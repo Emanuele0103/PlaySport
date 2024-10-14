@@ -1,4 +1,4 @@
-package com.IeI.PlayGame.user;
+package com.IeI.PlayGame.bean.user;
 
 public enum Role {
     USER,

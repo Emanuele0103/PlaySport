@@ -3,20 +3,24 @@ package com.IeI.PlayGame.services;
 import com.IeI.PlayGame.auth.AuthenticationRequest;
 import com.IeI.PlayGame.auth.AuthenticationResponse;
 import com.IeI.PlayGame.auth.RegisterRequest;
-import com.IeI.PlayGame.user.Role;
-import com.IeI.PlayGame.user.User;
-import com.IeI.PlayGame.user.UserRepository;
+import com.IeI.PlayGame.services.user.UserService;
+import com.IeI.PlayGame.bean.user.Role;
+import com.IeI.PlayGame.bean.user.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -27,7 +31,7 @@ public class AuthenticationService {
     @Autowired
     private JwtService jwtService;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public Optional<AuthenticationResponse> register(RegisterRequest request) {
 
         var user = User.builder()
                 .firstname(request.getFirstname())
@@ -36,11 +40,17 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-        userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+
+        Optional<User> userSaved = userService.saveUser(user);
+
+
+        if (userSaved.isPresent()) {
+            var jwtToken = jwtService.generateToken(userSaved.get());
+            return Optional.of(AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build());
+        }
+        return Optional.empty();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -50,7 +60,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
+        var user = userService.findUserByEmail(request.getEmail())
                 .orElseThrow();
 
         var jwtToken = jwtService.generateToken(user);

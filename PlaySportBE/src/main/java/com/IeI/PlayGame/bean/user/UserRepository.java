@@ -1,4 +1,4 @@
-package com.IeI.PlayGame.user;
+package com.IeI.PlayGame.bean.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,8 +1,11 @@
-package com.IeI.PlayGame.services;
+package com.IeI.PlayGame.services.user.impl;
 
-import com.IeI.PlayGame.user.User;
-import com.IeI.PlayGame.user.UserRepository;
+import com.IeI.PlayGame.services.JwtService;
+import com.IeI.PlayGame.bean.user.User;
+import com.IeI.PlayGame.bean.user.UserRepository;
+import com.IeI.PlayGame.services.user.UserService;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,8 +14,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Slf4j
 @Service
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -27,13 +33,24 @@ public class UserService {
     private JwtService jwtService;
 
     @Transactional
-    public User register(User user){
-        if(userRepository.findByEmail(user.getEmail()).isPresent()){
-            throw new RuntimeException("AuthController Already exits!");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public Optional<User> saveUser(User user) {
 
-        return userRepository.save(user);
+        if (user != null) {
+
+            if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+                log.error("Cannot create user, email [{}] already exist", user.getEmail());
+                return Optional.empty();
+            }
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+            try {
+                return Optional.of(userRepository.save(user));
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+
+        return Optional.empty();
     }
 
     public String login(String username, String password) {
@@ -43,6 +60,11 @@ public class UserService {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return jwtService.generateToken(userDetails); // Genera e restituisce il token JWT
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 
