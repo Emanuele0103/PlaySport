@@ -4,7 +4,7 @@ import com.IeI.PlayGame.auth.LoginRequest;
 import com.IeI.PlayGame.auth.LoginResponse;
 import com.IeI.PlayGame.auth.RegisterRequest;
 import com.IeI.PlayGame.bean.user.Role;
-import com.IeI.PlayGame.bean.user.User;  // Assicurati di importare il tuo User
+import com.IeI.PlayGame.bean.user.User;
 import com.IeI.PlayGame.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +24,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<LoginResponse> register(@RequestBody RegisterRequest request) {
+
         User user = new User();
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
@@ -40,6 +41,6 @@ public class UserController {
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginRequest request) {
         LoginResponse response = userService.authenticate(request.getEmail(), request.getPassword());
         return response.getToken() != null ? ResponseEntity.ok(response)
-                : ResponseEntity.status(401).body(response); // 401 Unauthorized
+                : ResponseEntity.status(401).body(response);
     }
 }
