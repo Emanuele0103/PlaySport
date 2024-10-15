@@ -33,11 +33,12 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Objects> extraClaim, UserDetails userDetails){
+        Date date = new Date();
         return Jwts.builder()
                 .claims(extraClaim)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .expiration(new Date(date.getTime() + 60000))
                 .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
     }
