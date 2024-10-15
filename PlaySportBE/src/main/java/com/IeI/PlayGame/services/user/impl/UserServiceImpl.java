@@ -68,9 +68,16 @@ public class UserServiceImpl implements UserService {
             if (authentication.isAuthenticated()) {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                 String jwtToken = jwtService.generateToken(userDetails);
-                return LoginResponse.builder()
-                        .token(jwtToken)
-                        .build();
+
+                Optional<User> userOpt = findUserByEmail(email);
+                if (userOpt.isPresent()) {
+                    User user = userOpt.get();
+                    return LoginResponse.builder()
+                            .token(jwtToken)
+                            .firstname(user.getFirstname())
+                            .lastname(user.getLastname())
+                            .build();
+                }
             }
         } catch (BadCredentialsException e) {
             log.error("Login failed for user [{}]: Invalid credentials", email);

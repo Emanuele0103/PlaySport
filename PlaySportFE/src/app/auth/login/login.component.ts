@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css', '../../../styles.css']
 })
 export class LoginComponent {
   
   loginForm: FormGroup;
+  errorMessage: string;
 
   constructor(
     private fb: FormBuilder,
@@ -32,6 +33,7 @@ export class LoginComponent {
         },
         error: err => {
           console.error('Login error:', err);
+          this.errorMessage = 'Utente non esistente o password errata';
         }
       });
     } else {

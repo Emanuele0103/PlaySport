@@ -1,7 +1,9 @@
 package com.IeI.PlayGame.services;
 
+import com.IeI.PlayGame.bean.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,20 +30,32 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(UserDetails userDetails) {
+        // Crea un map per i claims extra
+        Map<String, Object> extraClaims = new HashMap<>();
+
+        // Se il tuo UserDetails è una tua classe User, puoi estrarre firstname e lastname
+        if (userDetails instanceof User) { // Assicurati che User implementi UserDetails
+            User user = (User) userDetails;
+            extraClaims.put("firstname", user.getFirstname());
+            extraClaims.put("lastname", user.getLastname());
+        }
+
+        // Passa i claims extra al metodo di generazione del token
+        return generateToken(extraClaims, userDetails);
     }
 
-    public String generateToken(Map<String, Objects> extraClaim, UserDetails userDetails){
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         Date date = new Date();
         return Jwts.builder()
-                .claims(extraClaim)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(date.getTime() + 60000))
-                .signWith(getSignInKey(), Jwts.SIG.HS256)
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(date)
+                .setExpiration(new Date(date.getTime() + 60000)) // Durata del token in millisecondi
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String username = extractUsername(token);

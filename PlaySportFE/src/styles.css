@@ -83,3 +83,12 @@ body {
     color: #0056b3; /* Colore più scuro al passaggio del mouse */
   }
   
+  .error-message {
+    color: red;
+    margin-top: 8px; /* Distanza dall'elemento sopra */
+    font-size: 14px; /* Dimensione del font */
+    display: block; /* Fa in modo che l'elemento prenda una nuova riga */
+    width: 100%; /* Opzionale, per forzare a riempire la larghezza */
+    text-align: center; /* Centra il testo */
+  }
+  
