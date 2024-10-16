@@ -13,7 +13,6 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -47,7 +46,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(date)
-                .setExpiration(new Date(date.getTime() + 60000)) // Durata del token in millisecondi
+                .setExpiration(new Date(date.getTime() + 60000))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

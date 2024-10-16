@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap } from 'rxjs';
+import { Observable, BehaviorSubject, tap, catchError, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { Router } from 'express';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private baseUrl = 'http://localhost:9090/api/v1/user';  
+  
   private userSubject: BehaviorSubject<{ firstname: string | null; lastname: string | null } | null> = new BehaviorSubject(null);
   public user$ = this.userSubject.asObservable();
 
@@ -24,6 +26,10 @@ export class AuthService {
           localStorage.setItem('authToken', response.token);
           this.userSubject.next({ firstname: response.firstname, lastname: response.lastname });
         }
+      }),
+      catchError((error) => {
+        console.error('Errore durante il login:', error);
+        return throwError(error);
       })
     );
   }
@@ -41,15 +47,13 @@ export class AuthService {
     return null;
 }
 
-
   isAuthenticated(): boolean {
     const token = localStorage.getItem('authToken');
-    // Aggiungi logica per verificare se il token è scaduto
     return token != null;
   }
 
   logout(): void {
     localStorage.removeItem('authToken');
-    this.userSubject.next(null); // Pulisci i dettagli dell'utente
+    this.userSubject.next(null); 
   }
 }
