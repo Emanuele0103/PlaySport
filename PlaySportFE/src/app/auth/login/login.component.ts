@@ -27,13 +27,18 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
-        next: data => {
+        next: (data) => {
+          console.log('Login response:', data); // Log della risposta
+          
           localStorage.setItem('authToken', data.token);
+          localStorage.setItem('firstname', data.firstname);
+          localStorage.setItem('lastname', data.lastname);
+
           this.router.navigate(['/home']);
         },
-        error: err => {
+        error: (err) => {
           console.error('Login error:', err);
-          this.errorMessage = 'Utente non esistente o password errata';
+          this.errorMessage = err.error?.message || 'Utente non esistente o password errata';
         }
       });
     } else {

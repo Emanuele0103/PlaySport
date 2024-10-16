@@ -4,16 +4,22 @@ import { Observable, BehaviorSubject, tap, catchError, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 
+// Definisci un'interfaccia per rappresentare l'utente
+interface User {
+  firstname: string;
+  lastname: string;
+  role: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private baseUrl = 'http://localhost:9090/api/v1/user';  
-  
+
   // Comportamento soggetto per tracciare l'utente
-  private userSubject: BehaviorSubject<{ firstname: string ; lastname: string ; role: string}> = new BehaviorSubject(null);
-  public user = this.userSubject.asObservable();
-  user$: any;
+  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  public user$ = this.userSubject.asObservable(); // Utilizza direttamente userSubject come user$
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -34,11 +40,7 @@ export class AuthService {
           const decodedToken = this.getDecodedToken();
 
           // Aggiorna il BehaviorSubject con le informazioni dell'utente decodificato
-          this.userSubject.next({
-            firstname: decodedToken.firstname,
-            lastname: decodedToken.lastname,
-            role: decodedToken.role 
-          });
+          this.userSubject.next(decodedToken); // Aggiorna direttamente con il token decodificato
         }
       }),
       catchError((error) => {
@@ -49,19 +51,22 @@ export class AuthService {
   }
 
   // Funzione per decodificare il token JWT
-  getDecodedToken(): any {
+  getDecodedToken(): User | null {
     const token = localStorage.getItem('authToken');
     if (token) {
-      // Decodifica il token JWT
-      const decoded: any = jwtDecode(token);
+      try {
+        // Decodifica il token JWT
+        const decoded: any = jwtDecode(token);
 
-      // Restituisci il contenuto decodificato (incluse tutte le proprietà come firstname, lastname e role)
-      return {
-        firstname: decoded.firstname,
-        lastname: decoded.lastname,
-        role: decoded.role,  
-        email: decoded.sub  
-      };
+        // Restituisci il contenuto decodificato (incluse tutte le proprietà come firstname, lastname e role)
+        return {
+          firstname: decoded.firstname || 'Utente',
+          lastname: decoded.lastname || 'sconosciuto',
+          role: decoded.role || 'user', // Fornisce un ruolo predefinito se non presente
+        };
+      } catch (error) {
+        console.error('Errore nella decodifica del token:', error);
+      }
     }
     return null;
   }
@@ -81,7 +86,7 @@ export class AuthService {
   // Funzione di logout
   logout(): void {
     localStorage.removeItem('authToken');  
-    this.userSubject.next(null);  
+    this.userSubject.next(null);  // Imposta l'utente a null
     this.router.navigate(['/login']);  
   }
 }

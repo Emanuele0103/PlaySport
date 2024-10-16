@@ -9,7 +9,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HomeComponent implements OnInit {
   
-  user: { firstname: string; lastname: string; role: string }; 
+  user$: { firstname: string; lastname: string; role: string }; 
   selectedSport: string | null = null; 
   campi: { name: string, location: string }[] = [];
   isAdmin: boolean = false;
@@ -17,18 +17,26 @@ export class HomeComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    // Sottoscrivi i dati utente e controlla se l'utente è admin
-    this.authService.user$.subscribe(user => {
+    this.authService.user$.subscribe((user: { firstname: string; lastname: string; role: string; }) => {
       if (user) {
-        this.user = user;
+        this.user$ = user;
         this.isAdmin = this.authService.isAdmin();
+      } else {
+        const firstname = localStorage.getItem('firstname');
+        const lastname = localStorage.getItem('lastname');
+        this.user$ = {
+          firstname: firstname || 'Utente',
+          lastname: lastname || 'sconosciuto',
+          role: null
+        };
       }
     });
   }
+  
 
   // Funzione per ottenere il nome completo dell'utente
   get userName(): string {
-    return this.user ? `${this.user.firstname} ${this.user.lastname}` : 'Utente sconosciuto'; 
+    return this.user$ ? `${this.user$.firstname} ${this.user$.lastname}` : 'Utente sconosciuto'; 
   }
 
   // Funzione per la selezione dello sport
@@ -77,6 +85,10 @@ export class HomeComponent implements OnInit {
   // Funzione per il logout
   logout() {
     this.authService.logout();
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('firstname');
+    localStorage.removeItem('lastname');
     this.router.navigate(['/login']); 
   }
+  
 }
