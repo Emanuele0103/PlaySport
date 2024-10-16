@@ -1,94 +1,120 @@
 body {
-    font-family: 'Arial', sans-serif; /* Font generale */
-    background-color: #f0f2f5; /* Colore di sfondo della pagina */
-  }
-  
-  .auth-container {
-    max-width: 400px; /* Limita la larghezza del modulo */
-    margin: 50px auto; /* Centra il contenitore orizzontalmente e aggiungi margine superiore */
-    padding: 50px; /* Padding interno */
-    background-color: white; /* Sfondo bianco per il contenitore */
-    border-radius: 10px; /* Angoli arrotondati */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Ombra più pronunciata */
-  }
-  
-  .auth-title {
-    text-align: center; /* Centra il titolo */
-    font-size: 30px; /* Dimensione del font del titolo */
-    margin-bottom: 20px; /* Margine sotto il titolo */
-    color: #333; /* Colore del titolo */
-  }
-  
-  .form-group {
-    margin-bottom: 20px; /* Spaziatura tra i campi */
-    display: flex;
-    flex-direction: column; /* Layout verticale per etichetta e input */
-  }
-  
-  label {
-    margin-bottom: 5px; /* Spazio sotto le etichette */
-    font-weight: bold; /* Grassetto per le etichette */
-    color: #555; /* Colore delle etichette */
-  }
-  
-  input {
-    width: 95%; /* Input largo */
-    padding: 12px; /* Padding interno */
-    border: 1px solid #ddd; /* Bordo grigio chiaro */
-    border-radius: 5px; /* Angoli arrotondati per gli input */
-    transition: border-color 0.3s; /* Transizione per il colore del bordo */
-  }
-  
-  input:focus {
-    border-color: #007bff; /* Colore del bordo in stato di focus */
-    outline: none; /* Nessun contorno in stato di focus */
-  }
-  
-  button {
-    width: 100%; /* Pulsante largo */
-    padding: 12px;
-    background-color: #007bff; /* Colore di sfondo blu */
-    color: white; /* Colore del testo bianco */
-    border: none; /* Nessun bordo */
-    border-radius: 5px; /* Angoli arrotondati per il pulsante */
-    cursor: pointer; /* Cambia il cursore a mano */
-    font-size: 16px; /* Dimensione del testo del pulsante */
-    transition: background-color 0.3s; /* Transizione per il colore di sfondo */
-  }
-  
-  button:hover {
-    background-color: #0056b3; /* Colore più scuro al passaggio del mouse */
-  }
-  
-  button:disabled {
-    background-color: #ccc; /* Colore grigio se disabilitato */
-  }
-  
-  .error-message {
-    color: red; /* Colore rosso per i messaggi di errore */
-  }
-  
-  .link {
-    text-align: center; /* Centra il link */
-    margin-top: 15px; /* Spazio sopra il link */
-  }
-  
-  .link a {
-    color: #007bff; /* Colore blu per il link */
-    text-decoration: underline; /* Sottolinea il link */
-  }
-  
-  .link a:hover {
-    text-decoration: none; /* Rimuovi la sottolineatura al passaggio del mouse */
-    color: #0056b3; /* Colore più scuro al passaggio del mouse */
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 8px; /* Distanza dall'elemento sopra */
-    font-size: 14px; /* Dimensione del font */
-    display: block; /* Fa in modo che l'elemento prenda una nuova riga */
-    width: 100%; /* Opzionale, per forzare a riempire la larghezza */
-    text-align: center; /* Centra il testo */
-  }
-  
+  font-family: 'Arial', sans-serif; /* Font generale */
+  background: linear-gradient(150deg, rgb(255, 153, 0), rgb(126, 120, 120)); /* Gradiente di sfondo */
+  min-height: 100vh; /* Imposta l'altezza minima a 100% della viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.auth-container {
+  max-width: 400px; /* Limita la larghezza del modulo */
+  margin: 50px auto;
+  padding: 50px;
+  background-color: white;
+  border-radius: 15px; /* Angoli arrotondati più pronunciati */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Ombra più pronunciata */
+  transition: transform 0.4s ease, box-shadow 0.4s ease; /* Animazione di transizione */
+}
+
+.auth-container:hover {
+  transform: translateY(-10px); /* Sposta leggermente il contenitore in alto */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); /* Ombra più grande al passaggio del mouse */
+}
+
+.auth-title {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+input {
+  margin-bottom: 20px;
+  width: 95%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: border-color 0.3s, box-shadow 0.3s; /* Aggiunta transizione */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombra sugli input */
+}
+
+input:focus {
+  border-color: #007bff;
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.2); /* Ombra più grande su focus */
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s; /* Transizione su sfondo e trasformazione */
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px); /* Sposta leggermente il pulsante verso l'alto al passaggio del mouse */
+}
+
+button:active {
+  transform: translateY(0); /* Ripristina la posizione del pulsante quando viene cliccato */
+  background-color: #0041a3; /* Colore più scuro su click */
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed; /* Cambia il cursore quando disabilitato */
+}
+
+.error-message {
+  color: red;
+  margin-top: 8px;
+  font-size: 14px;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.link a {
+  color: #007bff;
+  text-decoration: underline;
+  transition: color 0.3s, transform 0.3s; /* Aggiungi una transizione ai link */
+}
+
+.link a:hover {
+  text-decoration: none;
+  color: #0056b3;
+  transform: scale(1.05); /* Leggero ingrandimento al passaggio del mouse */
+}
+
+.main-title {
+  text-align: center; /* Centra il titolo */
+  font-size: 36px; /* Dimensione del font più grande rispetto al titolo H2 */
+  color: #333; /* Colore del testo */
+  margin-bottom: 20px; /* Spazio sotto il titolo */
+  font-weight: bold; /* Grassetto */
+}

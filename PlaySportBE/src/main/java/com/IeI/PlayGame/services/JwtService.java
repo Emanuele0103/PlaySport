@@ -31,17 +31,13 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        // Crea un map per i claims extra
         Map<String, Object> extraClaims = new HashMap<>();
 
-        // Se il tuo UserDetails è una tua classe User, puoi estrarre firstname e lastname
-        if (userDetails instanceof User) { // Assicurati che User implementi UserDetails
+        if (userDetails instanceof User) {
             User user = (User) userDetails;
             extraClaims.put("firstname", user.getFirstname());
             extraClaims.put("lastname", user.getLastname());
         }
-
-        // Passa i claims extra al metodo di generazione del token
         return generateToken(extraClaims, userDetails);
     }
 

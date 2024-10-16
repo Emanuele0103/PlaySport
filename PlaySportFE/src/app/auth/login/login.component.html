@@ -1,3 +1,4 @@
+<h1 class="main-title">Play Sport</h1>
 <div class="auth-container">
   <h2 class="auth-title">Login</h2>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -30,8 +31,8 @@
     </div>
 
     <div class="link">
-      <p>Non hai un account? <a routerLink="/register">Registrati</a></p>
-    </div>
+      <p>Non hai un account? <a [routerLink]="'/register'">Registrati</a></p>
+    </div>    
 
   </form>
 </div>
