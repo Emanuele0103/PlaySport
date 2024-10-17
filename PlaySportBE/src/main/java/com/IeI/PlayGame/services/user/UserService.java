@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<LoginResponse> saveUser(User user);
+    Optional<User> saveUser(User user);
 
     LoginResponse authenticate(String username, String password);
 

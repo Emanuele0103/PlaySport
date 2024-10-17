@@ -23,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<LoginResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
 
         User user = new User();
         user.setFirstname(request.getFirstname());
@@ -32,9 +32,9 @@ public class UserController {
         user.setPassword(request.getPassword());
         user.setRole(Role.USER);
 
-        Optional<LoginResponse> response = userService.saveUser(user);
+        Optional<User> response = userService.saveUser(user);
         return response.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.unprocessableEntity().body(LoginResponse.builder().token(null).build()));
+                .orElseGet(() -> ResponseEntity.unprocessableEntity().build());
     }
 
     @PostMapping("/authenticate")

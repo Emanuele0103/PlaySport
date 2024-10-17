@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   
   user$: { firstname: string; lastname: string; role: string }; 
   selectedSport: string | null = null; 
-  campi: { name: string, location: string }[] = [];
+  campi: { name: string, address: string }[] = [];
   isAdmin: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -42,29 +42,29 @@ export class HomeComponent implements OnInit {
   // Funzione per la selezione dello sport
   selectSport(sport: string) {
     this.selectedSport = sport;
-    this.getCampiPerSport(sport); // Recupera i campi per lo sport selezionato
+    this.getFieldForSport(sport); // Recupera i campi per lo sport selezionato
   }
 
   // Simulazione di un servizio che recupera i campi per lo sport selezionato
-  getCampiPerSport(sport: string) {
+  getFieldForSport(sport: string) {
     // In una situazione reale, dovresti fare una chiamata HTTP per ottenere i campi
     // Per esempio: this.campiService.getCampi(sport).subscribe(...)
     const campiDisponibili = {
       calcio: [
-        { name: 'Campo Calcio 1', location: 'Via Roma' },
-        { name: 'Campo Calcio 2', location: 'Via Milano' }
+        { name: 'Campo Calcio 1', address: 'Via Roma' },
+        { name: 'Campo Calcio 2', address: 'Via Milano' }
       ],
       padel: [
-        { name: 'Campo Padel 1', location: 'Via Napoli' },
-        { name: 'Campo Padel 2', location: 'Via Firenze' }
+        { name: 'Campo Padel 1', address: 'Via Napoli' },
+        { name: 'Campo Padel 2', address: 'Via Firenze' }
       ],
       tennis: [
-        { name: 'Campo Tennis 1', location: 'Via Torino' },
-        { name: 'Campo Tennis 2', location: 'Via Bologna' }
+        { name: 'Campo Tennis 1', address: 'Via Torino' },
+        { name: 'Campo Tennis 2', address: 'Via Bologna' }
       ],
       basket: [
-        { name: 'Campo Basket 1', location: 'Via Palermo' },
-        { name: 'Campo Basket 2', location: 'Via Genova' }
+        { name: 'Campo Basket 1', address: 'Via Palermo' },
+        { name: 'Campo Basket 2', address: 'Via Genova' }
       ]
     };
 
@@ -73,8 +73,8 @@ export class HomeComponent implements OnInit {
   }
 
   // Funzione per prenotare un campo
-  prenotaCampo(campo: { name: string, location: string }) {
-    alert(`Hai prenotato il ${campo.name} a ${campo.location}`);
+  bookField(campo: { name: string, address: string }) {
+    alert(`Hai prenotato il ${campo.name} a ${campo.address}`);
   }
 
   // // Funzione per navigare al profilo utente

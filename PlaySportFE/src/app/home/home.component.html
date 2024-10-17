@@ -1,40 +1,49 @@
 <div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h2>Sport</h2>
-      <button (click)="selectSport('calcio')">Calcio</button>
-      <button (click)="selectSport('padel')">Padel</button>
-      <button (click)="selectSport('tennis')">Tennis</button>
-      <button (click)="selectSport('basket')">Basket</button>
-  
-      <div class="bottom-buttons">
-        <!-- Tasto per l'admin, visibile solo se l'utente è admin -->
-        <button *ngIf="isAdmin" class="admin-button">Gestisci Utenti</button>
-        <!-- Tasto Logout -->
-        <button (click)="logout()">Logout</button>
-      </div>
-    </div>
-  
-    <!-- Content Area (Campi di gioco) -->
-    <div class="content">
-      <h1>Benvenuto, {{ userName }}!</h1>
-  
-      <!-- Se è stato selezionato uno sport, mostra i campi disponibili -->
-      <div *ngIf="selectedSport">
-        <h2>Campi disponibili per {{ selectedSport }}</h2>
-        <div class="grid-container">
-          <div class="campo" *ngFor="let campo of campi">
-            <h3>{{ campo.name }}</h3>
-            <p>{{ campo.location }}</p>
-            <button (click)="prenotaCampo(campo)">Prenota</button>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Messaggio se non è selezionato alcuno sport -->
-      <div *ngIf="!selectedSport">
-        <p>Seleziona uno sport per vedere i campi disponibili.</p>
-      </div>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Sport</h2>
+    <button (click)="selectSport('calcio')">Calcio</button>
+    <button (click)="selectSport('padel')">Padel</button>
+    <button (click)="selectSport('tennis')">Tennis</button>
+    <button (click)="selectSport('basket')">Basket</button>
+
+    <div class="bottom-buttons">
+      <!-- Tasto "Gestisci Utenti", visibile solo se l'utente è admin -->
+      <button *ngIf="isAdmin" class="admin-button">
+        <i class="fas fa-user-cog"></i> Gestisci Utenti
+      </button>
+
+      <!-- Tasto per impostazioni visibile a tutti -->
+      <button class="settings-button">
+        <i class="fas fa-cog"></i> Impostazioni
+      </button>
+
+      <!-- Tasto Logout visibile a tutti -->
+      <button (click)="logout()" class="logout-button">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
     </div>
   </div>
-  
+
+  <!-- Content Area (Campi di gioco) -->
+  <div class="content">
+    <h1>Benvenuto, {{ userName }}!</h1>
+
+    <!-- Se è stato selezionato uno sport, mostra i campi disponibili -->
+    <div *ngIf="selectedSport">
+      <h2>Campi disponibili per {{ selectedSport }}</h2>
+      <div class="grid-container">
+        <div class="field" *ngFor="let field of campi">
+          <h3>{{ field.name }}</h3>
+          <p>{{ field.address }}</p>
+          <button (click)="bookField(field)">Prenota</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messaggio se non è selezionato alcuno sport -->
+    <div *ngIf="!selectedSport">
+      <p>Seleziona uno sport per vedere i campi disponibili.</p>
+    </div>
+  </div>
+</div>

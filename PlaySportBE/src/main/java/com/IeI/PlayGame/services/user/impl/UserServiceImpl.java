@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     private JwtService jwtService;
 
     @Transactional
-    public Optional<LoginResponse> saveUser(User user) {
+    public Optional<User> saveUser(User user) {
         if (user == null) {
             return Optional.empty();
         }
@@ -48,16 +48,15 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         try {
-            userRepository.save(user);
-            return Optional.of(LoginResponse.builder()
-                    .token(jwtService.generateToken(user))
-                    .build());
+            User savedUser = userRepository.save(user);
+            return Optional.of(savedUser);
         } catch (Exception e) {
             log.error("Error saving user: {}", e.getMessage());
         }
 
         return Optional.empty();
     }
+
 
     public LoginResponse authenticate(String email, String password) {
         try {
