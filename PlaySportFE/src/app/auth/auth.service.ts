@@ -30,41 +30,38 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/register`, signupRequest);  // Chiamata POST per registrare un nuovo utente
   }
 
-  // Funzione di login: invia i dati di login e riceve un token JWT
   login(loginRequest: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/authenticate`, loginRequest).pipe(
-      tap((response: any) => {  // Se la risposta è corretta, gestisce il token JWT
+      tap((response: any) => {
         if (response.token) {
-          // Salva il token nel localStorage
           localStorage.setItem('authToken', response.token);
-
-          // Decodifica il token per ottenere le informazioni dell'utente
           const decodedToken = this.getDecodedToken();
-
-          // Aggiorna il `BehaviorSubject` con i dati dell'utente decodificato
-          this.userSubject.next(decodedToken);  // Aggiorna lo stato dell'utente
+          this.userSubject.next(decodedToken);
+          
+          // Salva il ruolo nel localStorage
+          localStorage.setItem('role', decodedToken.role);
         }
       }),
-      catchError((error) => {  // Gestisce gli errori in caso di login fallito
+      catchError((error) => {
         console.error('Errore durante il login:', error);
-        return throwError(error);  // Propaga l'errore
+        return throwError(error);
       })
     );
   }
-
-  // Funzione per decodificare il token JWT e ottenere i dati dell'utente
-  getDecodedToken(): User | null {
+  
+  getDecodedToken(): User {
     const token = localStorage.getItem('authToken');  // Recupera il token dal localStorage
     if (token) {
       try {
         // Decodifica il token JWT
         const decoded: any = jwtDecode(token);
-
+        console.log('Token decodificato:', decoded);  // Aggiungi questo per visualizzare il token decodificato
+  
         // Restituisce i dati dell'utente decodificato (nome, cognome, ruolo)
         return {
           firstname: decoded.firstname || 'Utente',  // Usa "Utente" come nome predefinito se non presente
           lastname: decoded.lastname || 'sconosciuto',  // Usa "sconosciuto" come cognome predefinito se non presente
-          role: decoded.role || 'user',  // Imposta "user" come ruolo predefinito se non presente
+          role: decoded.role || 'user',  // Controlla il nome esatto del campo 'role' nel token
         };
       } catch (error) {
         console.error('Errore nella decodifica del token:', error);  // Gestisce eventuali errori di decodifica

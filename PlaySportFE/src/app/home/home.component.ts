@@ -12,31 +12,38 @@ export class HomeComponent implements OnInit {
 
   user$: { firstname: string; lastname: string; role: string }; 
   selectedSport: string; 
-  campi: { name: string, location: string }[] = []; // Array che contiene i campi disponibili per lo sport selezionato
+  campi: { name: string, address: string }[] = []; // Array che contiene i campi disponibili per lo sport selezionato
   isAdmin: boolean = false; // Variabile booleana che indica se l'utente ha il ruolo di amministratore
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  // Metodo del ciclo di vita di Angular, eseguito quando il componente viene inizializzato
   ngOnInit(): void {
     // Sottoscrizione al valore dell'utente corrente nel servizio di autenticazione
-    this.authService.user$.subscribe((user: { firstname: string; lastname: string; role: string; }) => {
+    this.authService.user$.subscribe((user: { firstname: string; lastname: string; role: string }) => {
       if (user) { // Se esiste un utente autenticato
         this.user$ = user; // Imposta i dati dell'utente
-        this.isAdmin = this.authService.isAdmin(); // Controlla se l'utente è un amministratore e imposta la variabile `isAdmin`
-      } else { 
+        this.isAdmin = this.authService.isAdmin(); // Controlla se l'utente è un amministratore
+        console.log('Utente autenticato:', this.user$); // Debug per controllare i dati dell'utente
+        console.log('È admin?', this.isAdmin); // Debug per vedere se viene rilevato come admin
+      } else {
         // Se non c'è utente autenticato, recupera i dati dal localStorage (memorizzazione locale del browser)
         const firstname = localStorage.getItem('firstname');
         const lastname = localStorage.getItem('lastname');
-        // Imposta l'utente come anonimo o con dati parziali
+        const role = localStorage.getItem('role'); // Recupera il ruolo salvato, se disponibile
+  
         this.user$ = {
-          firstname: firstname || 'Utente sconosciuto', // Se `firstname` non esiste, imposta 'Utente'
-          lastname: lastname || null, // Se `lastname` non esiste, imposta 'sconosciuto'
-          role: null // Non viene impostato un ruolo
+          firstname: firstname || 'Utente sconosciuto',
+          lastname: lastname || 'Sconosciuto',
+          role: role || 'user' 
         };
+  
+        this.isAdmin = this.user$.role === 'ADMIN'; // Controlla se il ruolo è 'ADMIN'
+        console.log('Dati utente caricati dal localStorage:', this.user$); // Debug per controllare i dati caricati
+        console.log('È admin dal localStorage?', this.isAdmin); // Debug per il ruolo admin
       }
     });
   }
+  
 
   // Getter che ritorna il nome completo dell'utente
   get userName(): string {
@@ -54,20 +61,28 @@ export class HomeComponent implements OnInit {
     // Oggetto che simula i campi disponibili per diversi sport
     const campiDisponibili = {
       calcio: [
-        { name: 'Campo Calcio 1', location: 'Via Roma' },
-        { name: 'Campo Calcio 2', location: 'Via Milano' }
+        { name: 'Campo Calcio 1', address
+    : 'Via Roma' },
+        { name: 'Campo Calcio 2', address
+    : 'Via Milano' }
       ],
       padel: [
-        { name: 'Campo Padel 1', location: 'Via Napoli' },
-        { name: 'Campo Padel 2', location: 'Via Firenze' }
+        { name: 'Campo Padel 1', address
+    : 'Via Napoli' },
+        { name: 'Campo Padel 2', address
+    : 'Via Firenze' }
       ],
       tennis: [
-        { name: 'Campo Tennis 1', location: 'Via Torino' },
-        { name: 'Campo Tennis 2', location: 'Via Bologna' }
+        { name: 'Campo Tennis 1', address
+    : 'Via Torino' },
+        { name: 'Campo Tennis 2', address
+    : 'Via Bologna' }
       ],
       basket: [
-        { name: 'Campo Basket 1', location: 'Via Palermo' },
-        { name: 'Campo Basket 2', location: 'Via Genova' }
+        { name: 'Campo Basket 1', address
+    : 'Via Palermo' },
+        { name: 'Campo Basket 2', address
+    : 'Via Genova' }
       ]
     };
 
@@ -76,9 +91,11 @@ export class HomeComponent implements OnInit {
   }
 
   // Funzione per prenotare un campo
-  bookField(campo: { name: string, location: string }) {
+  bookField(campo: { name: string, address: string }) {
     // Visualizza un messaggio di conferma della prenotazione
-    alert(`Hai prenotato il ${campo.name} a ${campo.location}`);
+    alert(`Hai prenotato il ${campo.name} a ${campo.address
+
+    }`);
   }
 
   // Funzione per il logout dell'utente
