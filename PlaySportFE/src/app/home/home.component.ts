@@ -5,16 +5,16 @@ import { AuthService } from '../auth/auth.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'] 
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  
-  user$: { firstname: string; lastname: string; role: string }; 
-  selectedSport: string | null = null; 
+
+  user$: { firstname: string; lastname: string; role: string };
+  selectedSport: string | null = null;
   campi: { name: string, address: string }[] = [];
   isAdmin: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user: { firstname: string; lastname: string; role: string; }) => {
@@ -32,11 +32,11 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-  
+
 
   // Funzione per ottenere il nome completo dell'utente
   get userName(): string {
-    return this.user$ ? `${this.user$.firstname} ${this.user$.lastname}` : 'Utente sconosciuto'; 
+    return this.user$ ? `${this.user$.firstname} ${this.user$.lastname}` : 'Utente sconosciuto';
   }
 
   // Funzione per la selezione dello sport
@@ -77,10 +77,9 @@ export class HomeComponent implements OnInit {
     alert(`Hai prenotato il ${campo.name} a ${campo.address}`);
   }
 
-  // // Funzione per navigare al profilo utente
-  // goToProfile() {
-  //   this.router.navigate(['/profile']); // Supponiamo che tu abbia un percorso per il profilo
-  // }
+  settings() {
+    this.router.navigate(['/setting'])
+  }
 
   // Funzione per il logout
   logout() {
@@ -88,7 +87,7 @@ export class HomeComponent implements OnInit {
     localStorage.removeItem('authToken');
     localStorage.removeItem('firstname');
     localStorage.removeItem('lastname');
-    this.router.navigate(['/login']); 
+    this.router.navigate(['/login']);
   }
-  
+
 }

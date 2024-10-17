@@ -64,13 +64,13 @@
   gap: 20px;
 }
 
-.campo {
-  background-color: #f9f9f9;
+.field {
+  background-color: #ffffff;
   border: 1px solid #ccc;
   padding: 20px;
   text-align: center;
 }
 
-.campo h3 {
+.field h3 {
   margin-top: 0;
 }
