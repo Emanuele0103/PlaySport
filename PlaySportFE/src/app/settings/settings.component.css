@@ -61,5 +61,22 @@
     margin-top: 40px; /* Distanza dal pulsante di ritorno */
 }
 
+.settings-container {
+  padding: 20px;
+  background-color: #f4f4f4; /* Colore di sfondo chiaro */
+  border-radius: 10px; /* Angoli arrotondati */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombra */
+}
 
-  
+.password-input-container {
+  position: relative; /* Necessario per posizionare il pulsante */
+  display: flex; /* Usa flexbox per allineare il pulsante */
+  align-items: center; /* Centra verticalmente */
+}
+
+.password-input-container input {
+  width: 500px; /* Larghezza fissa */
+  padding: 10px; /* Padding interno */
+  border: 1px solid #ccc; /* Bordo dell'input */
+  border-radius: 5px 0 0 5px; /* Angoli arrotondati a sinistra */
+}

@@ -9,6 +9,9 @@ import { AuthService } from '../auth/auth.service'; // Assicurati di avere il se
 })
 export class SettingsComponent {
 
+  showOldPassword: any;
+  showNewPassword: any;
+
   user: any = {
     firstname: '',
     lastname: '',
@@ -55,5 +58,13 @@ export class SettingsComponent {
 
   goBack() {
     this.router.navigate(['/home']); 
+  }
+
+  toggleOldPasswordVisibility() {
+    this.showOldPassword = !this.showOldPassword;
+  }
+
+  toggleNewPasswordVisibility() {
+    this.showNewPassword = !this.showNewPassword;
   }
 }

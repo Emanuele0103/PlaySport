@@ -1,53 +1,56 @@
 <div class="settings-container">
   <button class="back-button" (click)="goBack()">
-    <i class="fas fa-arrow-left"></i> <!-- Icona freccia -->
-</button>
-    <h2 class="settings-title">Impostazioni Utente</h2>
-    
-    <!-- Bottoni di navigazione -->
-    <div class="button-group">
+      <i class="fas fa-arrow-left"></i> <!-- Icona freccia -->
+  </button>
+  <h2 class="settings-title">Impostazioni Utente</h2>
+
+  <!-- Bottoni di navigazione -->
+  <div class="button-group">
       <button class="settings-button" (click)="showProfileForm()">Modifica Profilo</button>
       <button class="settings-button" (click)="showChangePassword()">Cambia Password</button>
       <button class="settings-button" (click)="logout()">Logout</button>
-    </div>
-  
-    <!-- Modulo per modificare il profilo -->
-    <div *ngIf="isProfileEditing">
-      <form>
-        <div>
-          <label for="firstname">Nome:</label>
-          <input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required>
-        </div>
-  
-        <div>
-          <label for="lastname">Cognome:</label>
-          <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required>
-        </div>
-  
-        <div>
-          <label for="email">Email:</label>
-          <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
-        </div>
-  
-        <button type="button" (click)="updateProfile()">Salva</button>
-      </form>
-    </div>
-  
-    <!-- Modulo per cambiare la password -->
-    <div *ngIf="isPasswordChanging">
-      <form>
-        <div>
-          <label for="oldPassword">Password Attuale:</label>
-          <input type="password" id="oldPassword" [(ngModel)]="oldPassword" name="oldPassword" required>
-        </div>
-  
-        <div>
-          <label for="newPassword">Nuova Password:</label>
-          <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required>
-        </div>
-  
-        <button type="button" (click)="changePassword()">Salva Nuova Password</button>
-      </form>
-    </div>
   </div>
-  
+
+  <!-- Modulo per modificare il profilo -->
+  <div *ngIf="isProfileEditing">
+      <form>
+          <div>
+              <label for="firstname">Nome:</label>
+              <input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required>
+          </div>
+
+          <div>
+              <label for="lastname">Cognome:</label>
+              <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required>
+          </div>
+
+          <div>
+              <label for="email">Email:</label>
+              <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
+          </div>
+
+          <button type="button" (click)="updateProfile()">Salva</button>
+      </form>
+  </div>
+
+  <!-- Modulo per cambiare la password -->
+  <div *ngIf="isPasswordChanging">
+      <form>
+          <div>
+              <label for="oldPassword">Password Attuale:</label>
+              <div class="password-input-container">
+                  <input type="password" id="oldPassword" [(ngModel)]="oldPassword" name="oldPassword" required [type]="showOldPassword ? 'text' : 'password'">
+              </div>
+          </div>
+
+          <div>
+              <label for="newPassword">Nuova Password:</label>
+              <div class="password-input-container">
+                  <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required [type]="showNewPassword ? 'text' : 'password'">
+              </div>
+          </div>
+
+          <button type="button" (click)="changePassword()">Salva Nuova Password</button>
+      </form>
+  </div>
+</div>
