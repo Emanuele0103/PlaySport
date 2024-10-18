@@ -1,26 +1,28 @@
 <div class="container">
   <!-- Sidebar -->
   <div class="sidebar">
-    <h2>Sport</h2>
-    <button (click)="selectSport('calcio')">Calcio</button>
-    <button (click)="selectSport('padel')">Padel</button>
-    <button (click)="selectSport('tennis')">Tennis</button>
-    <button (click)="selectSport('basket')">Basket</button>
+    <div class="sport-buttons">
+      <h2>Sport</h2>
+      <button (click)="selectSport('calcio')" class="sport-button">Calcio</button>
+      <button (click)="selectSport('padel')" class="sport-button">Padel</button>
+      <button (click)="selectSport('tennis')" class="sport-button">Tennis</button>
+      <button (click)="selectSport('basket')" class="sport-button">Basket</button>
+    </div>
 
     <div class="bottom-buttons">
       <!-- Tasto "Gestisci Utenti", visibile solo se l'utente è admin -->
-      <button *ngIf="isAdmin" class="admin-button">
-        <i class="fas fa-user-cog"></i> Gestisci Utenti
+      <button *ngIf="isAdmin" class="icon-button admin-button">
+        <i class="fas fa-user-cog"></i>
       </button>
 
       <!-- Tasto per impostazioni visibile a tutti -->
-      <button (click)="settings()" class="settings-button">
-        <i class="fas fa-cog"></i> Impostazioni
+      <button (click)="settings()" class="icon-button settings-button">
+        <i class="fas fa-cog"></i>
       </button>
 
       <!-- Tasto Logout visibile a tutti -->
-      <button (click)="logout()" class="logout-button">
-        <i class="fas fa-sign-out-alt"></i> Logout
+      <button (click)="logout()" class="icon-button logout-button">
+        <i class="fas fa-sign-out-alt"></i>
       </button>
     </div>
   </div>
