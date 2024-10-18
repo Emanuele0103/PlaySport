@@ -11,12 +11,12 @@
 
     <div class="bottom-buttons">
       <!-- Tasto "Gestisci Utenti", visibile solo se l'utente è admin -->
-      <button *ngIf="isAdmin" class="icon-button admin-button">
+      <button (click)="goToUserManager()"  *ngIf="isAdmin" class="icon-button admin-button">
         <i class="fas fa-user-cog"></i>
       </button>
 
       <!-- Tasto per impostazioni visibile a tutti -->
-      <button (click)="settings()" class="icon-button settings-button">
+      <button (click)="goToSettings()" class="icon-button settings-button">
         <i class="fas fa-cog"></i>
       </button>
 

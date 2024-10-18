@@ -10,7 +10,7 @@ import { AuthService } from '../auth/auth.service';
 export class HomeComponent implements OnInit {
 
   user$: { firstname: string; lastname: string; role: string };
-  selectedSport: string | null = null;
+  selectedSport: string;
   campi: { name: string, address: string }[] = [];
   isAdmin: boolean = false;
 
@@ -42,13 +42,11 @@ export class HomeComponent implements OnInit {
   // Funzione per la selezione dello sport
   selectSport(sport: string) {
     this.selectedSport = sport;
-    this.getFieldForSport(sport); // Recupera i campi per lo sport selezionato
+    this.getFieldForSport(sport);
   }
 
   // Simulazione di un servizio che recupera i campi per lo sport selezionato
   getFieldForSport(sport: string) {
-    // In una situazione reale, dovresti fare una chiamata HTTP per ottenere i campi
-    // Per esempio: this.campiService.getCampi(sport).subscribe(...)
     const campiDisponibili = {
       calcio: [
         { name: 'Campo Calcio 1', address: 'Via Roma' },
@@ -77,8 +75,12 @@ export class HomeComponent implements OnInit {
     alert(`Hai prenotato il ${campo.name} a ${campo.address}`);
   }
 
-  settings() {
+  goToSettings() {
     this.router.navigate(['/setting'])
+  }
+
+  goToUserManager() {
+    this.router.navigate(['/userManagement'])
   }
 
   // Funzione per il logout

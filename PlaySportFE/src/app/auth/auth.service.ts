@@ -18,7 +18,7 @@ export class AuthService {
   private baseUrl = 'http://localhost:9090/api/v1/user';  
 
   // Comportamento soggetto per tracciare l'utente
-  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   public user$ = this.userSubject.asObservable(); // Utilizza direttamente userSubject come user$
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   // Funzione per decodificare il token JWT
-  getDecodedToken(): User | null {
+  getDecodedToken(): User {
     const token = localStorage.getItem('authToken');
     if (token) {
       try {
