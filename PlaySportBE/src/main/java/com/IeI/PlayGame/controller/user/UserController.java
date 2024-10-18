@@ -49,4 +49,16 @@ public class UserController {
         return updatedUserOpt.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestParam String email, @RequestParam String currentPassword, @RequestParam String newPassword) {
+        boolean isChanged = userService.changePassword(email, currentPassword, newPassword);
+        if (isChanged) {
+            return ResponseEntity.ok("Password changed successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to change password. Please check your current password.");
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package com.IeI.PlayGame.services.user;
 
 import com.IeI.PlayGame.auth.LoginResponse;
 import com.IeI.PlayGame.bean.user.User;
+import jakarta.transaction.Transactional;
 
 import java.util.Optional;
 
@@ -14,4 +15,6 @@ public interface UserService {
     Optional<User> findUserByEmail(String email);
 
     Optional<User> updateUser(String email, User updatedUser);
+
+    boolean changePassword(String email, String currentPassword, String newPassword);
 }

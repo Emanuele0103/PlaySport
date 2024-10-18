@@ -34,6 +34,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JwtService jwtService;
 
+    public String error = "User not found for email [{}]";
+
     @Transactional
     public Optional<User> saveUser(User user) {
         if (user == null) {
@@ -120,22 +122,36 @@ public class UserServiceImpl implements UserService {
                 existingUser.setEmail(updatedUser.getEmail());
             }
 
-            // Puoi anche aggiornare la password se necessario
-            if (updatedUser.getPassword() != null) {
-                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-            }
+            userRepository.save(existingUser);
+            return Optional.of(existingUser);
+        } else {
+            log.error(error, email);
+            return Optional.empty();
+        }
+    }
 
-            try {
-                User savedUser = userRepository.save(existingUser);
-                return Optional.of(savedUser);
-            } catch (Exception e) {
-                log.error("Error updating user: {}", e.getMessage());
+
+    @Transactional
+    @Override
+    public boolean changePassword(String email, String currentPassword, String newPassword) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            // Verifica se la password attuale è corretta
+            if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+                // Aggiorna la password con la nuova
+                user.setPassword(passwordEncoder.encode(newPassword));
+                userRepository.save(user);
+                return true; // Password cambiata con successo
+            } else {
+                log.error("Password change failed for user [{}]: Current password is incorrect", email);
+                return false; // La password attuale è errata
             }
         } else {
-            log.error("User not found for email [{}]", email);
+            log.error(error, email);
+            return false;
         }
-
-        return Optional.empty();
     }
 
 }
