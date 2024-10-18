@@ -12,4 +12,6 @@ public interface UserService {
     LoginResponse authenticate(String username, String password);
 
     Optional<User> findUserByEmail(String email);
+
+    Optional<User> updateUser(String email, User updatedUser);
 }

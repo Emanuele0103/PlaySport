@@ -8,6 +8,7 @@ import { AuthService } from '../auth/auth.service'; // Assicurati di avere il se
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent {
+
   user: any = {
     firstname: '',
     lastname: '',
@@ -48,7 +49,11 @@ export class SettingsComponent {
 
   // Funzione di logout
   logout() {
-    this.authService.logout(); // Assicurati che questo metodo esegua il logout
-    this.router.navigate(['/home']); // Naviga alla home
+    this.authService.logout(); 
+    this.router.navigate(['/home']); 
+  }
+
+  goBack() {
+    this.router.navigate(['/home']); 
   }
 }

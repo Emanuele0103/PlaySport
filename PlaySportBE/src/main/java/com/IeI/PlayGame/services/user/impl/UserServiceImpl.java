@@ -92,4 +92,50 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Transactional
+    @Override
+    public Optional<User> updateUser(String email, User updatedUser) {
+        // Verifica se l'utente esiste
+        Optional<User> existingUserOpt = userRepository.findByEmail(email);
+
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
+
+            // Aggiornare solo i campi desiderati
+            if (updatedUser.getFirstname() != null) {
+                existingUser.setFirstname(updatedUser.getFirstname());
+            }
+
+            if (updatedUser.getLastname() != null) {
+                existingUser.setLastname(updatedUser.getLastname());
+            }
+
+            if (updatedUser.getEmail() != null && !updatedUser.getEmail().equals(existingUser.getEmail())) {
+                // Controllo se l'email è già in uso
+                if (userRepository.findByEmail(updatedUser.getEmail()).isPresent()) {
+                    log.error("Cannot update user, email [{}] already exists", updatedUser.getEmail());
+                    return Optional.empty();
+                }
+                existingUser.setEmail(updatedUser.getEmail());
+            }
+
+            // Puoi anche aggiornare la password se necessario
+            if (updatedUser.getPassword() != null) {
+                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            }
+
+            try {
+                User savedUser = userRepository.save(existingUser);
+                return Optional.of(savedUser);
+            } catch (Exception e) {
+                log.error("Error updating user: {}", e.getMessage());
+            }
+        } else {
+            log.error("User not found for email [{}]", email);
+        }
+
+        return Optional.empty();
+    }
+
 }
