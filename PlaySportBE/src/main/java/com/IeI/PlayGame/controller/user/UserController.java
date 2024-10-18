@@ -1,5 +1,6 @@
 package com.IeI.PlayGame.controller.user;
 
+import com.IeI.PlayGame.pass.ChangePasswordRequest;
 import com.IeI.PlayGame.auth.LoginRequest;
 import com.IeI.PlayGame.auth.LoginResponse;
 import com.IeI.PlayGame.auth.RegisterRequest;
@@ -9,6 +10,8 @@ import com.IeI.PlayGame.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -22,7 +25,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-
         User user = new User();
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
@@ -42,23 +44,29 @@ public class UserController {
                 : ResponseEntity.status(401).body(response);
     }
 
-    @PutMapping("/update/{email}")
-    public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User updatedUser) {
-        Optional<User> updatedUserOpt = userService.updateUser(email, updatedUser);
+    @PutMapping("/update")
+    public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {
+        // Ottieni l'email dell'utente autenticato
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
 
+        Optional<User> updatedUserOpt = userService.updateUser(email, updatedUser);
         return updatedUserOpt.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(@RequestParam String email, @RequestParam String currentPassword, @RequestParam String newPassword) {
-        boolean isChanged = userService.changePassword(email, currentPassword, newPassword);
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
+        // Ottieni l'email dell'utente autenticato
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        boolean isChanged = userService.changePassword(email, request.getCurrentPassword(), request.getNewPassword());
         if (isChanged) {
             return ResponseEntity.ok("Password changed successfully.");
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to change password. Please check your current password.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to change password.");
         }
     }
-
 }

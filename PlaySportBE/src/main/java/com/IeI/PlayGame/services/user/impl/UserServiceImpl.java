@@ -133,23 +133,22 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean changePassword(String email, String currentPassword, String newPassword) {
+    public boolean changePassword(String currentPassword, String newPassword, String token) {
+        String email = jwtService.extractUsername(token); // Estrai l'email dal token
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            // Verifica se la password attuale è corretta
             if (passwordEncoder.matches(currentPassword, user.getPassword())) {
-                // Aggiorna la password con la nuova
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);
                 return true; // Password cambiata con successo
             } else {
-                log.error("Password change failed for user [{}]: Current password is incorrect", email);
-                return false; // La password attuale è errata
+                log.error("Current password is incorrect for user [{}]", email);
+                return false; // Password attuale errata
             }
         } else {
-            log.error(error, email);
+            log.error("User not found for email [{}]", email);
             return false;
         }
     }
