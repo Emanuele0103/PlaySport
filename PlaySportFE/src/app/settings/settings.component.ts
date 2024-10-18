@@ -8,7 +8,7 @@ import { UserService } from '../settings/user.service'; // Servizio utente per a
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent implements OnInit{
+export class SettingsComponent implements OnInit {
 
   showOldPassword: boolean = false;
   showNewPassword: boolean = false;
@@ -22,26 +22,26 @@ export class SettingsComponent implements OnInit{
   newPassword: string = '';
   isProfileEditing: boolean = false;
   isPasswordChanging: boolean = false;
-  feedbackMessage: string = ''; 
+  feedbackMessage: string = '';
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
-  
+
   ngOnInit(): void {
-    this.loadUserProfile(); // Chiama il metodo per caricare il profilo
+    //this.loadUserProfile(); // Chiama il metodo per caricare il profilo
   }
 
   // Mostra il modulo per modificare il profilo
   showProfileForm() {
     this.isProfileEditing = true;
     this.isPasswordChanging = false;
-    this.feedbackMessage = ''; 
+    this.feedbackMessage = '';
   }
 
   // Mostra il modulo per cambiare la password
   showChangePassword() {
     this.isProfileEditing = false;
     this.isPasswordChanging = true;
-    this.feedbackMessage = ''; 
+    this.feedbackMessage = '';
   }
 
   // Funzione per aggiornare il profilo utente
@@ -72,19 +72,21 @@ export class SettingsComponent implements OnInit{
     });
   }
 
-  loadUserProfile() {
-    this.userService.getUserProfile().subscribe({
-      next: (userProfile) => {
-        this.user = userProfile; // Imposta l'oggetto utente
-      },
-      error: (error) => {
-        console.error('Errore durante il recupero del profilo utente:', error);
-      }
-    });
-  }
+
+
+  // loadUserProfile() {
+  //   this.userService.getUserProfile().subscribe({
+  //     next: (userProfile) => {
+  //       this.user = userProfile; // Imposta l'oggetto utente
+  //     },
+  //     error: (error) => {
+  //       console.error('Errore durante il recupero del profilo utente:', error);
+  //     }
+  //   });
+  // }
 
   goBack() {
-    this.router.navigate(['/home']); 
+    this.router.navigate(['/home']);
   }
-  
+
 }

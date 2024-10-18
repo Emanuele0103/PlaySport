@@ -15,7 +15,7 @@ interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:9090/api/v1/user';  
+  private baseUrl = 'http://localhost:9090/api/v1/user';
 
   // Comportamento soggetto per tracciare l'utente
   private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
@@ -71,22 +71,22 @@ export class AuthService {
     return null;
   }
 
-  // Verifica se l'utente è autenticato
+  // AuthService
   isAuthenticated(): boolean {
     const token = localStorage.getItem('authToken');
-    return token != null;
+    return token !== null;
   }
 
   // Verifica se l'utente ha il ruolo di admin
   isAdmin(): boolean {
-    const user = this.userSubject.value; 
-    return user && user.role === 'ADMIN'; 
+    const user = this.userSubject.value;
+    return user && user.role === 'ADMIN';
   }
 
   // Funzione di logout
   logout(): void {
-    localStorage.removeItem('authToken');  
+    localStorage.removeItem('authToken');
     this.userSubject.next(null);  // Imposta l'utente a null
-    this.router.navigate(['/login']);  
+    this.router.navigate(['/login']);
   }
 }
