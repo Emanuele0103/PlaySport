@@ -11,7 +11,7 @@
 
     <div class="bottom-buttons">
       <!-- Tasto "Gestisci Utenti", visibile solo se l'utente è admin -->
-      <button (click)="goToUserManager()"  *ngIf="isAdmin" class="icon-button admin-button">
+      <button (click)="goToUserManager()" *ngIf="isAdmin" class="icon-button admin-button">
         <i class="fas fa-user-cog"></i>
       </button>
 
@@ -30,12 +30,11 @@
   <!-- Content Area (Campi di gioco) -->
   <div class="content">
     <h1>Benvenuto, {{ userName }}!</h1>
-
-    <!-- Se è stato selezionato uno sport, mostra i campi disponibili -->
-    <div *ngIf="selectedSport">
-      <h2>Campi disponibili per {{ selectedSport }}</h2>
+    <!-- Mostra tutti i campi se non è stato selezionato alcuno sport -->
+    <div *ngIf="!selectedSport">
+      <h2>Campi disponibili</h2>
       <div class="grid-container">
-        <div class="field" *ngFor="let field of campi">
+        <div class="field" *ngFor="let field of filteredFields">
           <h3>{{ field.name }}</h3>
           <p>{{ field.address }}</p>
           <button (click)="bookField(field)">Prenota</button>
@@ -43,9 +42,21 @@
       </div>
     </div>
 
-    <!-- Messaggio se non è selezionato alcuno sport -->
-    <div *ngIf="!selectedSport">
-      <p>Seleziona uno sport per vedere i campi disponibili.</p>
+    <!-- Se è stato selezionato uno sport, mostra i campi disponibili -->
+    <div *ngIf="selectedSport">
+      <h2>Campi disponibili per {{ selectedSport }}</h2>
+      <div class="grid-container">
+        <div class="field" *ngFor="let field of filteredFields">
+          <h3>{{ field.name }}</h3>
+          <p>{{ field.address }}</p>
+          <button (click)="bookField(field)">Prenota</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messaggio se non è selezionato alcuno sport e non ci sono campi -->
+    <div *ngIf="filteredFields.length === 0">
+      <p>Nessun campo disponibile.</p>
     </div>
   </div>
 </div>

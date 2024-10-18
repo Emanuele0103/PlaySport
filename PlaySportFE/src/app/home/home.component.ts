@@ -10,8 +10,9 @@ import { AuthService } from '../auth/auth.service';
 export class HomeComponent implements OnInit {
 
   user$: { firstname: string; lastname: string; role: string };
-  selectedSport: string;
-  campi: { name: string, address: string }[] = [];
+  selectedSport: string | null = null; // inizialmente null
+  campi: { name: string, address: string, sport: string }[] = []; // Aggiunto 'sport'
+  filteredFields: { name: string, address: string }[] = []; // Per i campi filtrati
   isAdmin: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -30,13 +31,32 @@ export class HomeComponent implements OnInit {
           role: null
         };
       }
+
+      // Carica i campi all'accesso
+      this.loadAllFields();
     });
   }
-
 
   // Funzione per ottenere il nome completo dell'utente
   get userName(): string {
     return this.user$ ? `${this.user$.firstname} ${this.user$.lastname}` : 'Utente sconosciuto';
+  }
+
+  // Funzione per caricare tutti i campi disponibili
+  loadAllFields() {
+    this.campi = [
+      { name: 'Campo Calcio 1', address: 'Via Roma', sport: 'calcio' },
+      { name: 'Campo Calcio 2', address: 'Via Milano', sport: 'calcio' },
+      { name: 'Campo Padel 1', address: 'Via Napoli', sport: 'padel' },
+      { name: 'Campo Padel 2', address: 'Via Firenze', sport: 'padel' },
+      { name: 'Campo Tennis 1', address: 'Via Torino', sport: 'tennis' },
+      { name: 'Campo Tennis 2', address: 'Via Bologna', sport: 'tennis' },
+      { name: 'Campo Basket 1', address: 'Via Palermo', sport: 'basket' },
+      { name: 'Campo Basket 2', address: 'Via Genova', sport: 'basket' }
+    ];
+
+    // Mostra subito tutti i campi dopo l'accesso
+    this.filteredFields = [...this.campi];
   }
 
   // Funzione per la selezione dello sport
@@ -45,29 +65,9 @@ export class HomeComponent implements OnInit {
     this.getFieldForSport(sport);
   }
 
-  // Simulazione di un servizio che recupera i campi per lo sport selezionato
+  // Filtra i campi in base allo sport selezionato
   getFieldForSport(sport: string) {
-    const campiDisponibili = {
-      calcio: [
-        { name: 'Campo Calcio 1', address: 'Via Roma' },
-        { name: 'Campo Calcio 2', address: 'Via Milano' }
-      ],
-      padel: [
-        { name: 'Campo Padel 1', address: 'Via Napoli' },
-        { name: 'Campo Padel 2', address: 'Via Firenze' }
-      ],
-      tennis: [
-        { name: 'Campo Tennis 1', address: 'Via Torino' },
-        { name: 'Campo Tennis 2', address: 'Via Bologna' }
-      ],
-      basket: [
-        { name: 'Campo Basket 1', address: 'Via Palermo' },
-        { name: 'Campo Basket 2', address: 'Via Genova' }
-      ]
-    };
-
-    // Imposta i campi in base allo sport selezionato
-    this.campi = campiDisponibili[sport] || [];
+    this.filteredFields = this.campi.filter(field => field.sport === sport); // Filtra in base allo sport
   }
 
   // Funzione per prenotare un campo
@@ -76,11 +76,11 @@ export class HomeComponent implements OnInit {
   }
 
   goToSettings() {
-    this.router.navigate(['/setting'])
+    this.router.navigate(['/setting']);
   }
 
   goToUserManager() {
-    this.router.navigate(['/userManagement'])
+    this.router.navigate(['/userManagement']);
   }
 
   // Funzione per il logout

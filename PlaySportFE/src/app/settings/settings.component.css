@@ -1,0 +1,37 @@
+.settings-container {
+    padding: 20px; /* Padding generale per il contenitore */
+  }
+  
+  .settings-title {
+    text-align: center; /* Centra il titolo */
+    margin-bottom: 20px; /* Margine sotto il titolo */
+    font-size: 24px; /* Dimensione del font */
+    color: #333; /* Colore del font */
+  }
+  
+  .button-group {
+    display: flex; /* Usa flexbox per gestire il layout dei bottoni */
+    justify-content: center; /* Centra i bottoni orizzontalmente */
+    gap: 15px; /* Spazio tra i bottoni */
+    margin-bottom: 20px; /* Margine sotto il gruppo di bottoni */
+  }
+  
+  .settings-button {
+    background-color: #007bff; /* Colore di sfondo dei bottoni */
+    color: white; /* Colore del testo */
+    border: none; /* Rimuove il bordo predefinito */
+    padding: 10px 20px; /* Padding interno per rendere i bottoni più grandi */
+    border-radius: 5px; /* Angoli arrotondati */
+    font-size: 16px; /* Dimensione del font */
+    cursor: pointer; /* Cambia il cursore quando ci si passa sopra */
+    transition: background-color 0.3s; /* Transizione per l'effetto hover */
+  }
+  
+  .settings-button:hover {
+    background-color: #0056b3; /* Colore di sfondo quando si passa sopra */
+  }
+  
+  form {
+    margin-top: 20px; /* Margine sopra i form per separare i bottoni */
+  }
+  
