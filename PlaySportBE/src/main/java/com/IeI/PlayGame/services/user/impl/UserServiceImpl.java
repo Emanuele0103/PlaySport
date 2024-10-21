@@ -108,7 +108,6 @@ public class UserServiceImpl implements UserService {
         if (existingUserOpt.isPresent()) {
             User existingUser = existingUserOpt.get();
 
-            // Aggiorna solo i campi non null
             if (updatedUser.getFirstname() != null && !updatedUser.getFirstname().isEmpty()) {
                 existingUser.setFirstname(updatedUser.getFirstname());
             }
@@ -117,7 +116,6 @@ public class UserServiceImpl implements UserService {
                 existingUser.setLastname(updatedUser.getLastname());
             }
 
-            // Gestione dell'email
             if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty() &&
                     !updatedUser.getEmail().equals(existingUser.getEmail())) {
                 if (userRepository.findByEmail(updatedUser.getEmail()).isPresent()) {
@@ -127,7 +125,6 @@ public class UserServiceImpl implements UserService {
                 existingUser.setEmail(updatedUser.getEmail());
             }
 
-            // Gestione del numero di telefono
             if (updatedUser.getPhoneNumber() != null && !updatedUser.getPhoneNumber().isEmpty() &&
                     !updatedUser.getPhoneNumber().equals(existingUser.getPhoneNumber())) {
                 if (userRepository.findByPhoneNumber(updatedUser.getPhoneNumber()).isPresent()) {
@@ -137,7 +134,6 @@ public class UserServiceImpl implements UserService {
                 existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
             }
 
-            // Salva l'oggetto utente aggiornato
             userRepository.save(existingUser);
             return Optional.of(existingUser);
         } else {
@@ -146,16 +142,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-
     @Transactional
     @Override
-    public boolean changePassword(String currentPassword, String newPassword, String token) {
-        String email = jwtService.extractUsername(token);
-        Optional<User> userOpt = userRepository.findByEmail(email);
+    public boolean changePassword(String currentPassword, String newPassword, String email) {
+        Optional<User> existingUserOpt = userRepository.findByEmail(email);
 
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
+        if (existingUserOpt.isPresent()) {
+            User user = existingUserOpt.get();
             if (passwordEncoder.matches(currentPassword, user.getPassword())) {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);

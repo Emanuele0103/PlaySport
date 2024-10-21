@@ -52,22 +52,19 @@ public class UserController {
 
         Optional<User> updatedUserOpt = userService.updateUser(email, updatedUser);
 
-        if (updatedUserOpt.isPresent()) {
-            return ResponseEntity.ok(updatedUserOpt.get()); // Ottieni il valore User dall'Optional
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return updatedUserOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
 
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/change-password")
+    @PostMapping("/change_password")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
-        boolean isChanged = userService.changePassword(email, request.getCurrentPassword(), request.getNewPassword());
+        boolean isChanged = userService.changePassword(request.getCurrentPassword(), request.getNewPassword(), email);
+
         if (isChanged) {
             return ResponseEntity.ok("Password changed successfully.");
         } else {

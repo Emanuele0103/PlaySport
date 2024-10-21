@@ -4,10 +4,19 @@
     </button>
     <h2 class="settings-title">Impostazioni Utente</h2>
   
-    <!-- Messaggio di feedback -->
-    <div *ngIf="feedbackMessage" class="feedback-message">
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+    
+    <div *ngIf="feedbackMessage" class="success-message">
       {{ feedbackMessage }}
     </div>
+    
+    <!-- Il tuo modulo per cambiare la password -->
+    <form (ngSubmit)="changePassword()">
+      <!-- Campi del modulo per la password -->
+    </form>
+    
   
     <!-- Bottoni di navigazione -->
     <div class="button-group">

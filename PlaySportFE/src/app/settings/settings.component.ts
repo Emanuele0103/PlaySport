@@ -9,7 +9,7 @@ import { UserService, UserProfile } from '../settings/user.service'; // Servizio
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  
+
   showOldPassword: boolean = false;
   showNewPassword: boolean = false;
 
@@ -25,6 +25,7 @@ export class SettingsComponent implements OnInit {
   isProfileEditing: boolean = false;
   isPasswordChanging: boolean = false;
   feedbackMessage: string = '';
+  errorMessage: string = '';
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
 
@@ -58,49 +59,51 @@ export class SettingsComponent implements OnInit {
     this.feedbackMessage = '';
   }
 
-// Funzione per aggiornare il profilo utente
-updateProfile() {
-  // Crea un oggetto per il profilo da inviare, includendo solo i campi modificati
-  const updatedUserProfile: Partial<UserProfile> = {};
+  // Funzione per aggiornare il profilo utente
+  updateProfile() {
+    // Crea un oggetto per il profilo da inviare, includendo solo i campi modificati
+    const updatedUserProfile: Partial<UserProfile> = {};
 
-  // Verifica quali campi sono stati effettivamente modificati
-  if (this.user.firstname) {
+    // Verifica quali campi sono stati effettivamente modificati
+    if (this.user.firstname) {
       updatedUserProfile.firstname = this.user.firstname;
-  }
-  if (this.user.lastname) {
+    }
+    if (this.user.lastname) {
       updatedUserProfile.lastname = this.user.lastname;
-  }
-  if (this.user.email) {
+    }
+    if (this.user.email) {
       updatedUserProfile.email = this.user.email;
-  }
-  if (this.user.phoneNumber) {
+    }
+    if (this.user.phoneNumber) {
       updatedUserProfile.phoneNumber = this.user.phoneNumber;
-  }
+    }
 
-  // Invia solo i campi modificati
-  this.userService.updateUserProfile(updatedUserProfile).subscribe({
+    // Invia solo i campi modificati
+    this.userService.updateUserProfile(updatedUserProfile).subscribe({
       next: (response) => {
-          this.feedbackMessage = 'Profilo aggiornato con successo!';
-          console.log("Profilo aggiornato:", response);
+        this.feedbackMessage = 'Profilo aggiornato con successo!';
+        console.log("Profilo aggiornato:", response);
       },
       error: (error) => {
-          this.feedbackMessage = 'Errore durante l\'aggiornamento del profilo.';
-          console.error('Errore aggiornamento profilo:', error);
+        this.feedbackMessage = 'Errore durante l\'aggiornamento del profilo.';
+        console.error('Errore aggiornamento profilo:', error);
       }
-  });
-}
+    });
+  }
 
-  
 
   // Funzione per cambiare la password
   changePassword() {
     this.userService.changePassword(this.oldPassword, this.newPassword).subscribe({
       next: (response) => {
-        this.feedbackMessage = 'Password cambiata con successo!';
-        console.log("Password cambiata:", response);
+        this.feedbackMessage = response.message; // Accesso al messaggio JSON
+        this.errorMessage = ''; // Resetta eventuali messaggi di errore
+        console.log("Password cambiata:", response.message);
       },
       error: (error) => {
-        this.feedbackMessage = 'Errore durante il cambio password.';
+        // Gestisci l'errore
+        this.errorMessage = error.error.message; // Accesso al messaggio JSON di errore
+        this.feedbackMessage = ''; // Resetta il messaggio di feedback in caso di errore
         console.error('Errore cambio password:', error);
       }
     });

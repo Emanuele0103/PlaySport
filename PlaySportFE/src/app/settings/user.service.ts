@@ -28,9 +28,13 @@ export class UserService {
     );
   }
 
-  // Cambia la password dell'utente
   changePassword(oldPassword: string, newPassword: string): Observable<any> {
     const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      console.error('Token non trovato!');
+    }
+
     const headers = { Authorization: `Bearer ${token}` };
 
     const changePasswordRequest = {
@@ -38,7 +42,7 @@ export class UserService {
       newPassword: newPassword
     };
 
-    return this.http.post(`${this.apiUrl}/change-password`, changePasswordRequest, { headers }).pipe(
+    return this.http.post<{ message: string }>(`${this.apiUrl}/change_password`, changePasswordRequest, { headers }).pipe(
       catchError(this.handleError)
     );
   }

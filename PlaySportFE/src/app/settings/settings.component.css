@@ -80,3 +80,14 @@
   border: 1px solid #ccc; /* Bordo dell'input */
   border-radius: 5px 0 0 5px; /* Angoli arrotondati a sinistra */
 }
+
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.success-message {
+  color: green;
+  font-weight: bold;
+}
