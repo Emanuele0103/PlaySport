@@ -34,6 +34,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JwtService jwtService;
 
+    public String error = "User not found for email [{}]";
+
     @Transactional
     public Optional<User> saveUser(User user) {
         if (user == null) {
@@ -92,4 +94,63 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Transactional
+    @Override
+    public Optional<User> updateUser(String email, User updatedUser) {
+        // Verifica se l'utente esiste
+        Optional<User> existingUserOpt = userRepository.findByEmail(email);
+
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
+
+            // Aggiornare solo i campi desiderati
+            if (updatedUser.getFirstname() != null) {
+                existingUser.setFirstname(updatedUser.getFirstname());
+            }
+
+            if (updatedUser.getLastname() != null) {
+                existingUser.setLastname(updatedUser.getLastname());
+            }
+
+            if (updatedUser.getEmail() != null && !updatedUser.getEmail().equals(existingUser.getEmail())) {
+                // Controllo se l'email è già in uso
+                if (userRepository.findByEmail(updatedUser.getEmail()).isPresent()) {
+                    log.error("Cannot update user, email [{}] already exists", updatedUser.getEmail());
+                    return Optional.empty();
+                }
+                existingUser.setEmail(updatedUser.getEmail());
+            }
+
+            userRepository.save(existingUser);
+            return Optional.of(existingUser);
+        } else {
+            log.error(error, email);
+            return Optional.empty();
+        }
+    }
+
+
+    @Transactional
+    @Override
+    public boolean changePassword(String currentPassword, String newPassword, String token) {
+        String email = jwtService.extractUsername(token); // Estrai l'email dal token
+        Optional<User> userOpt = userRepository.findByEmail(email);
+
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(newPassword));
+                userRepository.save(user);
+                return true; // Password cambiata con successo
+            } else {
+                log.error("Current password is incorrect for user [{}]", email);
+                return false; // Password attuale errata
+            }
+        } else {
+            log.error("User not found for email [{}]", email);
+            return false;
+        }
+    }
+
 }
