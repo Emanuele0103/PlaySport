@@ -31,6 +31,7 @@ public class UserController {
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         user.setRole(Role.USER);
+        user.setPhoneNumber(request.getPhoneNumber());
 
         Optional<User> response = userService.saveUser(user);
         return response.map(ResponseEntity::ok)
@@ -46,19 +47,23 @@ public class UserController {
 
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {
-        // Ottieni l'email dell'utente autenticato
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
         Optional<User> updatedUserOpt = userService.updateUser(email, updatedUser);
-        return updatedUserOpt.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+
+        if (updatedUserOpt.isPresent()) {
+            return ResponseEntity.ok(updatedUserOpt.get()); // Ottieni il valore User dall'Optional
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
+
+
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
-        // Ottieni l'email dell'utente autenticato
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
@@ -68,5 +73,15 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to change password.");
         }
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<User> getUserProfile() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        Optional<User> userOpt = userService.findUserByEmail(email);
+        return userOpt.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

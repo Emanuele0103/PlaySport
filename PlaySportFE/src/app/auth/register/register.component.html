@@ -37,6 +37,15 @@
         <small *ngIf="signupForm.get('password')?.errors?.['minlength']" class="error-message">La password deve essere lunga almeno 6 caratteri.</small>
       </div>
     </div>
+
+    <div>
+      <label for="phoneNumber">Numero di Telefono</label>
+      <input id="phoneNumber" formControlName="phoneNumber" type="tel" required />
+      <div *ngIf="signupForm.get('phoneNumber')?.invalid && (signupForm.get('phoneNumber')?.dirty || signupForm.get('phoneNumber')?.touched)">
+        <small *ngIf="signupForm.get('phoneNumber')?.errors?.['required']" class="error-message">Il numero di telefono è obbligatorio.</small>
+        <small *ngIf="signupForm.get('phoneNumber')?.errors?.['pattern']" class="error-message">Inserisci un numero di telefono valido.</small>
+      </div>
+    </div>
   
     <button type="submit" [disabled]="signupForm.invalid">Registrati</button>
   

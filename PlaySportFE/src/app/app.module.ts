@@ -8,7 +8,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { SettingsComponent } from './settings/settings.component';
 import { UserManagementComponent } from './user-management/user-management.component';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 
 @NgModule({
   declarations: [
@@ -22,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     AuthModule,
     RouterModule,
-    FormsModule // Aggiungi qui
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideClientHydration(),

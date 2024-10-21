@@ -2,46 +2,36 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
 
 export interface UserProfile {
-  firstname: string;
-  lastname: string;
-  email: string;
-}
-
-export interface Feedback {
-  feedback: string;
+  firstname?: string;  // Rendi opzionali i campi
+  lastname?: string;   // Rendi opzionali i campi
+  email?: string;      // Rendi opzionali i campi
+  phoneNumber?: string; // Rendi opzionali i campi
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:9090/api/v1/user'; // Cambia con il tuo endpoint
+  private apiUrl = 'http://localhost:9090/api/v1/user'; // Modifica con l'endpoint corretto
 
   constructor(private http: HttpClient) { }
 
-  // // Recupera le informazioni dell'utente
-  // getUserProfile(): Observable<UserProfile> {
-  //     return this.http.get<UserProfile>(`${this.apiUrl}/profile`).pipe(
-  //         catchError(this.handleError));
-  // }
-
   // Aggiorna il profilo dell'utente
   updateUserProfile(user: UserProfile): Observable<any> {
-    const token = localStorage.getItem('authToken'); // Ottieni il token direttamente dal localStorage
+    const token = localStorage.getItem('authToken');
     const headers = { Authorization: `Bearer ${token}` };
 
     return this.http.put(`${this.apiUrl}/update`, user, { headers }).pipe(
-      catchError(this.handleError) // Assicurati di gestire gli errori
+      catchError(this.handleError) // Gestione degli errori
     );
   }
 
-  // UserService
+  // Cambia la password dell'utente
   changePassword(oldPassword: string, newPassword: string): Observable<any> {
     const token = localStorage.getItem('authToken');
-    const headers = { Authorization: `Bearer ${token}` }; // Imposta l'intestazione Authorization
+    const headers = { Authorization: `Bearer ${token}` };
 
     const changePasswordRequest = {
       currentPassword: oldPassword,
@@ -53,10 +43,18 @@ export class UserService {
     );
   }
 
+  // Recupera il profilo utente
+  getUserProfile(): Observable<UserProfile> {
+    const token = localStorage.getItem('authToken');
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.get<UserProfile>(`${this.apiUrl}/profile`, { headers }).pipe( // Cambia l'endpoint se necessario
+      catchError(this.handleError)
+    );
+  }
+
   // Gestione degli errori
   private handleError(error: HttpErrorResponse) {
-    // Puoi loggare l'errore o fare ulteriori azioni
-    console.error('Si è verificato un errore:', error);
-    return throwError('Qualcosa è andato storto; riprova più tardi.');
+    console.error('Errore:', error);
+    return throwError('Si è verificato un errore. Riprova più tardi.');
   }
 }

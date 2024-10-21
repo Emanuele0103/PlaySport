@@ -26,14 +26,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auths -> auths
-                        .requestMatchers("/api/v1/user/**").permitAll() // Permetti l'accesso solo per registrazione e autenticazione
-                        .anyRequest().authenticated() // Tutte le altre richieste richiedono autenticazione
+                        .requestMatchers("/api/v1/user/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Imposta la gestione delle sessioni su stateless
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Aggiungi il filtro JWT
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -44,10 +44,10 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:4200") // Consenti solo richieste da questo dominio
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Consenti questi metodi
-                        .allowedHeaders("*") // Consenti tutte le intestazioni
-                        .allowCredentials(true); // Consenti credenziali
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true); 
             }
         };
     }

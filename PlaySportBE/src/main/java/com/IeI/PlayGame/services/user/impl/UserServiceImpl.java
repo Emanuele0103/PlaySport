@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService {
             return Optional.empty();
         }
 
+        if (user.getPhoneNumber() != null && userRepository.findByPhoneNumber(user.getPhoneNumber()).isPresent()) {
+            log.error("Cannot create user, phone number [{}] already exists", user.getPhoneNumber());
+            return Optional.empty();
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         try {
@@ -98,23 +103,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Optional<User> updateUser(String email, User updatedUser) {
-        // Verifica se l'utente esiste
         Optional<User> existingUserOpt = userRepository.findByEmail(email);
 
         if (existingUserOpt.isPresent()) {
             User existingUser = existingUserOpt.get();
 
-            // Aggiornare solo i campi desiderati
-            if (updatedUser.getFirstname() != null) {
+            // Aggiorna solo i campi non null
+            if (updatedUser.getFirstname() != null && !updatedUser.getFirstname().isEmpty()) {
                 existingUser.setFirstname(updatedUser.getFirstname());
             }
 
-            if (updatedUser.getLastname() != null) {
+            if (updatedUser.getLastname() != null && !updatedUser.getLastname().isEmpty()) {
                 existingUser.setLastname(updatedUser.getLastname());
             }
 
-            if (updatedUser.getEmail() != null && !updatedUser.getEmail().equals(existingUser.getEmail())) {
-                // Controllo se l'email è già in uso
+            // Gestione dell'email
+            if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty() &&
+                    !updatedUser.getEmail().equals(existingUser.getEmail())) {
                 if (userRepository.findByEmail(updatedUser.getEmail()).isPresent()) {
                     log.error("Cannot update user, email [{}] already exists", updatedUser.getEmail());
                     return Optional.empty();
@@ -122,6 +127,17 @@ public class UserServiceImpl implements UserService {
                 existingUser.setEmail(updatedUser.getEmail());
             }
 
+            // Gestione del numero di telefono
+            if (updatedUser.getPhoneNumber() != null && !updatedUser.getPhoneNumber().isEmpty() &&
+                    !updatedUser.getPhoneNumber().equals(existingUser.getPhoneNumber())) {
+                if (userRepository.findByPhoneNumber(updatedUser.getPhoneNumber()).isPresent()) {
+                    log.error("Cannot update user, phone number [{}] already exists", updatedUser.getPhoneNumber());
+                    return Optional.empty();
+                }
+                existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+            }
+
+            // Salva l'oggetto utente aggiornato
             userRepository.save(existingUser);
             return Optional.of(existingUser);
         } else {
@@ -131,10 +147,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
     @Transactional
     @Override
     public boolean changePassword(String currentPassword, String newPassword, String token) {
-        String email = jwtService.extractUsername(token); // Estrai l'email dal token
+        String email = jwtService.extractUsername(token);
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isPresent()) {
@@ -142,10 +159,10 @@ public class UserServiceImpl implements UserService {
             if (passwordEncoder.matches(currentPassword, user.getPassword())) {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);
-                return true; // Password cambiata con successo
+                return true;
             } else {
                 log.error("Current password is incorrect for user [{}]", email);
-                return false; // Password attuale errata
+                return false;
             }
         } else {
             log.error("User not found for email [{}]", email);

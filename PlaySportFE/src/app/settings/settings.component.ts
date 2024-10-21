@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service'; // Servizio di autenticazione
-import { UserService } from '../settings/user.service'; // Servizio utente per aggiornare profilo e password
+import { UserService, UserProfile } from '../settings/user.service'; // Servizio utente per aggiornare profilo e password
 
 @Component({
   selector: 'app-settings',
@@ -9,15 +9,17 @@ import { UserService } from '../settings/user.service'; // Servizio utente per a
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-
+  
   showOldPassword: boolean = false;
   showNewPassword: boolean = false;
 
-  user: any = {
+  user: UserProfile = {
     firstname: '',
     lastname: '',
-    email: ''
+    email: '',
+    phoneNumber: ''
   };
+
   oldPassword: string = '';
   newPassword: string = '';
   isProfileEditing: boolean = false;
@@ -27,7 +29,19 @@ export class SettingsComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
 
   ngOnInit(): void {
-    //this.loadUserProfile(); // Chiama il metodo per caricare il profilo
+    this.loadUserProfile(); // Chiama il metodo per caricare il profilo
+  }
+
+  // Funzione per caricare il profilo utente
+  loadUserProfile() {
+    this.userService.getUserProfile().subscribe({
+      next: (userProfile) => {
+        this.user = userProfile; // Imposta l'oggetto utente
+      },
+      error: (error) => {
+        console.error('Errore durante il recupero del profilo utente:', error);
+      }
+    });
   }
 
   // Mostra il modulo per modificare il profilo
@@ -44,19 +58,39 @@ export class SettingsComponent implements OnInit {
     this.feedbackMessage = '';
   }
 
-  // Funzione per aggiornare il profilo utente
-  updateProfile() {
-    this.userService.updateUserProfile(this.user).subscribe({
+// Funzione per aggiornare il profilo utente
+updateProfile() {
+  // Crea un oggetto per il profilo da inviare, includendo solo i campi modificati
+  const updatedUserProfile: Partial<UserProfile> = {};
+
+  // Verifica quali campi sono stati effettivamente modificati
+  if (this.user.firstname) {
+      updatedUserProfile.firstname = this.user.firstname;
+  }
+  if (this.user.lastname) {
+      updatedUserProfile.lastname = this.user.lastname;
+  }
+  if (this.user.email) {
+      updatedUserProfile.email = this.user.email;
+  }
+  if (this.user.phoneNumber) {
+      updatedUserProfile.phoneNumber = this.user.phoneNumber;
+  }
+
+  // Invia solo i campi modificati
+  this.userService.updateUserProfile(updatedUserProfile).subscribe({
       next: (response) => {
-        this.feedbackMessage = 'Profilo aggiornato con successo!';
-        console.log("Profilo aggiornato:", response);
+          this.feedbackMessage = 'Profilo aggiornato con successo!';
+          console.log("Profilo aggiornato:", response);
       },
       error: (error) => {
-        this.feedbackMessage = 'Errore durante l\'aggiornamento del profilo.';
-        console.error('Errore aggiornamento profilo:', error);
+          this.feedbackMessage = 'Errore durante l\'aggiornamento del profilo.';
+          console.error('Errore aggiornamento profilo:', error);
       }
-    });
-  }
+  });
+}
+
+  
 
   // Funzione per cambiare la password
   changePassword() {
@@ -71,19 +105,6 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
-
-
-
-  // loadUserProfile() {
-  //   this.userService.getUserProfile().subscribe({
-  //     next: (userProfile) => {
-  //       this.user = userProfile; // Imposta l'oggetto utente
-  //     },
-  //     error: (error) => {
-  //       console.error('Errore durante il recupero del profilo utente:', error);
-  //     }
-  //   });
-  // }
 
   goBack() {
     this.router.navigate(['/home']);
