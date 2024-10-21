@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Table(name = "resource")
-public class ResourcesType {
+public class ResourceType {
 
     @Id
     @GeneratedValue

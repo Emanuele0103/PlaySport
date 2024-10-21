@@ -1,22 +1,21 @@
 package com.IeI.PlayGame.bean.resources;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Builder
 @Table(name = "resource")
 public class Resource {
 
     @Id
     @GeneratedValue
-    private Integer ID;
+    private Integer Id;
 
     @Column(nullable = false)
     private String resourcesName;
@@ -26,10 +25,10 @@ public class Resource {
 
     @ManyToOne
     @JoinColumn(name = "resourceTypeId")
-    private ResourcesType resourcesType;
+    private ResourceType resourceType;
 
     @Column(nullable = false)
     private String resourcesOwnerName;
 
-    private Boolean isDeleted = false;
+    private Boolean deleted = false;
 }
