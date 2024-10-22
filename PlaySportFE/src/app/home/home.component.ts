@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { ResourceService, Resource } from '../home/resource.service';  // Importa il servizio e l'interfaccia Resource
 
 @Component({
   selector: 'app-home',
@@ -10,12 +11,16 @@ import { AuthService } from '../auth/auth.service';
 export class HomeComponent implements OnInit {
 
   user$: { firstname: string; lastname: string; role: string };
-  selectedSport: string | null = null; // inizialmente null
-  campi: { name: string, address: string, sport: string }[] = []; // Aggiunto 'sport'
-  filteredFields: { name: string, address: string }[] = []; // Per i campi filtrati
+  selectedSport: string | null = null;
+  campi: Resource[] = []; 
+  filteredFields: Resource[] = [];
   isAdmin: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private resourceService: ResourceService,  
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user: { firstname: string; lastname: string; role: string; }) => {
@@ -32,47 +37,45 @@ export class HomeComponent implements OnInit {
         };
       }
 
-      // Carica i campi all'accesso
+      // Carica le risorse dal server all'accesso
       this.loadAllFields();
     });
   }
 
-  // Funzione per ottenere il nome completo dell'utente
   get userName(): string {
     return this.user$ ? `${this.user$.firstname} ${this.user$.lastname}` : 'Utente sconosciuto';
   }
 
-  // Funzione per caricare tutti i campi disponibili
-  loadAllFields() {
-    this.campi = [
-      { name: 'Campo Calcio 1', address: 'Via Roma', sport: 'calcio' },
-      { name: 'Campo Calcio 2', address: 'Via Milano', sport: 'calcio' },
-      { name: 'Campo Padel 1', address: 'Via Napoli', sport: 'padel' },
-      { name: 'Campo Padel 2', address: 'Via Firenze', sport: 'padel' },
-      { name: 'Campo Tennis 1', address: 'Via Torino', sport: 'tennis' },
-      { name: 'Campo Tennis 2', address: 'Via Bologna', sport: 'tennis' },
-      { name: 'Campo Basket 1', address: 'Via Palermo', sport: 'basket' },
-      { name: 'Campo Basket 2', address: 'Via Genova', sport: 'basket' }
-    ];
+// Carica tutte le risorse dal server
+loadAllFields() {
+  this.resourceService.getFields().subscribe(
+    (fields) => {
+      console.log('Campi caricati:', fields); // Log per controllare i campi caricati
+      this.campi = fields;
+      this.filteredFields = [...this.campi]; // Mostra tutte le risorse all'inizio
+    },
+    (error) => {
+      console.error('Errore nel caricamento delle risorse:', error);
+    }
+  );
+}
 
-    // Mostra subito tutti i campi dopo l'accesso
-    this.filteredFields = [...this.campi];
-  }
 
-  // Funzione per la selezione dello sport
+  // Funzione per selezionare uno sport (in base al tipo di risorsa)
   selectSport(sport: string) {
     this.selectedSport = sport;
     this.getFieldForSport(sport);
   }
 
-  // Filtra i campi in base allo sport selezionato
   getFieldForSport(sport: string) {
-    this.filteredFields = this.campi.filter(field => field.sport === sport); // Filtra in base allo sport
-  }
+    this.filteredFields = this.campi.filter(field => 
+      field.resourceType?.name.toLowerCase() === sport.toLowerCase()
+    );
+  }  
 
-  // Funzione per prenotare un campo
-  bookField(campo: { name: string, address: string }) {
-    alert(`Hai prenotato il ${campo.name} a ${campo.address}`);
+  // Funzione per prenotare una risorsa
+  bookField(campo: Resource) {
+    alert(`Hai prenotato il ${campo.resourceName} a ${campo.address}`);
   }
 
   goToSettings() {
@@ -91,5 +94,4 @@ export class HomeComponent implements OnInit {
     localStorage.removeItem('lastname');
     this.router.navigate(['/login']);
   }
-
 }

@@ -1,7 +1,8 @@
 package com.IeI.PlayGame.bean.resources;
 
+import com.IeI.PlayGame.bean.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+        import lombok.*;
 
 @Data
 @Entity
@@ -32,4 +33,8 @@ public class Resource {
 
     @Column
     private Boolean deleted = false;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User owner;
 }

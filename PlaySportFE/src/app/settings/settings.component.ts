@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service'; // Servizio di autenticazione
-import { UserService, UserProfile } from '../settings/user.service'; // Servizio utente per aggiornare profilo e password
+import { UserService, UserProfile } from '../settings/user.service';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-settings',
@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
   feedbackMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private router: Router, private authService: AuthService, private userService: UserService) { }
+  constructor(private sharedService: SharedService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.loadUserProfile(); // Chiama il metodo per caricare il profilo
@@ -110,7 +110,7 @@ export class SettingsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/home']);
+    this.sharedService.goBack();
   }
 
 }
