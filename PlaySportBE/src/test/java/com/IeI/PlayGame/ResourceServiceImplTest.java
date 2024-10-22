@@ -33,7 +33,7 @@ public class ResourceServiceImplTest {
     public void testThatResourceCanBeCreated(){
 
 
-        ResourceType resourceType = new ResourceType(1L, ResourceTypeEnum.SOCCER);
+        ResourceType resourceType = new ResourceType(1L, ResourceTypeEnum.SOCCER.name());
 
 
         resourceTypeRepository.save(resourceType);
