@@ -19,20 +19,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
-
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
                 .authorizeHttpRequests(auths -> auths
-                        .requestMatchers("/api/v1/user/**").permitAll()
-                        .requestMatchers("/api/v1/user/change-password").authenticated()
-                        .requestMatchers("/api/v1/user/update").authenticated()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/v1/user/**").permitAll() // Public access to user endpoints
+                        .requestMatchers("/api/v1/user/change-password").authenticated() // Requires authentication
+                        .requestMatchers("/api/v1/user/update").authenticated() // Requires authentication
+                        .anyRequest().authenticated() // Any other request must be authenticated
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless session management
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -45,11 +44,11 @@ public class SecurityConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:4200")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true); 
+                registry.addMapping("/api/**") // Map CORS for all API endpoints
+                        .allowedOrigins("http://localhost:4200") // Allow requests from Angular app
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allowed HTTP methods
+                        .allowedHeaders("*") // Allow all headers
+                        .allowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)
             }
         };
     }

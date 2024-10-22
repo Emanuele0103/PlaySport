@@ -1,60 +1,46 @@
 package com.IeI.PlayGame.services.resources.impl;
 
+import com.IeI.PlayGame.bean.user.User;
 import com.IeI.PlayGame.bean.resources.Resource;
 import com.IeI.PlayGame.repository.resource.ResourceRepository;
 import com.IeI.PlayGame.services.resources.ResourceService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Service
+@RequiredArgsConstructor
 public class ResourceServiceImpl implements ResourceService {
 
-    @Autowired
-    private ResourceRepository resourceRepository;
+    private final ResourceRepository resourceRepository;
 
     @Override
     public Optional<Resource> saveResource(Resource resource) {
-
-        if (resource != null) {
-
-            try {
-                return Optional.of(resourceRepository.save(resource));
-            } catch (Exception e) {
-
-                log.error(e.getMessage(), e);
-            }
-        }
-        return Optional.empty();
+        return Optional.of(resourceRepository.save(resource));
     }
 
     @Override
     public Optional<Resource> updateResource(Resource resource) {
-
-        if (resource != null && resource.getId() != null) {
-
-            return saveResource(resource);
+        // Assicurarsi che il campo esista prima di aggiornare
+        Optional<Resource> existingResource = resourceRepository.findById(resource.getId());
+        if (existingResource.isPresent()) {
+            return Optional.of(resourceRepository.save(resource));
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<Resource> deleteResource(Resource resource) {
-
-        if (resource != null) {
-
-            resource.setDeleted(true);
-            return updateResource(resource);
-        }
-        return Optional.empty();
+        // Imposta il campo come "deleted" invece di eliminarlo fisicamente
+        resource.setDeleted(true);
+        return Optional.of(resourceRepository.save(resource));
     }
 
     @Override
     public List<Resource> findByDeleted(boolean deleted) {
+        // Restituisce tutte le risorse non eliminate
         return resourceRepository.findByDeleted(deleted);
     }
 
@@ -63,5 +49,9 @@ public class ResourceServiceImpl implements ResourceService {
         return resourceRepository.findById(id);
     }
 
-
+    // Implementazione del nuovo metodo per trovare i campi dell'utente autenticato
+    @Override
+    public List<Resource> findByOwner(User owner) {
+        return resourceRepository.findByOwner(owner);
+    }
 }
