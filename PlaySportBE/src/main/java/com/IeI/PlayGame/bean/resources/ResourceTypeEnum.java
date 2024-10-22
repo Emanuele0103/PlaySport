@@ -1,7 +1,7 @@
 package com.IeI.PlayGame.bean.resources;
 
-public enum Type {
-    CALCIO,
+public enum ResourceTypeEnum {
+    SOCCER,
     TENNIS,
     PADEL,
     BASKET

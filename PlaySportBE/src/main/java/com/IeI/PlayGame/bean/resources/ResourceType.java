@@ -19,5 +19,5 @@ public class ResourceType {
     private Long ID;
 
     @Column(name = "resource_type_id")
-    private Type type;
+    private ResourceTypeEnum type;
 }

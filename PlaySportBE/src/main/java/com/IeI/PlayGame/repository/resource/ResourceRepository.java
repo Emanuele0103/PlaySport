@@ -1,13 +1,14 @@
-package com.IeI.PlayGame.bean.resources;
+package com.IeI.PlayGame.repository.resource;
 
 
+import com.IeI.PlayGame.bean.resources.Resource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
-    Optional<Resource> findByDeleted(Boolean deleted);
+    List<Resource> findByDeleted(Boolean deleted);
 }

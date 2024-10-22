@@ -18,7 +18,7 @@ public class ResourceController {
     private final ResourceService resourceService;
 
     @GetMapping("/resources")
-    public Optional<Resource> allResources() {
+    public List<Resource> allResources() {
 
         return resourceService.findByDeleted(false);
     }
