@@ -1,1 +1,75 @@
-<p>user-management works!</p>
+<div class="settings-container">
+    <button class="back-button" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> <!-- Icona freccia -->
+    </button>
+    <h2 class="settings-title">Gestione Campi da Gioco</h2>
+
+    <!-- Messaggi di feedback -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="feedbackMessage" class="success-message">
+      {{ feedbackMessage }}
+    </div>
+
+    <!-- Tabella dei campi esistenti -->
+    <div *ngIf="fields.length > 0">
+      <h3>Campi esistenti</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome Campo</th>
+            <th>Sport</th>
+            <th>Prezzo Orario (€)</th>
+            <th>Azione</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let field of fields">
+            <td>{{ field.name }}</td>
+            <td>{{ field.sport }}</td>
+            <td>{{ field.pricePerHour }}</td>
+            <td>
+              <button (click)="editField(field)">Modifica</button>
+              <button (click)="deleteField(field.id)">Elimina</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Form per aggiungere o modificare un campo -->
+    <div *ngIf="isEditing || isAdding">
+      <h3>{{ isEditing ? 'Modifica Campo' : 'Aggiungi Nuovo Campo' }}</h3>
+      <form (ngSubmit)="saveField()">
+        <div>
+          <label for="name">Nome Campo:</label>
+          <input type="text" id="name" [(ngModel)]="fieldData.name" name="name" required>
+        </div>
+
+        <div>
+          <label for="sport">Sport:</label>
+          <select id="sport" [(ngModel)]="fieldData.sport" name="sport" required>
+            <option value="calcio">Calcio</option>
+            <option value="tennis">Tennis</option>
+            <option value="basket">Basket</option>
+            <option value="pallavolo">Pallavolo</option>
+            <!-- Aggiungi altri sport se necessario -->
+          </select>
+        </div>
+
+        <div>
+          <label for="pricePerHour">Prezzo Orario (€):</label>
+          <input type="number" id="pricePerHour" [(ngModel)]="fieldData.pricePerHour" name="pricePerHour" required min="1">
+        </div>
+
+        <button type="submit">{{ isEditing ? 'Salva Modifiche' : 'Aggiungi Campo' }}</button>
+      </form>
+    </div>
+
+    <!-- Bottone per aggiungere un nuovo campo -->
+    <div class="button-group" *ngIf="!isEditing && !isAdding">
+      <button class="settings-button" (click)="showAddFieldForm()">Aggiungi Nuovo Campo</button>
+    </div>
+  </div>
