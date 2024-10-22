@@ -20,7 +20,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     @Getter
-    private Integer id;
+    private Long id;
 
     @Column
     private String firstname;

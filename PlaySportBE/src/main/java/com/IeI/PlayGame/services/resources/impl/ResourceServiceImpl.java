@@ -4,6 +4,7 @@ import com.IeI.PlayGame.bean.resources.Resource;
 import com.IeI.PlayGame.bean.resources.ResourceRepository;
 import com.IeI.PlayGame.services.resources.ResourceService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,8 @@ public class ResourceServiceImpl implements ResourceService {
         if (resource != null) {
 
             try {
-
-                return Optional.of(resourceRepository.save(resource));
+                Resource savedResource = resourceRepository.save(resource);
+                return Optional.of(savedResource);
             } catch (Exception e) {
 
                 log.error(e.getMessage(), e);
@@ -55,8 +56,13 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<Resource> findByDeleted(boolean deleted) {
+    public Optional<Resource> findByDeleted(boolean deleted) {
         return resourceRepository.findByDeleted(deleted);
+    }
+
+    @Override
+    public Optional<Resource> findOne(Long id) {
+        return Optional.empty();
     }
 
 

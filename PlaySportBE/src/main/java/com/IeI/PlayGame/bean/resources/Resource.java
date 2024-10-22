@@ -15,20 +15,21 @@ public class Resource {
 
     @Id
     @GeneratedValue
-    private Integer Id;
+    private Long Id;
 
     @Column(nullable = false)
-    private String resourcesName;
+    private String resourceName;
 
     @Column(nullable = false)
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "resourceTypeId")
+    @JoinColumn(name = "resource_type_id")
     private ResourceType resourceType;
 
     @Column(nullable = false)
-    private String resourcesOwnerName;
+    private String resourceOwnerName;
 
+    @Column
     private Boolean deleted = false;
 }

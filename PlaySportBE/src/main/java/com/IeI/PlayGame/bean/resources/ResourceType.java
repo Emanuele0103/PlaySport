@@ -11,12 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "resource")
+@Table(name = "resource_type")
 public class ResourceType {
 
     @Id
     @GeneratedValue
-    private Integer ID;
+    private Long ID;
 
+    @Column(name = "resource_type_id")
     private Type type;
 }

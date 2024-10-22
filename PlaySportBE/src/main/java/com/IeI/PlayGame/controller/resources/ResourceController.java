@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class ResourceController {
     private final ResourceService resourceService;
 
     @GetMapping("/resources")
-    public List<Resource> allResources() {
+    public Optional<Resource> allResources() {
 
         return resourceService.findByDeleted(false);
     }
