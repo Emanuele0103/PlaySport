@@ -1,6 +1,6 @@
 package com.IeI.PlayGame.config;
 
-import com.IeI.PlayGame.bean.user.UserRepository;
+import com.IeI.PlayGame.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

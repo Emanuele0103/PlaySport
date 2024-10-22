@@ -1,5 +1,6 @@
-package com.IeI.PlayGame.bean.user;
+package com.IeI.PlayGame.repository.user;
 
+import com.IeI.PlayGame.bean.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

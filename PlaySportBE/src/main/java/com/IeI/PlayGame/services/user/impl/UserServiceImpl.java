@@ -3,7 +3,7 @@ package com.IeI.PlayGame.services.user.impl;
 import com.IeI.PlayGame.auth.LoginResponse;
 import com.IeI.PlayGame.services.JwtService;
 import com.IeI.PlayGame.bean.user.User;
-import com.IeI.PlayGame.bean.user.UserRepository;
+import com.IeI.PlayGame.repository.user.UserRepository;
 import com.IeI.PlayGame.services.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;

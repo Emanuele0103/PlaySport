@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 
 @Data
 @Entity
@@ -15,9 +16,9 @@ import lombok.NoArgsConstructor;
 public class ResourceType {
 
     @Id
-    @GeneratedValue
-    private Long ID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
 
-    @Column(name = "resource_type_id")
-    private ResourceTypeEnum type;
+    @Column(unique = true)
+    private String type;
 }
