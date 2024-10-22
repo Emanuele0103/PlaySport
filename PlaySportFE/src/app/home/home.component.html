@@ -30,33 +30,40 @@
   <!-- Content Area (Campi di gioco) -->
   <div class="content">
     <h1>Benvenuto, {{ userName }}!</h1>
+
+    <!-- Messaggio se non ci sono campi disponibili -->
+    <div *ngIf="filteredFields.length === 0">
+      <p>Nessun campo disponibile.</p>
+    </div>
+
     <!-- Mostra tutti i campi se non è stato selezionato alcuno sport -->
     <div *ngIf="!selectedSport">
       <h2>Campi disponibili</h2>
       <div class="grid-container">
         <div class="field" *ngFor="let field of filteredFields">
-          <h3>{{ field.name }}</h3>
-          <p>{{ field.address }}</p>
+          <h3>{{ field.resourceName }} ({{ field.resourceType.name }})</h3>
+          <p>Indirizzo: {{ field.address }}</p>
+          <p>Proprietario: {{ field.resourceOwnerName }}</p>
           <button (click)="bookField(field)">Prenota</button>
         </div>
       </div>
     </div>
 
-    <!-- Se è stato selezionato uno sport, mostra i campi disponibili -->
-    <div *ngIf="selectedSport">
+    <!-- Use a ng-container to avoid layout issues -->
+    <ng-container *ngIf="selectedSport">
       <h2>Campi disponibili per {{ selectedSport }}</h2>
       <div class="grid-container">
         <div class="field" *ngFor="let field of filteredFields">
-          <h3>{{ field.name }}</h3>
-          <p>{{ field.address }}</p>
-          <button (click)="bookField(field)">Prenota</button>
+          <!-- Move the *ngIf to the inner div -->
+          <ng-container *ngIf="field.resourceType.name.toLowerCase() === selectedSport.toLowerCase()">
+            <h3>{{ field.resourceName }} ({{ field.resourceType.name }})</h3>
+            <p>Indirizzo: {{ field.address }}</p>
+            <p>Proprietario: {{ field.resourceOwnerName }}</p>
+            <button (click)="bookField(field)">Prenota</button>
+          </ng-container>
         </div>
       </div>
-    </div>
+    </ng-container>
 
-    <!-- Messaggio se non è selezionato alcuno sport e non ci sono campi -->
-    <div *ngIf="filteredFields.length === 0">
-      <p>Nessun campo disponibile.</p>
-    </div>
   </div>
 </div>

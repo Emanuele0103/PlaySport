@@ -1,30 +1,31 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-user-management',
   templateUrl: './user-management.component.html',
-  styleUrl: './user-management.component.css'
+  styleUrls: ['./user-management.component.css'] // Correzione "styleUrl" -> "styleUrls"
 })
 export class UserManagementComponent {
 
-  constructor(private sharedService :SharedService, private router: Router) { }
+  constructor(private sharedService: SharedService, private router: Router) {}
 
   fields = [
-    { id: 1, name: 'Campo 1', sport: 'calcio', pricePerHour: 50 },
-    { id: 2, name: 'Campo 2', sport: 'tennis', pricePerHour: 30 }
+    { id: 1, resourceName: 'Campo 1', address: 'Via Roma 1', resourceType: 'calcio', resourceOwnerName: 'Mario Rossi' },
+    { id: 2, resourceName: 'Campo 2', address: 'Via Milano 10', resourceType: 'tennis', resourceOwnerName: 'Luigi Bianchi' }
   ]; // Esempio di campi iniziali
+
   isEditing = false;
   isAdding = false;
   errorMessage = '';
   feedbackMessage = '';
   fieldData = {
     id: null,
-    name: '',
-    sport: '',
-    pricePerHour: 0
+    resourceName: '',
+    address: '',
+    resourceType: '',
+    resourceOwnerName: ''
   };
 
   // Funzione per mostrare il modulo di aggiunta campo
@@ -57,7 +58,7 @@ export class UserManagementComponent {
   editField(field: any) {
     this.isEditing = true;
     this.isAdding = false;
-    this.fieldData = { ...field }; // Pre-fill il form con i dati esistenti
+    this.fieldData = { ...field }; 
   }
 
   // Funzione per eliminare un campo
@@ -70,9 +71,10 @@ export class UserManagementComponent {
   resetForm() {
     this.fieldData = {
       id: null,
-      name: '',
-      sport: '',
-      pricePerHour: 0
+      resourceName: '',
+      address: '',
+      resourceType: '',
+      resourceOwnerName: ''
     };
     this.errorMessage = '';
     this.feedbackMessage = '';

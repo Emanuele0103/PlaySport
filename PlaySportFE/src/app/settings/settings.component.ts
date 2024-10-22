@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
   feedbackMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private router: Router, private sharedService: SharedService, private userService: UserService) { }
+  constructor(private sharedService: SharedService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.loadUserProfile(); // Chiama il metodo per caricare il profilo

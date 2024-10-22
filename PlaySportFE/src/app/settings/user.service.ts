@@ -2,21 +2,22 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { SharedService } from '../shared/shared.service';
 
 export interface UserProfile {
-  firstname?: string;  // Rendi opzionali i campi
-  lastname?: string;   // Rendi opzionali i campi
-  email?: string;      // Rendi opzionali i campi
-  phoneNumber?: string; // Rendi opzionali i campi
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  phoneNumber?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:9090/api/v1/user'; // Modifica con l'endpoint corretto
+  private apiUrl = 'http://localhost:9090/api/v1/user';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private sharedService: SharedService) { }
 
   // Aggiorna il profilo dell'utente
   updateUserProfile(user: UserProfile): Observable<any> {

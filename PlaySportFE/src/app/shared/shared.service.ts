@@ -5,10 +5,25 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class SharedService {
+  fieldData: { id: any; name: string; sport: string; pricePerHour: number; };
+  errorMessage: string;
+  feedbackMessage: string;
 
   constructor(private router: Router) { }
 
   goBack(): void {
     this.router.navigate(['/home']);
   }
+
+  resetForm() :void  {
+    this.fieldData = {
+      id: null,
+      name: '',
+      sport: '',
+      pricePerHour: 0
+    };
+    this.errorMessage = '';
+    this.feedbackMessage = '';
+  }
+
 }
