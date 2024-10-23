@@ -5,7 +5,6 @@ import com.IeI.PlayGame.bean.user.User;
 import com.IeI.PlayGame.services.resources.ResourceService;
 import com.IeI.PlayGame.services.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +17,7 @@ import java.util.Optional;
 public class ResourceController {
 
     private final ResourceService resourceService;
+
     private final UserService userService;
 
     @GetMapping("/resources")
@@ -34,6 +34,11 @@ public class ResourceController {
         resource.setOwner(authenticatedUser);
         // Salva la risorsa
         return resourceService.saveResource(resource).orElseThrow();
+    }
+
+    @PutMapping("/resources")
+    public Optional<Resource> updateResource(@RequestBody Resource updatedResource) {
+        return resourceService.updateResource(updatedResource);
     }
 }
 

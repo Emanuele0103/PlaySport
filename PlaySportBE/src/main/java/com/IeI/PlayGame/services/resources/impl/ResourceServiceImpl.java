@@ -1,6 +1,7 @@
 package com.IeI.PlayGame.services.resources.impl;
 
 import com.IeI.PlayGame.bean.resources.Resource;
+import com.IeI.PlayGame.bean.user.User;
 import com.IeI.PlayGame.repository.resource.ResourceRepository;
 import com.IeI.PlayGame.services.resources.ResourceService;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,9 @@ public class ResourceServiceImpl implements ResourceService {
     public Optional<Resource> findOne(Long id) {
         return resourceRepository.findById(id);
     }
+
+    @Override
+    public List<Resource> findByOwner(User owner) { return resourceRepository.findByOwner(owner); }
 
 
 }
