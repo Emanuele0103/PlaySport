@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ResourceServiceImpl implements ResourceService {
 
-    private ResourceRepository resourceRepository;
+    private final ResourceRepository resourceRepository;
 
     @Override
     public Optional<Resource> saveResource(Resource resource) {

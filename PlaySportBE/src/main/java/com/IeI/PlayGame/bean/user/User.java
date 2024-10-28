@@ -22,10 +22,10 @@ public class User implements UserDetails {
     @Getter
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String firstname;
 
-    @Column
+    @Column(nullable = false)
     private String lastname;
 
     @Column(unique = true, nullable = false)
@@ -37,7 +37,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(unique = true, nullable = true)
+    @Column(unique = true)
     private String phoneNumber;
 
     @Override

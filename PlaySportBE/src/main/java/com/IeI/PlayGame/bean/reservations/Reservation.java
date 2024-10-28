@@ -26,10 +26,13 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private User userId;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "resourceId")
-    private Resource resourceId;
+    private Resource resource;
+
+    @Column
+    private boolean deleted = false;
 
 }

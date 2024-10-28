@@ -18,4 +18,6 @@ public interface UserService {
     boolean changePassword(String email, String currentPassword, String newPassword);
 
     User getAuthenticatedUser();
+
+    Optional<User> findById(Long id);
 }

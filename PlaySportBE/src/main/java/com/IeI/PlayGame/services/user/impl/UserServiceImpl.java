@@ -6,6 +6,7 @@ import com.IeI.PlayGame.bean.user.User;
 import com.IeI.PlayGame.repository.user.UserRepository;
 import com.IeI.PlayGame.services.user.UserService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,21 +22,18 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
-    public String error = "User not found for email [{}]";
+    public final String error = "User not found for email [{}]";
 
     @Transactional
     public Optional<User> saveUser(User user) {
@@ -175,6 +173,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("Authentication issue");
         }
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 
 }

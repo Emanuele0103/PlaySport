@@ -25,7 +25,7 @@ public class Resource {
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "type")
+    @JoinColumn(name = "type", nullable = false)
     private ResourceType resourceType;
 
     @Column(nullable = false)

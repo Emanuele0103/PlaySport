@@ -26,7 +26,7 @@ public class ResourceController {
         return resourceService.findByOwner(authenticatedUser);
     }
 
-    @PostMapping
+    @PostMapping("/resources")
     public Resource addResource(@RequestBody Resource resource) {
         // Ottieni l'utente autenticato
         User authenticatedUser = userService.getAuthenticatedUser();
@@ -36,7 +36,7 @@ public class ResourceController {
         return resourceService.saveResource(resource).orElseThrow();
     }
 
-    @PutMapping
+    @PutMapping("/resources")
     public Optional<Resource> updateResource(@RequestBody Resource updatedResource) {
         return resourceService.updateResource(updatedResource);
     }
