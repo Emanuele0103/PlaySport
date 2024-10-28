@@ -2,7 +2,7 @@ package com.IeI.PlayGame.services.resources.impl;
 
 import com.IeI.PlayGame.bean.resources.ResourceType;
 import com.IeI.PlayGame.bean.resources.ResourceTypeEnum;
-import com.IeI.PlayGame.repository.resource.ResourceTypeRepository;
+import com.IeI.PlayGame.repository.resources.ResourceTypeRepository;
 import com.IeI.PlayGame.services.resources.ResourceTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

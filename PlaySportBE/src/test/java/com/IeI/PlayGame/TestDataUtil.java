@@ -10,7 +10,7 @@ public final class TestDataUtil {
 
     public static Resource createTestResource(){
 
-        ResourceType resourceType = new ResourceType(1L, ResourceTypeEnum.SOCCER);
+        ResourceType resourceType = new ResourceType(1L, ResourceTypeEnum.SOCCER.name());
         return Resource.builder()
                 .Id(1L)
                 .resourceName("Campo 1")

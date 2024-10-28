@@ -2,11 +2,10 @@ package com.IeI.PlayGame.services.resources.impl;
 
 import com.IeI.PlayGame.bean.resources.Resource;
 import com.IeI.PlayGame.bean.user.User;
-import com.IeI.PlayGame.repository.resource.ResourceRepository;
+import com.IeI.PlayGame.repository.resources.ResourceRepository;
 import com.IeI.PlayGame.services.resources.ResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

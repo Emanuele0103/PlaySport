@@ -1,4 +1,4 @@
-package com.IeI.PlayGame.repository.resource;
+package com.IeI.PlayGame.repository.resources;
 
 
 import com.IeI.PlayGame.bean.resources.Resource;

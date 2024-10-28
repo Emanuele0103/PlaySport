@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 public class Resource {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     @Column(nullable = false)
@@ -25,7 +25,7 @@ public class Resource {
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "resource_type_id")
+    @JoinColumn(name = "type")
     private ResourceType resourceType;
 
     @Column(nullable = false)
