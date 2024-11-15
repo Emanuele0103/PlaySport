@@ -14,5 +14,6 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
     List<Resource> findByOwner(User owner);
 
     List<Resource> findByDeleted(boolean deleted);
+
 }
 

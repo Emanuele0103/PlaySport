@@ -1,5 +1,6 @@
 package com.IeI.PlayGame.services.resources.impl;
 
+import com.IeI.PlayGame.bean.resources.Resource;
 import com.IeI.PlayGame.bean.resources.ResourceType;
 import com.IeI.PlayGame.bean.resources.ResourceTypeEnum;
 import com.IeI.PlayGame.repository.resources.ResourceTypeRepository;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -35,6 +37,12 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     @Override
     public Optional<ResourceType> findByType(ResourceTypeEnum resourceTypeEnum) {
         return resourceTypeRepository.findByType(resourceTypeEnum.name());
+    }
+
+    @Override
+    public Optional<Resource> findByResourceType(ResourceTypeEnum type) {
+        //return resourceTypeRepository.findByType(type.name());
+        return Optional.empty();
     }
 
 }

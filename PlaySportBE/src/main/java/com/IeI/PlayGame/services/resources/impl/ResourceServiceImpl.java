@@ -67,5 +67,10 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<Resource> findByOwner(User owner) { return resourceRepository.findByOwner(owner); }
 
+    @Override
+    public List<Resource> findAll() {
+        return resourceRepository.findAll();
+    }
+
 
 }

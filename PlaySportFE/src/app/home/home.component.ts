@@ -12,13 +12,13 @@ export class HomeComponent implements OnInit {
 
   user$: { firstname: string; lastname: string; role: string };
   selectedSport: string | null = null;
-  campi: Resource[] = []; 
+  campi: Resource[] = [];
   filteredFields: Resource[] = [];
   isAdmin: boolean = false;
 
   constructor(
     private authService: AuthService,
-    private resourceService: ResourceService,  
+    private resourceService: ResourceService,
     private router: Router
   ) { }
 
@@ -68,10 +68,10 @@ loadAllFields() {
   }
 
   getFieldForSport(sport: string) {
-    this.filteredFields = this.campi.filter(field => 
+    this.filteredFields = this.campi.filter(field =>
       field.resourceType?.name.toLowerCase() === sport.toLowerCase()
     );
-  }  
+  }
 
   // Funzione per prenotare una risorsa
   bookField(campo: Resource) {
@@ -88,10 +88,10 @@ loadAllFields() {
 
   // Funzione per il logout
   logout() {
-    this.authService.logout();
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('firstname');
-    localStorage.removeItem('lastname');
-    this.router.navigate(['/login']);
-  }
+       this.authService.logout();
+       localStorage.removeItem('authToken');
+       localStorage.removeItem('firstname');
+       localStorage.removeItem('lastname');
+       this.router.navigate(['/login']);
+     }
 }

@@ -20,4 +20,6 @@ public interface ResourceService {
 
     // Nuovo metodo per trovare le risorse per utente proprietario
     List<Resource> findByOwner(User owner);
+
+    List<Resource> findAll();
 }

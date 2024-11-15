@@ -1,8 +1,10 @@
 package com.IeI.PlayGame.controller.resources;
 
 import com.IeI.PlayGame.bean.resources.Resource;
+import com.IeI.PlayGame.bean.resources.ResourceTypeEnum;
 import com.IeI.PlayGame.bean.user.User;
 import com.IeI.PlayGame.services.resources.ResourceService;
+import com.IeI.PlayGame.services.resources.ResourceTypeService;
 import com.IeI.PlayGame.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,9 @@ public class ResourceController {
 
     private final UserService userService;
 
-    @GetMapping("/resources")
+    private final ResourceTypeService resourceTypeService;
+
+    @GetMapping("/userResources")
     public List<Resource> getUserResources() {
         User authenticatedUser = userService.getAuthenticatedUser();
         return resourceService.findByOwner(authenticatedUser);
@@ -39,6 +43,16 @@ public class ResourceController {
     @PutMapping("/resources")
     public Optional<Resource> updateResource(@RequestBody Resource updatedResource) {
         return resourceService.updateResource(updatedResource);
+    }
+
+    @GetMapping("/resourcesType")
+    public Optional<Resource> getResourcesOfOneType(ResourceTypeEnum type) {
+        return resourceTypeService.findByResourceType(type);
+    }
+
+    @GetMapping("/resources")
+    public List<Resource> getResources() {
+        return resourceService.findAll();
     }
 }
 
