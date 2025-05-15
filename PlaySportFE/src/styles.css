@@ -118,3 +118,14 @@ button:disabled {
   margin-bottom: 20px; /* Spazio sotto il titolo */
   font-weight: bold; /* Grassetto */
 }
+
+.bottom-buttons button {
+  margin-right: 10px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.bottom-buttons .logout-button i,
+.bottom-buttons .settings-button i {
+  margin-right: 5px; /* Spazio tra l'icona e il testo */
+}

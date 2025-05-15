@@ -1,69 +1,44 @@
 <div class="container">
   <!-- Sidebar -->
   <div class="sidebar">
-    <div class="sport-buttons">
-      <h2>Sport</h2>
-      <button (click)="selectSport('calcio')" class="sport-button">Calcio</button>
-      <button (click)="selectSport('padel')" class="sport-button">Padel</button>
-      <button (click)="selectSport('tennis')" class="sport-button">Tennis</button>
-      <button (click)="selectSport('basket')" class="sport-button">Basket</button>
-    </div>
+    <h2>Sport</h2>
+    <button (click)="selectSport('calcio')">Calcio</button>
+    <button (click)="selectSport('padel')">Padel</button>
+    <button (click)="selectSport('tennis')">Tennis</button>
+    <button (click)="selectSport('basket')">Basket</button>
 
     <div class="bottom-buttons">
-      <!-- Tasto "Gestisci Utenti", visibile solo se l'utente è admin -->
-      <button (click)="goToUserManager()" *ngIf="isAdmin" class="icon-button admin-button">
-        <i class="fas fa-user-cog"></i>
+      <button *ngIf="isAdmin" class="admin-button">
+        <i class="fas fa-user-cog"></i> Gestisci Utenti
       </button>
 
-      <!-- Tasto per impostazioni visibile a tutti -->
-      <button (click)="goToSettings()" class="icon-button settings-button">
-        <i class="fas fa-cog"></i>
+      <button class="settings-button">
+        <i class="fas fa-cog"></i> Impostazioni
       </button>
 
-      <!-- Tasto Logout visibile a tutti -->
-      <button (click)="logout()" class="icon-button logout-button">
-        <i class="fas fa-sign-out-alt"></i>
+      <button (click)="logout()" class="logout-button">
+        <i class="fas fa-sign-out-alt"></i> Logout
       </button>
     </div>
   </div>
 
-  <!-- Content Area (Campi di gioco) -->
+  <!-- Content Area -->
   <div class="content">
     <h1>Benvenuto, {{ userName }}!</h1>
 
-    <!-- Messaggio se non ci sono campi disponibili -->
-    <div *ngIf="filteredFields.length === 0">
-      <p>Nessun campo disponibile.</p>
-    </div>
-
-    <!-- Mostra tutti i campi se non è stato selezionato alcuno sport -->
-    <div *ngIf="!selectedSport">
-      <h2>Campi disponibili</h2>
-      <div class="grid-container">
-        <div class="field" *ngFor="let field of filteredFields">
-          <h3>{{ field.resourceName }} ({{ field.resourceType.name }})</h3>
-          <p>Indirizzo: {{ field.address }}</p>
-          <p>Proprietario: {{ field.resourceOwnerName }}</p>
-          <button (click)="bookField(field)">Prenota</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Use a ng-container to avoid layout issues -->
-    <ng-container *ngIf="selectedSport">
+    <div *ngIf="selectedSport">
       <h2>Campi disponibili per {{ selectedSport }}</h2>
       <div class="grid-container">
-        <div class="field" *ngFor="let field of filteredFields">
-          <!-- Move the *ngIf to the inner div -->
-          <ng-container *ngIf="field.resourceType.name.toLowerCase() === selectedSport.toLowerCase()">
-            <h3>{{ field.resourceName }} ({{ field.resourceType.name }})</h3>
-            <p>Indirizzo: {{ field.address }}</p>
-            <p>Proprietario: {{ field.resourceOwnerName }}</p>
-            <button (click)="bookField(field)">Prenota</button>
-          </ng-container>
+        <div class="campo" *ngFor="let campo of filteredFields">
+          <h3>{{ campo.resourceName }}</h3>
+          <p>{{ campo.address }}</p>
+          <button (click)="bookField(campo)">Prenota</button>
         </div>
       </div>
-    </ng-container>
+    </div>
 
+    <div *ngIf="!selectedSport">
+      <p>Seleziona uno sport per vedere i campi disponibili.</p>
+    </div>
   </div>
 </div>
