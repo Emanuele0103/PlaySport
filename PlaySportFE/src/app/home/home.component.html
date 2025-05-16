@@ -29,8 +29,8 @@
     <div *ngIf="selectedSport">
       <h2>Campi disponibili per {{ selectedSport }}</h2>
       <div class="grid-container">
-        <div class="campo" *ngFor="let campo of filteredFields">
-          <h3>{{ campo.resourceName }}</h3>
+        <div class="campo" *ngFor="let campo of campi">
+          <h3>{{ campo.name }}</h3>
           <p>{{ campo.address }}</p>
           <button (click)="bookField(campo)">Prenota</button>
         </div>

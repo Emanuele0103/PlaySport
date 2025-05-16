@@ -7,9 +7,6 @@ import { AuthService } from '../auth/auth.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
-  selector: 'app-home', 
-  templateUrl: './home.component.html', 
-  styleUrls: ['./home.component.css'] 
 })
 export class HomeComponent implements OnInit {
 
