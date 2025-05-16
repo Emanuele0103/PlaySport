@@ -17,22 +17,29 @@ export class HomeComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.authService.user$.subscribe((user: { firstname: string; lastname: string; role: string; }) => {
-      if (user) {
-        this.user$ = user;
-        this.isAdmin = this.authService.isAdmin();
-      } else {
-        const firstname = localStorage.getItem('firstname');
-        const lastname = localStorage.getItem('lastname');
-        this.user$ = {
-          firstname: firstname || 'Utente',
-          lastname: lastname || 'sconosciuto',
-          role: null
-        };
-      }
-    });
-  }
+ngOnInit(): void {
+  this.authService.user$.subscribe((user: { firstname: string; lastname: string; role: string }) => {
+    if (user) {
+      this.user$ = user;
+      this.isAdmin = this.authService.isAdmin();
+    } else if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const firstname = localStorage.getItem('firstname');
+      const lastname = localStorage.getItem('lastname');
+      this.user$ = {
+        firstname: firstname || 'Utente',
+        lastname: lastname || 'Sconosciuto',
+        role: null
+      };
+    } else {
+      this.user$ = {
+        firstname: 'Utente',
+        lastname: 'Sconosciuto',
+        role: null
+      };
+    }
+  });
+}
+
   
 
   // Getter che ritorna il nome completo dell'utente
@@ -88,12 +95,16 @@ export class HomeComponent implements OnInit {
     }`);
   }
 
-  // Funzione per il logout
-  logout() {
-    this.authService.logout(); // Chiama il servizio di autenticazione per eseguire il logout
-    localStorage.removeItem('authToken'); // Rimuove il token di autenticazione dal localStorage
-    localStorage.removeItem('firstname'); // Rimuove il nome dell'utente dal localStorage
-    localStorage.removeItem('lastname'); // Rimuove il cognome dell'utente dal localStorage
-    this.router.navigate(['/login']); // Reindirizza l'utente alla pagina di login
+  logout(): void {
+  this.authService.logout();
+  
+  if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('firstname');
+    localStorage.removeItem('lastname');
   }
+
+  this.router.navigate(['/login']);
+}
+
 }

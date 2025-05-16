@@ -1,98 +1,70 @@
-
+/* Contenitore principale */
 .container {
   display: flex;
   height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
+/* Sidebar */
 .sidebar {
   width: 250px;
-  background-color: #f4f4f4;
+  background-color: #1e1e2f;
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-}
-
-/* Stili per i bottoni dello sport */
-.sport-buttons {
-  display: flex;
-  flex-direction: column;
-}
-
-.sport-button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: blue;
   color: white;
-  border-radius: 8px;
-}
-
-.sport-button:hover {
-  background-color: darkblue;
-}
-
-/* Stili per i bottoni di impostazione/logout/gestione utenti */
-.bottom-buttons {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-/* Bottoni quadrati e piccoli con solo icone */
-.icon-button {
-  background-color: #f1f1f1;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.icon-button i {
-  font-size: 18px;
-  color: #333;
-}
-
-.icon-button:hover {
-  background-color: #ddd;
 }
 
 /* Area contenuto */
 .content {
-  margin-left: 270px;
-  padding: 20px;
-  width: calc(100% - 270px);
+  flex-grow: 1;
+  padding: 40px;
+  background-color: #fff; /* Bianco su tutta l’area destra */
+  min-width: 0;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
-.content h1 {
-  margin-bottom: 20px;
+/* Bottoni sport */
+.sidebar button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
-/* Griglia per i campi */
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+.sidebar button:hover {
+  background-color: #0056b3;
 }
 
-.field {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  padding: 20px
+/* Bottoni inferiori */
+.bottom-buttons {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bottom-buttons button {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.bottom-buttons button i {
+  margin-right: 8px;
 }
