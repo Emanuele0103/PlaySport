@@ -1,12 +1,32 @@
-<h2>{{ clubData.name }}</h2>
-<p><strong>Indirizzo:</strong> {{ clubData.address }}</p>
-<a [href]="clubData.mapLink" target="_blank">📍 Apri su Google Maps</a>
+<div class="club-container" *ngIf="clubData">
+    <h2>{{ clubData.name }}</h2>
+    <p><strong>Indirizzo:</strong> {{ clubData.address }}</p>
 
-<img [src]="clubData.image" alt="Foto club" style="width: 100%; max-width: 600px; margin-top: 20px;" />
+    <label for="date">📅 Seleziona giorno:</label>
 
-<h3>Orari disponibili</h3>
-<div *ngFor="let slot of clubData.calendar">
-    <span>{{ slot.hour }}</span>
-    <span *ngIf="slot.available" style="color: green">Disponibile</span>
-    <span *ngIf="!slot.available" style="color: red">Occupato</span>
+    <input type="date" id="date" [value]="selectedDate" [min]="minDate" [max]="maxDate" (change)="onDateChange($event)"
+        style="margin: 10px 0; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+
+    <h3>Disponibilità Orari</h3>
+    <div class="calendar">
+        <div *ngFor="let slot of clubData.calendar" class="calendar-slot" [class.full]="!slot.available"
+            [class.selected]="slot.hour === selectedSlot" (click)="slot.available && onSelectSlot(slot.hour)">
+            <span>{{ slot.hour }}</span><br>
+            <span *ngIf="slot.available" class="available">Disponibile</span>
+            <span *ngIf="!slot.available" class="unavailable">Occupato</span>
+        </div>
+    </div>
+
+    <img [src]="clubData.image" alt="Foto del club" class="club-image" />
+
+    <div class="map-container">
+        <iframe [src]="googleMapUrl" loading="lazy" allowfullscreen></iframe>
+    </div>
+
+    <div class="button-row">
+        <button (click)="onBook()" [disabled]="!selectedSlot" class="btn green">Prenota ora</button>
+        <button (click)="goBack()" class="btn red">Torna indietro</button>
+    </div>
+
+
 </div>
