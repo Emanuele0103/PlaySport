@@ -1,7 +1,18 @@
-import { Component, OnInit } from '@angular/core'; 
-import { Router } from '@angular/router'; 
-import { AuthService } from '../auth/auth.service'; 
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
+interface Campo {
+  name: string;
+  address: string;
+  img: string;
+}
+
+interface User {
+  firstname: string;
+  lastname: string;
+  role: string | null;
+}
 
 @Component({
   selector: 'app-home',
@@ -10,101 +21,80 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  user$: { firstname: string; lastname: string; role: string }; 
-  selectedSport: string; 
-  campi: { name: string, address: string }[] = []; // Array che contiene i campi disponibili per lo sport selezionato
-  isAdmin: boolean = false; // Variabile booleana che indica se l'utente ha il ruolo di amministratore
+  user$: User;
+  selectedSport: string = '';
+  campi: Campo[] = [];
+  isAdmin: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
-ngOnInit(): void {
-  this.authService.user$.subscribe((user: { firstname: string; lastname: string; role: string }) => {
-    if (user) {
-      this.user$ = user;
-      this.isAdmin = this.authService.isAdmin();
-    } else if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      const firstname = localStorage.getItem('firstname');
-      const lastname = localStorage.getItem('lastname');
-      this.user$ = {
-        firstname: firstname || 'Utente',
-        lastname: lastname || 'Sconosciuto',
-        role: null
-      };
+  ngOnInit(): void {
+    this.authService.user$.subscribe((user: User) => {
+      if (user) {
+        this.user$ = user;
+        this.isAdmin = this.authService.isAdmin();
+      } else {
+        this.recuperaUtenteDaLocalStorage();
+      }
+    });
+  }
+
+  recuperaUtenteDaLocalStorage(): void {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const firstname = localStorage.getItem('firstname') || 'Utente';
+      const lastname = localStorage.getItem('lastname') || 'Sconosciuto';
+      this.user$ = { firstname, lastname, role: null };
     } else {
-      this.user$ = {
-        firstname: 'Utente',
-        lastname: 'Sconosciuto',
-        role: null
-      };
+      this.user$ = { firstname: 'Utente', lastname: 'Sconosciuto', role: null };
     }
-  });
-}
+  }
 
-  
-
-  // Getter che ritorna il nome completo dell'utente
   get userName(): string {
     return this.user$ ? `${this.user$.firstname} ${this.user$.lastname}` : 'Utente sconosciuto';
   }
 
-  // Funzione per la selezione dello sport
-  selectSport(sport: string) {
-    this.selectedSport = sport; // Imposta lo sport selezionato
-    this.getFieldForSport(sport); // Recupera i campi associati a quello sport
+  selectSport(sport: string): void {
+    this.selectedSport = sport;
+    this.getFieldForSport(sport);
   }
 
-  // Funzione che simula la chiamata di un servizio per ottenere i campi disponibili per lo sport selezionato
-  getFieldForSport(sport: string) {
-    // Oggetto che simula i campi disponibili per diversi sport
-    const campiDisponibili = {
+  getFieldForSport(sport: string): void {
+    const campiDisponibili: { [key: string]: Campo[] } = {
       calcio: [
-        { name: 'Campo Calcio 1', address
-    : 'Via Roma' },
-        { name: 'Campo Calcio 2', address
-    : 'Via Milano' }
+        { name: 'Campo Calcio 1', address: 'Via Roma', img: 'assets/img/calcio1.jpg' },
+        { name: 'Campo Calcio 2', address: 'Via Milano', img: 'assets/img/calcio2.jpg' }
       ],
       padel: [
-        { name: 'Campo Padel 1', address
-    : 'Via Napoli' },
-        { name: 'Campo Padel 2', address
-    : 'Via Firenze' }
+        { name: 'Campo Padel 1', address: 'Via Napoli', img: 'assets/img/padel1.jpg' },
+        { name: 'Campo Padel 2', address: 'Via Firenze', img: 'assets/img/padel2.jpg' }
       ],
       tennis: [
-        { name: 'Campo Tennis 1', address
-    : 'Via Torino' },
-        { name: 'Campo Tennis 2', address
-    : 'Via Bologna' }
+        { name: 'Campo Tennis 1', address: 'Via Torino', img: 'assets/img/tennis1.jpg' },
+        { name: 'Campo Tennis 2', address: 'Via Bologna', img: 'assets/img/tennis2.jpg' }
       ],
       basket: [
-        { name: 'Campo Basket 1', address
-    : 'Via Palermo' },
-        { name: 'Campo Basket 2', address
-    : 'Via Genova' }
+        { name: 'Campo Basket 1', address: 'Via Palermo', img: 'assets/img/basket1.jpg' },
+        { name: 'Campo Basket 2', address: 'Via Genova', img: 'assets/img/basket2.jpg' }
       ]
     };
 
-    // Imposta l'array dei campi disponibili per lo sport selezionato. Se non ci sono campi per lo sport, imposta un array vuoto
     this.campi = campiDisponibili[sport] || [];
   }
 
-  // Funzione per prenotare un campo
-  bookField(campo: { name: string, address: string }) {
-    // Visualizza un messaggio di conferma della prenotazione
-    alert(`Hai prenotato il ${campo.name} a ${campo.address
-
-    }`);
+  bookField(campo: Campo): void {
+    alert(`Hai prenotato il ${campo.name} a ${campo.address}`);
   }
 
   logout(): void {
-  this.authService.logout();
-  
-  if (typeof localStorage !== 'undefined') {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('firstname');
-    localStorage.removeItem('lastname');
-  }
+    this.authService.logout();
 
-  this.router.navigate(['/login']);
-}
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('firstname');
+      localStorage.removeItem('lastname');
+    }
+
+    this.router.navigate(['/login']);
+  }
 
 }
