@@ -33,7 +33,7 @@
           <div class="campo-info">
             <h3>{{ campo.name }}</h3>
             <p>{{ campo.address }}</p>
-            <button (click)="bookField(campo)">Prenota</button>
+            <button [routerLink]="['/club', campo.id]">Prenota</button>
           </div>
         </div>
       </div>

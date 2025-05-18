@@ -1,0 +1,12 @@
+<h2>{{ clubData.name }}</h2>
+<p><strong>Indirizzo:</strong> {{ clubData.address }}</p>
+<a [href]="clubData.mapLink" target="_blank">📍 Apri su Google Maps</a>
+
+<img [src]="clubData.image" alt="Foto club" style="width: 100%; max-width: 600px; margin-top: 20px;" />
+
+<h3>Orari disponibili</h3>
+<div *ngFor="let slot of clubData.calendar">
+    <span>{{ slot.hour }}</span>
+    <span *ngIf="slot.available" style="color: green">Disponibile</span>
+    <span *ngIf="!slot.available" style="color: red">Occupato</span>
+</div>

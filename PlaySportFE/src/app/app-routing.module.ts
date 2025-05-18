@@ -6,13 +6,15 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { SettingsComponent } from './settings/settings.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { ClubDetailsComponent } from './club-details/club-details.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent }, 
   { path: 'setting', component: SettingsComponent }, 
-  { path: 'userManagement', component: UserManagementComponent }, 
+  { path: 'userManagement', component: UserManagementComponent },
+  { path: 'club/:id', component: ClubDetailsComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' } 
 ];
 

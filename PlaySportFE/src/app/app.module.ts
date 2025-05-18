@@ -9,13 +9,15 @@ import { HomeComponent } from './home/home.component';
 import { SettingsComponent } from './settings/settings.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClubDetailsComponent } from './club-details/club-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     SettingsComponent,
-    UserManagementComponent
+    UserManagementComponent,
+    ClubDetailsComponent
   ],
   imports: [
     BrowserModule,

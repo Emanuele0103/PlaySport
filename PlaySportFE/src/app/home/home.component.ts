@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
 interface Campo {
+  id: number;
   name: string;
   address: string;
   img: string;
@@ -61,20 +62,20 @@ export class HomeComponent implements OnInit {
   getFieldForSport(sport: string): void {
     const campiDisponibili: { [key: string]: Campo[] } = {
       calcio: [
-        { name: 'Campo Calcio 1', address: 'Via Roma', img: 'calcio1.jpg' },
-        { name: 'Campo Calcio 2', address: 'Via Milano', img: 'calcio2.jpg' }
+        { id: 1, name: 'Campo Calcio 1', address: 'Via Roma', img: 'calcio1.jpg' },
+        { id: 2, name: 'Campo Calcio 2', address: 'Via Milano', img: 'calcio2.jpg' }
       ],
       padel: [
-        { name: 'Campo Padel 1', address: 'Via Napoli', img: 'padel1.jpg' },
-        { name: 'Campo Padel 2', address: 'Via Firenze', img: 'padel2.jpg' }
+        { id: 3, name: 'Campo Padel 1', address: 'Via Napoli', img: 'padel1.jpg' },
+        { id: 4, name: 'Campo Padel 2', address: 'Via Firenze', img: 'padel2.jpg' }
       ],
       tennis: [
-        { name: 'Campo Tennis 1', address: 'Via Torino', img: 'tennis1.jpg' },
-        { name: 'Campo Tennis 2', address: 'Via Bologna', img: 'tennis2.jpg' }
+        { id: 5, name: 'Campo Tennis 1', address: 'Via Torino', img: 'tennis1.jpg' },
+        { id: 6, name: 'Campo Tennis 2', address: 'Via Bologna', img: 'tennis2.jpg' }
       ],
       basket: [
-        { name: 'Campo Basket 1', address: 'Via Palermo', img: 'basket1.jpg' },
-        { name: 'Campo Basket 2', address: 'Via Genova', img: 'basket2.jpg' }
+        { id: 7, name: 'Campo Basket 1', address: 'Via Palermo', img: 'basket1.jpg' },
+        { id: 8, name: 'Campo Basket 2', address: 'Via Genova', img: 'basket2.jpg' }
       ]
     };
 
@@ -82,7 +83,8 @@ export class HomeComponent implements OnInit {
   }
 
   bookField(campo: Campo): void {
-    alert(`Hai prenotato il ${campo.name} a ${campo.address}`);
+    // Redirect alla pagina club con ID
+    this.router.navigate(['/club', campo.id]);
   }
 
   logout(): void {
