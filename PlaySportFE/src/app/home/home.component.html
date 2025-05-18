@@ -29,7 +29,7 @@
 
       <div class="grid-container">
         <div class="campo-card" *ngFor="let campo of campi">
-          <img [src]="campo.img" alt="Campo" class="campo-img">
+          <img [src]="'assets/img/' + campo.img" alt="Campo" class="campo-img">
           <div class="campo-info">
             <h3>{{ campo.name }}</h3>
             <p>{{ campo.address }}</p>
