@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { environment } from '../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-club-details',
@@ -12,26 +13,29 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 export class ClubDetailsComponent implements OnInit {
   clubId: number;
   clubData: any;
-  googleMapUrl: SafeResourceUrl = ''; // ✅ tipo corretto
+  googleMapUrl: SafeResourceUrl = '';
   selectedDate: string = '';
   selectedSlot: string | null = null;
 
-  minDate: string = '';
-  maxDate: string = '';
+  minDate: Date = new Date();
+  maxDate: Date = new Date();
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private sanitizer: DomSanitizer // ✅ necessario per sicurezza URL
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
     this.clubId = Number(this.route.snapshot.paramMap.get('id'));
     this.clubData = this.getMockClubData(this.clubId);
 
-    this.selectedDate = this.getTodayDate();
-    this.minDate = this.selectedDate;
-    this.maxDate = this.getFutureDate(7);
+    const today = new Date();
+    this.selectedDate = today.toISOString().split('T')[0];
+    this.minDate = today;
+    const max = new Date();
+    max.setDate(max.getDate() + 7);
+    this.maxDate = max;
 
     if (this.clubData) {
       this.googleMapUrl = this.getMapEmbedUrl(
@@ -42,21 +46,13 @@ export class ClubDetailsComponent implements OnInit {
     }
   }
 
-  getTodayDate(): string {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  }
-
-  getFutureDate(days: number): string {
-    const future = new Date();
-    future.setDate(future.getDate() + days);
-    return future.toISOString().split('T')[0];
-  }
-
-  onDateChange(event: any): void {
-    this.selectedDate = event.target.value;
-    this.selectedSlot = null;
-    this.updateCalendar();
+  onDateChange(event: MatDatepickerInputEvent<Date>) {
+    const date = event.value;
+    if (date) {
+      this.selectedDate = date.toISOString().split('T')[0];
+      this.selectedSlot = null;
+      this.updateCalendar();
+    }
   }
 
   onSelectSlot(hour: string): void {
@@ -82,7 +78,7 @@ export class ClubDetailsComponent implements OnInit {
         id: 1,
         name: 'Campo Calcio 1',
         address: 'Via Roma',
-        image: 'assets/img/calcio1.jpg',
+        images: ['assets/img/calcio1.jpg'],
         lat: 41.9028,
         lng: 12.4964,
         calendar: [],
@@ -91,7 +87,7 @@ export class ClubDetailsComponent implements OnInit {
         id: 2,
         name: 'Campo Calcio 2',
         address: 'Via Milano',
-        image: 'assets/img/calcio2.jpg',
+        images: ['assets/img/calcio2.jpg'],
         lat: 45.4642,
         lng: 9.19,
         calendar: [],
@@ -100,7 +96,7 @@ export class ClubDetailsComponent implements OnInit {
         id: 3,
         name: 'Campo Padel 1',
         address: 'Via Napoli',
-        image: 'assets/img/padel1.jpg',
+        images: ['assets/img/padel1.jpg', 'assets/img/padel2.jpg'],
         lat: 40.8522,
         lng: 14.2681,
         calendar: [],
@@ -109,7 +105,7 @@ export class ClubDetailsComponent implements OnInit {
         id: 4,
         name: 'Campo Padel 2',
         address: 'Via Firenze',
-        image: 'assets/img/padel2.jpg',
+        image: ['assets/img/padel2.jpg'],
         lat: 43.7696,
         lng: 11.2558,
         calendar: [],
@@ -118,7 +114,7 @@ export class ClubDetailsComponent implements OnInit {
         id: 5,
         name: 'Campo Tennis 1',
         address: 'Via Torino',
-        image: 'assets/img/tennis1.jpg',
+        image: ['assets/img/tennis1.jpg'],
         lat: 45.0703,
         lng: 7.6869,
         calendar: [],
@@ -127,7 +123,7 @@ export class ClubDetailsComponent implements OnInit {
         id: 6,
         name: 'Campo Tennis 2',
         address: 'Via Bologna',
-        image: 'assets/img/tennis2.jpg',
+        image: ['assets/img/tennis2.jpg'],
         lat: 44.4949,
         lng: 11.3426,
         calendar: [],
@@ -136,7 +132,7 @@ export class ClubDetailsComponent implements OnInit {
         id: 7,
         name: 'Campo Basket 1',
         address: 'Via Palermo',
-        image: 'assets/img/basket1.jpg',
+        image: ['assets/img/basket1.jpg'],
         lat: 38.1157,
         lng: 13.3615,
         calendar: [],
@@ -145,7 +141,7 @@ export class ClubDetailsComponent implements OnInit {
         id: 8,
         name: 'Campo Basket 2',
         address: 'Via Genova',
-        image: 'assets/img/basket2.jpg',
+        image: ['assets/img/basket2.jpg'],
         lat: 44.4056,
         lng: 8.9463,
         calendar: [],
@@ -170,7 +166,7 @@ export class ClubDetailsComponent implements OnInit {
   getMapEmbedUrl(lat: number, lng: number): SafeResourceUrl {
     const apiKey = environment.googleMapsApiKey;
     const url = `https://www.google.com/maps/embed/v1/view?key=${apiKey}&center=${lat},${lng}&zoom=15`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url); // ✅ qui Angular lo considera sicuro
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   goBack(): void {

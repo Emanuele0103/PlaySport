@@ -2,31 +2,35 @@
     <h2>{{ clubData.name }}</h2>
     <p><strong>Indirizzo:</strong> {{ clubData.address }}</p>
 
-    <label for="date">📅 Seleziona giorno:</label>
-
-    <input type="date" id="date" [value]="selectedDate" [min]="minDate" [max]="maxDate" (change)="onDateChange($event)"
-        style="margin: 10px 0; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+    <mat-form-field appearance="fill" style="width: 100%; margin: 20px 0;">
+        <mat-label>📅 Seleziona giorno</mat-label>
+        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (dateChange)="onDateChange($event)" />
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
 
     <h3>Disponibilità Orari</h3>
     <div class="calendar">
         <div *ngFor="let slot of clubData.calendar" class="calendar-slot" [class.full]="!slot.available"
             [class.selected]="slot.hour === selectedSlot" (click)="slot.available && onSelectSlot(slot.hour)">
-            <span>{{ slot.hour }}</span><br>
+            <span>{{ slot.hour }}</span><br />
             <span *ngIf="slot.available" class="available">Disponibile</span>
             <span *ngIf="!slot.available" class="unavailable">Occupato</span>
         </div>
     </div>
 
-    <img [src]="clubData.image" alt="Foto del club" class="club-image" />
+    <h3>Galleria</h3>
+    <div class="gallery">
+        <img *ngFor="let img of clubData.images" [src]="img" alt="Foto club" />
+    </div>
 
     <div class="map-container">
         <iframe [src]="googleMapUrl" loading="lazy" allowfullscreen></iframe>
     </div>
 
     <div class="button-row">
-        <button (click)="onBook()" [disabled]="!selectedSlot" class="btn green">Prenota ora</button>
+        <button (click)="onBook()" [disabled]="!selectedSlot" class="btn green">
+            Prenota ora
+        </button>
         <button (click)="goBack()" class="btn red">Torna indietro</button>
     </div>
-
-
 </div>
