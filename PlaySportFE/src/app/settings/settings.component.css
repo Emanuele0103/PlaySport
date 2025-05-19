@@ -18,21 +18,35 @@
 }
 
 /* Pulsante indietro */
+.back-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
 .back-button {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  background: none;
+  width: 36px;
+  height: 36px;
   border: none;
-  font-size: 20px;
-  cursor: pointer;
+  border-radius: 50%;
+  background-color: #e0e0e0;
   color: #333;
-  transition: color 0.3s;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .back-button:hover {
-  color: #007bff;
+  background-color: #d1d1d1;
+  transform: scale(1.05);
 }
+
+
 
 /* Gruppo di pulsanti */
 .button-group {

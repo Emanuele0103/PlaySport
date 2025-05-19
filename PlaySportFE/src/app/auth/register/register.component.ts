@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   signupForm: FormGroup;
-  avatarBase64: string = ''; // 🔥 Qui salviamo l'immagine
+  avatarBase64: string = '';
   selectedFileName: string = '';
 
   constructor(
