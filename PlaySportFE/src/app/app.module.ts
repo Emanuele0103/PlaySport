@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  provideClientHydration,
+} from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +13,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClubDetailsComponent } from './club-details/club-details.component';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,7 @@ import { ClubDetailsComponent } from './club-details/club-details.component';
     HomeComponent,
     SettingsComponent,
     UserManagementComponent,
-    ClubDetailsComponent
+    ClubDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,12 +29,9 @@ import { ClubDetailsComponent } from './club-details/club-details.component';
     AuthModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [
-    provideClientHydration(),
-    provideHttpClient(withFetch())
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideClientHydration(), provideHttpClient(withFetch())],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
