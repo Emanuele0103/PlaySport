@@ -1,45 +1,67 @@
-import { Component } from '@angular/core';  
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';  
-import { AuthService } from '../auth.service';  
-import { Router } from '@angular/router'; 
-
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register', 
-  templateUrl: './register.component.html', 
-  styleUrls: ['./register.component.css', '../../../styles.css'] 
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css', '../../../styles.css'],
 })
 export class RegisterComponent {
-  
-  signupForm: FormGroup;  // Proprietà che rappresenta il form di registrazione
+  signupForm: FormGroup;
+  avatarBase64: string = ''; // 🔥 Qui salviamo l'immagine
+  selectedFileName: string = '';
 
-  // Costruttore in cui si iniettano i servizi necessari al componente
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
-    
-    // Inizializzazione del form con i campi necessari, applicando validazioni sui dati inseriti
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.signupForm = this.fb.group({
-      firstname: ['', [Validators.required, Validators.minLength(2)]],  // Campo 'firstname' richiesto, minimo 2 caratteri
-      lastname: ['', [Validators.required, Validators.minLength(2)]],   // Campo 'lastname' richiesto, minimo 2 caratteri
-      email: ['', [Validators.required, Validators.email]],  // Campo 'email' richiesto, validazione sull'email
-      password: ['', [Validators.required, Validators.minLength(6)]]  // Campo 'password' richiesto, minimo 6 caratteri
+      firstname: ['', [Validators.required, Validators.minLength(2)]],
+      lastname: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      phoneNumber: [
+        '',
+        [Validators.required, Validators.pattern('^[0-9]{8,15}$')],
+      ],
     });
   }
 
-  // Funzione che viene chiamata quando si invia il form di registrazione
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFileName = file.name;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.avatarBase64 = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.selectedFileName = '';
+    }
+  }
+
   onSubmit(): void {
-    if (this.signupForm.valid) {  // Verifica se il form è valido secondo le regole di validazione
-      // Chiama il servizio di autenticazione per registrare un nuovo utente
-      this.authService.register(this.signupForm.value).subscribe({
-        next: data => {
-          console.log('Registrazione completata con successo!', data);  // Mostra un messaggio di successo nella console
-          this.router.navigate(['/login']);  // Reindirizza l'utente alla pagina di login dopo la registrazione
+    if (this.signupForm.valid) {
+      const newUser = {
+        ...this.signupForm.value,
+        avatar: this.avatarBase64 || null,
+      };
+
+      this.authService.register(newUser).subscribe({
+        next: (data) => {
+          console.log('Registrazione completata con successo!', data);
+          this.router.navigate(['/login']);
         },
-        error: err => {
-          console.error('Errore durante la registrazione:', err);  // Stampa un messaggio di errore se la registrazione fallisce
-        }
+        error: (err) => {
+          console.error('Errore durante la registrazione:', err);
+        },
       });
     } else {
-      console.log('Form non valido');  // Messaggio nella console se il form non passa la validazione
+      console.log('Form non valido');
     }
   }
 }

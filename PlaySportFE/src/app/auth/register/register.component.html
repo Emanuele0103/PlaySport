@@ -2,53 +2,83 @@
 <div class="auth-container">
   <h2>Registrazione</h2>
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <!-- Nome -->
     <div>
       <label for="firstname">Nome</label>
       <input id="firstname" formControlName="firstname" required />
-      <div *ngIf="signupForm.get('firstname')?.invalid && (signupForm.get('firstname')?.dirty || signupForm.get('firstname')?.touched)">
-        <small *ngIf="signupForm.get('firstname')?.errors?.['required']" class="error-message">Il nome è obbligatorio.</small>
-        <small *ngIf="signupForm.get('firstname')?.errors?.['minlength']" class="error-message">Il nome deve essere lungo almeno 2 caratteri.</small>
-      </div>
-    </div>
-  
-    <div>
-      <label for="lastname">Cognome</label>
-      <input id="lastname" formControlName="lastname" required />
-      <div *ngIf="signupForm.get('lastname')?.invalid && (signupForm.get('lastname')?.dirty || signupForm.get('lastname')?.touched)">
-        <small *ngIf="signupForm.get('lastname')?.errors?.['required']" class="error-message">Il cognome è obbligatorio.</small>
-        <small *ngIf="signupForm.get('lastname')?.errors?.['minlength']" class="error-message">Il cognome deve essere lungo almeno 2 caratteri.</small>
-      </div>
-    </div>
-  
-    <div>
-      <label for="email">Email</label>
-      <input id="email" formControlName="email" type="email" required />
-      <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)">
-        <small *ngIf="signupForm.get('email')?.errors?.['required']" class="error-message">L'email è obbligatoria.</small>
-        <small *ngIf="signupForm.get('email')?.errors?.['email']" class="error-message">Inserisci un'email valida.</small>
-      </div>
-    </div>
-  
-    <div>
-      <label for="password">Password</label>
-      <input id="password" formControlName="password" type="password" required />
-      <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)">
-        <small *ngIf="signupForm.get('password')?.errors?.['required']" class="error-message">La password è obbligatoria.</small>
-        <small *ngIf="signupForm.get('password')?.errors?.['minlength']" class="error-message">La password deve essere lunga almeno 6 caratteri.</small>
+      <div
+        *ngIf="signupForm.get('firstname')?.invalid && (signupForm.get('firstname')?.dirty || signupForm.get('firstname')?.touched)">
+        <small *ngIf="signupForm.get('firstname')?.errors?.['required']" class="error-message">Il nome è
+          obbligatorio.</small>
+        <small *ngIf="signupForm.get('firstname')?.errors?.['minlength']" class="error-message">Il nome deve essere
+          lungo almeno 2 caratteri.</small>
       </div>
     </div>
 
+    <!-- Cognome -->
+    <div>
+      <label for="lastname">Cognome</label>
+      <input id="lastname" formControlName="lastname" required />
+      <div
+        *ngIf="signupForm.get('lastname')?.invalid && (signupForm.get('lastname')?.dirty || signupForm.get('lastname')?.touched)">
+        <small *ngIf="signupForm.get('lastname')?.errors?.['required']" class="error-message">Il cognome è
+          obbligatorio.</small>
+        <small *ngIf="signupForm.get('lastname')?.errors?.['minlength']" class="error-message">Il cognome deve essere
+          lungo almeno 2 caratteri.</small>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" required />
+      <div
+        *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)">
+        <small *ngIf="signupForm.get('email')?.errors?.['required']" class="error-message">L'email è
+          obbligatoria.</small>
+        <small *ngIf="signupForm.get('email')?.errors?.['email']" class="error-message">Inserisci un'email
+          valida.</small>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div>
+      <label for="password">Password</label>
+      <input id="password" formControlName="password" type="password" required />
+      <div
+        *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)">
+        <small *ngIf="signupForm.get('password')?.errors?.['required']" class="error-message">La password è
+          obbligatoria.</small>
+        <small *ngIf="signupForm.get('password')?.errors?.['minlength']" class="error-message">La password deve essere
+          lunga almeno 6 caratteri.</small>
+      </div>
+    </div>
+
+    <!-- Numero di Telefono -->
     <div>
       <label for="phoneNumber">Numero di Telefono</label>
       <input id="phoneNumber" formControlName="phoneNumber" type="tel" required />
-      <div *ngIf="signupForm.get('phoneNumber')?.invalid && (signupForm.get('phoneNumber')?.dirty || signupForm.get('phoneNumber')?.touched)">
-        <small *ngIf="signupForm.get('phoneNumber')?.errors?.['required']" class="error-message">Il numero di telefono è obbligatorio.</small>
-        <small *ngIf="signupForm.get('phoneNumber')?.errors?.['pattern']" class="error-message">Inserisci un numero di telefono valido.</small>
+      <div
+        *ngIf="signupForm.get('phoneNumber')?.invalid && (signupForm.get('phoneNumber')?.dirty || signupForm.get('phoneNumber')?.touched)">
+        <small *ngIf="signupForm.get('phoneNumber')?.errors?.['required']" class="error-message">Il numero di telefono è
+          obbligatorio.</small>
+        <small *ngIf="signupForm.get('phoneNumber')?.errors?.['pattern']" class="error-message">Inserisci un numero di
+          telefono valido.</small>
       </div>
     </div>
-  
+
+    <!-- Avatar -->
+    <div class="custom-file-upload">
+      <label for="avatar" class="upload-label">📷 Carica Foto Profilo</label>
+      <input type="file" id="avatar" (change)="onFileSelected($event)" accept="image/*" hidden>
+      <span class="file-name">{{ selectedFileName || 'Nessun file selezionato' }}</span>
+    </div>
+
+
+    <!-- Submit -->
     <button type="submit" [disabled]="signupForm.invalid">Registrati</button>
-  
+
+    <!-- Link login -->
     <div class="link">
       <p>Hai già un account? <a routerLink="/login">Accedi</a></p>
     </div>
