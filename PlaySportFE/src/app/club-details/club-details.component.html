@@ -2,11 +2,14 @@
     <h2>{{ clubData.name }}</h2>
     <p><strong>Indirizzo:</strong> {{ clubData.address }}</p>
 
-    <mat-form-field appearance="fill" style="width: 100%; margin: 20px 0;">
+    <mat-form-field appearance="outline" style="width: 100%; margin: 20px 0;">
         <mat-label>📅 Seleziona giorno</mat-label>
-        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (dateChange)="onDateChange($event)" />
-        <mat-datepicker #picker></mat-datepicker>
+        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" [value]="selectedDate"
+            (dateChange)="onDateChange($event)" readonly />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker startView="month" touchUi="true"></mat-datepicker>
     </mat-form-field>
+
 
     <h3>Disponibilità Orari</h3>
     <div class="calendar">
