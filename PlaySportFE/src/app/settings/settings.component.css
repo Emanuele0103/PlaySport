@@ -1,93 +1,212 @@
+/* Contenitore principale */
 .settings-container {
-    padding: 20px; /* Padding generale per il contenitore */
-  }
-  
-  .settings-title {
-    text-align: center; /* Centra il titolo */
-    margin-bottom: 20px; /* Margine sotto il titolo */
-    font-size: 24px; /* Dimensione del font */
-    color: #333; /* Colore del font */
-  }
-  
-  .button-group {
-    display: flex; /* Usa flexbox per gestire il layout dei bottoni */
-    justify-content: center; /* Centra i bottoni orizzontalmente */
-    gap: 15px; /* Spazio tra i bottoni */
-    margin-bottom: 20px; /* Margine sotto il gruppo di bottoni */
-  }
-  
-  .settings-button {
-    background-color: #007bff; /* Colore di sfondo dei bottoni */
-    color: white; /* Colore del testo */
-    border: none; /* Rimuove il bordo predefinito */
-    padding: 10px 20px; /* Padding interno per rendere i bottoni più grandi */
-    border-radius: 5px; /* Angoli arrotondati */
-    font-size: 16px; /* Dimensione del font */
-    cursor: pointer; /* Cambia il cursore quando ci si passa sopra */
-    transition: background-color 0.3s; /* Transizione per l'effetto hover */
-  }
-  
-  .settings-button:hover {
-    background-color: #0056b3; /* Colore di sfondo quando si passa sopra */
-  }
-  
-  form {
-    margin-top: 20px; /* Margine sopra i form per separare i bottoni */
-  }
-
-  .settings-container {
-    position: relative;
-    padding: 20px;
+  position: relative;
+  padding: 30px 20px;
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 40px auto;
 }
 
+/* Titolo */
+.settings-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Pulsante indietro */
 .back-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-    color: #333; /* Colore dell'icona */
-    transition: color 0.3s;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s;
 }
 
 .back-button:hover {
-    color: #007bff; /* Colore quando l'utente passa sopra l'icona */
+  color: #007bff;
 }
 
-.settings-title {
-    text-align: center;
-    margin-top: 40px; /* Distanza dal pulsante di ritorno */
+/* Gruppo di pulsanti */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
 }
 
-.settings-container {
-  padding: 20px;
-  background-color: #f4f4f4; /* Colore di sfondo chiaro */
-  border-radius: 10px; /* Angoli arrotondati */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombra */
+.settings-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
+.settings-button:hover {
+  background-color: #0056b3;
+}
+
+.settings-button.danger {
+  background-color: #dc3545;
+}
+
+.settings-button.danger:hover {
+  background-color: #c82333;
+}
+
+.settings-button.full {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Form */
+form {
+  margin-top: 20px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="date"],
+form input[type="password"],
+form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* Password + toggle 👁️ */
 .password-input-container {
-  position: relative; /* Necessario per posizionare il pulsante */
-  display: flex; /* Usa flexbox per allineare il pulsante */
-  align-items: center; /* Centra verticalmente */
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .password-input-container input {
-  width: 500px; /* Larghezza fissa */
-  padding: 10px; /* Padding interno */
-  border: 1px solid #ccc; /* Bordo dell'input */
-  border-radius: 5px 0 0 5px; /* Angoli arrotondati a sinistra */
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px 0 0 6px;
 }
 
+.password-input-container button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-left: none;
+  padding: 10px;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+}
 
+.password-input-container button:hover {
+  background-color: #ddd;
+}
+
+/* Messaggi */
 .error-message {
-  color: red;
+  color: #a94442;
+  background-color: #f2dede;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
   font-weight: bold;
 }
 
 .success-message {
-  color: green;
+  color: #3c763d;
+  background-color: #dff0d8;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
   font-weight: bold;
+}
+
+/* Tema scuro switch */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.theme-label {
+  font-weight: bold;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #007bff;
+}
+
+input:checked + .slider::before {
+  transform: translateX(24px);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .settings-button {
+    width: 100%;
+  }
 }

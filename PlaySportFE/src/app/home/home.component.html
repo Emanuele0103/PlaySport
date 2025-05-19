@@ -1,6 +1,12 @@
 <div class="container">
   <!-- Sidebar -->
   <div class="sidebar">
+    <!-- Profilo utente -->
+    <div class="user-profile" *ngIf="user$">
+      <img [src]="user$.avatar || 'assets/default-avatar.png'" alt="Avatar" class="avatar" />
+      <p class="username">{{ user$.firstname }} {{ user$.lastname }}</p>
+    </div>
+
     <h2>Sport</h2>
     <button class="button" (click)="selectSport('calcio')">Calcio</button>
     <button class="button" (click)="selectSport('padel')">Padel</button>

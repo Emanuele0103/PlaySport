@@ -19,6 +19,27 @@
   color: white;
 }
 
+/* 🔵 PROFILO UTENTE */
+.user-profile {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.user-profile .avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-bottom: 8px;
+}
+
+.user-profile .username {
+  font-weight: 600;
+  font-size: 14px;
+  color: #f1f1f1;
+}
+
 /* Bottoni sport */
 .sidebar button {
   background-color: #007bff;

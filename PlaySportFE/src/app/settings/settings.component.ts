@@ -9,9 +9,6 @@ import { SharedService } from '../shared/shared.service';
   styleUrls: ['./settings.component.css'],
 })
 export class SettingsComponent implements OnInit {
-  showOldPassword: boolean = false;
-  showNewPassword: boolean = false;
-
   user: UserProfile = {
     firstname: '',
     lastname: '',
@@ -25,7 +22,6 @@ export class SettingsComponent implements OnInit {
   oldPassword: string = '';
   newPassword: string = '';
   isProfileEditing: boolean = false;
-  isPasswordChanging: boolean = false;
   feedbackMessage: string = '';
   errorMessage: string = '';
 
@@ -52,61 +48,52 @@ export class SettingsComponent implements OnInit {
 
   showProfileForm() {
     this.isProfileEditing = true;
-    this.isPasswordChanging = false;
-    this.feedbackMessage = '';
-    this.errorMessage = '';
-  }
-
-  showChangePassword() {
-    this.isProfileEditing = false;
-    this.isPasswordChanging = true;
     this.feedbackMessage = '';
     this.errorMessage = '';
   }
 
   updateProfile() {
     const updatedUserProfile: Partial<UserProfile> = {
-      firstname: this.user.firstname,
-      lastname: this.user.lastname,
       email: this.user.email,
-      phoneNumber: this.user.phoneNumber,
-      birthDate: this.user.birthDate,
-      wantsNews: this.user.wantsNews,
       avatar: this.user.avatar,
     };
 
     this.userService.updateUserProfile(updatedUserProfile).subscribe({
-      next: (response) => {
-        this.feedbackMessage = 'Profilo aggiornato con successo!';
-        this.errorMessage = '';
+      next: () => {
+        if (this.oldPassword && this.newPassword) {
+          this.userService
+            .changePassword(this.oldPassword, this.newPassword)
+            .subscribe({
+              next: (res) => {
+                this.feedbackMessage =
+                  'Email, immagine e password aggiornati con successo!';
+                this.errorMessage = '';
+                this.oldPassword = '';
+                this.newPassword = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              },
+              error: (error) => {
+                this.feedbackMessage = '';
+                this.errorMessage =
+                  'Email/immagine aggiornati, ma errore nel cambio password: ' +
+                  error.error.message;
+                console.error(error);
+              },
+            });
+        } else {
+          this.feedbackMessage = 'Email e immagine aggiornati con successo!';
+          this.errorMessage = '';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         (document.getElementById('avatar') as HTMLInputElement).value = '';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
       error: (error) => {
         this.feedbackMessage = '';
-        this.errorMessage = "Errore durante l'aggiornamento del profilo.";
+        this.errorMessage = "Errore durante l'aggiornamento.";
         console.error('Errore aggiornamento profilo:', error);
       },
     });
-  }
-
-  changePassword() {
-    this.userService
-      .changePassword(this.oldPassword, this.newPassword)
-      .subscribe({
-        next: (response) => {
-          this.feedbackMessage = response.message;
-          this.errorMessage = '';
-          this.oldPassword = '';
-          this.newPassword = '';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        },
-        error: (error) => {
-          this.errorMessage = error.error.message;
-          this.feedbackMessage = '';
-          console.error('Errore cambio password:', error);
-        },
-      });
   }
 
   onFileSelected(event: any) {

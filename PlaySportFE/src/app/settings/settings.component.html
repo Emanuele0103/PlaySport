@@ -5,104 +5,52 @@
 
   <h2 class="settings-title">Impostazioni Utente</h2>
 
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
+  <div class="button-group full-width">
+    <button class="settings-button full" [routerLink]="['/le-mie-prenotazioni']">
+      📅 Le mie prenotazioni
+    </button>
   </div>
-
-  <div *ngIf="feedbackMessage" class="success-message">
-    {{ feedbackMessage }}
-  </div>
-
-  <button class="settings-button" [routerLink]="['/le-mie-prenotazioni']">
-    Le mie prenotazioni
-  </button>
 
   <div class="button-group">
-    <button class="settings-button" (click)="showProfileForm()">Modifica Profilo</button>
-    <button class="settings-button" (click)="showChangePassword()">Cambia Password</button>
+    <button class="settings-button" (click)="showProfileForm()">✏️ Modifica Profilo</button>
   </div>
 
-  <!-- Form profilo -->
-  <div *ngIf="isProfileEditing">
-    <form #profileForm="ngForm" (ngSubmit)="updateProfile()">
-      <div>
-        <label for="firstname">Nome:</label>
-        <input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required>
-      </div>
-
-      <div>
-        <label for="lastname">Cognome:</label>
-        <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required>
-      </div>
-
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
-      </div>
-
-      <div>
-        <label for="phoneNumber">Numero di Telefono:</label>
-        <input type="tel" id="phoneNumber" [(ngModel)]="user.phoneNumber" name="phoneNumber" pattern="^[+0-9]{10,15}$"
-          required>
-      </div>
-
-      <div>
-        <label for="birthDate">Data di Nascita:</label>
-        <input type="date" id="birthDate" [(ngModel)]="user.birthDate" name="birthDate">
-      </div>
-
-      <div>
-        <label>
-          <input type="checkbox" [(ngModel)]="user.wantsNews" name="wantsNews">
-          Voglio ricevere offerte e aggiornamenti
-        </label>
-      </div>
-
-      <div>
-        <label for="avatar">Immagine Profilo:</label>
-        <input type="file" id="avatar" (change)="onFileSelected($event)">
-      </div>
-
-      <div *ngIf="user.avatar">
-        <img [src]="user.avatar" alt="Avatar" width="100">
-      </div>
-
-      <button type="submit" [disabled]="!profileForm.form.valid">Salva</button>
-    </form>
-  </div>
-
-  <!-- Form password -->
-  <div *ngIf="isPasswordChanging">
-    <form (ngSubmit)="changePassword()">
-      <div>
-        <label for="oldPassword">Password Attuale:</label>
-        <div class="password-input-container">
-          <input [type]="showOldPassword ? 'text' : 'password'" id="oldPassword" [(ngModel)]="oldPassword"
-            name="oldPassword" required>
-          <button type="button" (click)="showOldPassword = !showOldPassword">👁️</button>
-        </div>
-      </div>
-
-      <div>
-        <label for="newPassword">Nuova Password:</label>
-        <div class="password-input-container">
-          <input [type]="showNewPassword ? 'text' : 'password'" id="newPassword" [(ngModel)]="newPassword"
-            name="newPassword" required>
-          <button type="button" (click)="showNewPassword = !showNewPassword">👁️</button>
-        </div>
-      </div>
-
-      <button type="submit">Salva Nuova Password</button>
-    </form>
-  </div>
-
-  <div>
-    <label>
-      <input type="checkbox" (change)="toggleTheme($event)"> Tema Scuro
+  <!-- Toggle Tema Scuro -->
+  <div class="theme-toggle">
+    <label class="switch">
+      <input type="checkbox" (change)="toggleTheme($event)">
+      <span class="slider round"></span>
     </label>
+    <span class="theme-label">Tema Scuro</span>
   </div>
 
-  <div>
-    <button class="settings-button danger" (click)="confirmDelete()">Elimina il mio account</button>
+  <!-- Bottone elimina account -->
+  <button class="settings-button danger full" (click)="confirmDelete()">
+    🗑️ Elimina il mio account
+  </button>
+
+  <!-- Modulo modifica profilo -->
+  <div *ngIf="isProfileEditing" class="profile-form">
+    <h3>Modifica Profilo</h3>
+
+    <form (ngSubmit)="updateProfile()" #profileForm="ngForm">
+      <!-- Email -->
+      <input type="email" [(ngModel)]="user.email" name="email" placeholder="Email" required />
+
+      <!-- Avatar upload -->
+      <label for="avatar">Foto Profilo</label>
+      <input type="file" (change)="onFileSelected($event)" id="avatar" />
+
+      <!-- Cambia Password integrato -->
+      <h4>Cambia Password (opzionale)</h4>
+      <input type="password" [(ngModel)]="oldPassword" name="oldPassword" placeholder="Vecchia password" />
+      <input type="password" [(ngModel)]="newPassword" name="newPassword" placeholder="Nuova password" />
+
+      <button type="submit" class="settings-button">💾 Salva</button>
+    </form>
+
+    <!-- Feedback -->
+    <p *ngIf="feedbackMessage" class="success">{{ feedbackMessage }}</p>
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
   </div>
 </div>

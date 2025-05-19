@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SharedService } from '../shared/shared.service';
@@ -24,16 +25,26 @@ export interface UserProfile {
 export class UserService {
   private apiUrl = 'http://localhost:9090/api/v1/user';
 
-  constructor(private http: HttpClient, private sharedService: SharedService) {}
+  constructor(
+    private http: HttpClient,
+    private sharedService: SharedService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        return new HttpHeaders({
+          Authorization: `Bearer ${token}`,
+        });
+      }
+    }
+
+    // Se non siamo nel browser o il token non esiste, restituisco intestazioni vuote
+    return new HttpHeaders();
   }
 
-  // ✅ Recupera il profilo utente
   getUserProfile(): Observable<UserProfile> {
     return this.http
       .get<UserProfile>(`${this.apiUrl}/profile`, {
@@ -42,7 +53,6 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
-  // ✅ Aggiorna il profilo utente
   updateUserProfile(user: UserProfile): Observable<any> {
     return this.http
       .put(`${this.apiUrl}/update`, user, {
@@ -51,7 +61,6 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
-  // ✅ Cambia la password
   changePassword(
     oldPassword: string,
     newPassword: string
@@ -72,7 +81,6 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
-  // ✅ Elimina account utente
   deleteAccount(): Observable<any> {
     return this.http
       .delete(`${this.apiUrl}/delete`, {
@@ -81,7 +89,6 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
-  // ⚠️ Gestione errori generica
   private handleError(error: HttpErrorResponse) {
     console.error('Errore:', error);
     return throwError(
