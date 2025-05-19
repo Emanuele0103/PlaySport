@@ -11,7 +11,7 @@
       <button *ngIf="isAdmin" class="button">
         <i class="fas fa-user-cog"></i> Gestisci Utenti
       </button>
-      <button class="button">
+      <button class="button" [routerLink]="['/settings']">
         <i class="fas fa-cog"></i> Impostazioni
       </button>
       <button class="button" (click)="logout()">

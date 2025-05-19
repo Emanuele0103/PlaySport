@@ -6,10 +6,9 @@ import { SharedService } from '../shared/shared.service';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  styleUrls: ['./settings.component.css'],
 })
 export class SettingsComponent implements OnInit {
-
   showOldPassword: boolean = false;
   showNewPassword: boolean = false;
 
@@ -17,7 +16,10 @@ export class SettingsComponent implements OnInit {
     firstname: '',
     lastname: '',
     email: '',
-    phoneNumber: ''
+    phoneNumber: '',
+    birthDate: '',
+    wantsNews: false,
+    avatar: '',
   };
 
   oldPassword: string = '';
@@ -27,90 +29,123 @@ export class SettingsComponent implements OnInit {
   feedbackMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private sharedService: SharedService, private userService: UserService) { }
+  constructor(
+    private sharedService: SharedService,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.loadUserProfile(); // Chiama il metodo per caricare il profilo
+    this.loadUserProfile();
   }
 
-  // Funzione per caricare il profilo utente
   loadUserProfile() {
     this.userService.getUserProfile().subscribe({
       next: (userProfile) => {
-        this.user = userProfile; // Imposta l'oggetto utente
+        this.user = userProfile;
       },
       error: (error) => {
         console.error('Errore durante il recupero del profilo utente:', error);
-      }
+      },
     });
   }
 
-  // Mostra il modulo per modificare il profilo
   showProfileForm() {
     this.isProfileEditing = true;
     this.isPasswordChanging = false;
     this.feedbackMessage = '';
+    this.errorMessage = '';
   }
 
-  // Mostra il modulo per cambiare la password
   showChangePassword() {
     this.isProfileEditing = false;
     this.isPasswordChanging = true;
     this.feedbackMessage = '';
+    this.errorMessage = '';
   }
 
-  // Funzione per aggiornare il profilo utente
   updateProfile() {
-    // Crea un oggetto per il profilo da inviare, includendo solo i campi modificati
-    const updatedUserProfile: Partial<UserProfile> = {};
+    const updatedUserProfile: Partial<UserProfile> = {
+      firstname: this.user.firstname,
+      lastname: this.user.lastname,
+      email: this.user.email,
+      phoneNumber: this.user.phoneNumber,
+      birthDate: this.user.birthDate,
+      wantsNews: this.user.wantsNews,
+      avatar: this.user.avatar,
+    };
 
-    // Verifica quali campi sono stati effettivamente modificati
-    if (this.user.firstname) {
-      updatedUserProfile.firstname = this.user.firstname;
-    }
-    if (this.user.lastname) {
-      updatedUserProfile.lastname = this.user.lastname;
-    }
-    if (this.user.email) {
-      updatedUserProfile.email = this.user.email;
-    }
-    if (this.user.phoneNumber) {
-      updatedUserProfile.phoneNumber = this.user.phoneNumber;
-    }
-
-    // Invia solo i campi modificati
     this.userService.updateUserProfile(updatedUserProfile).subscribe({
       next: (response) => {
         this.feedbackMessage = 'Profilo aggiornato con successo!';
-        console.log("Profilo aggiornato:", response);
+        this.errorMessage = '';
+        (document.getElementById('avatar') as HTMLInputElement).value = '';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
       error: (error) => {
-        this.feedbackMessage = 'Errore durante l\'aggiornamento del profilo.';
+        this.feedbackMessage = '';
+        this.errorMessage = "Errore durante l'aggiornamento del profilo.";
         console.error('Errore aggiornamento profilo:', error);
-      }
+      },
     });
   }
 
-
-  // Funzione per cambiare la password
   changePassword() {
-    this.userService.changePassword(this.oldPassword, this.newPassword).subscribe({
-      next: (response) => {
-        this.feedbackMessage = response.message; // Accesso al messaggio JSON
-        this.errorMessage = ''; // Resetta eventuali messaggi di errore
-        console.log("Password cambiata:", response.message);
-      },
-      error: (error) => {
-        // Gestisci l'errore
-        this.errorMessage = error.error.message; // Accesso al messaggio JSON di errore
-        this.feedbackMessage = ''; // Resetta il messaggio di feedback in caso di errore
-        console.error('Errore cambio password:', error);
-      }
-    });
+    this.userService
+      .changePassword(this.oldPassword, this.newPassword)
+      .subscribe({
+        next: (response) => {
+          this.feedbackMessage = response.message;
+          this.errorMessage = '';
+          this.oldPassword = '';
+          this.newPassword = '';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        error: (error) => {
+          this.errorMessage = error.error.message;
+          this.feedbackMessage = '';
+          console.error('Errore cambio password:', error);
+        },
+      });
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.user.avatar = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  toggleTheme(event: any) {
+    const dark = event.target.checked;
+    document.body.classList.toggle('dark-theme', dark);
+  }
+
+  confirmDelete() {
+    if (
+      confirm(
+        'Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.'
+      )
+    ) {
+      this.userService.deleteAccount().subscribe({
+        next: () => {
+          this.sharedService.logout();
+          alert('Account eliminato con successo.');
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.error('Errore eliminazione account:', err);
+          alert("Errore durante l'eliminazione dell'account.");
+        },
+      });
+    }
   }
 
   goBack() {
     this.sharedService.goBack();
   }
-
 }

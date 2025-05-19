@@ -1,75 +1,108 @@
 <div class="settings-container">
-    <button class="back-button" (click)="goBack()">
-      <i class="fas fa-arrow-left"></i> <!-- Icona freccia -->
-    </button>
-    <h2 class="settings-title">Impostazioni Utente</h2>
-  
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
-    
-    <div *ngIf="feedbackMessage" class="success-message">
-      {{ feedbackMessage }}
-    </div>
-    
-    <!-- Il tuo modulo per cambiare la password -->
-    <form (ngSubmit)="changePassword()">
-      <!-- Campi del modulo per la password -->
+  <button class="back-button" (click)="goBack()">
+    <i class="fas fa-arrow-left"></i>
+  </button>
+
+  <h2 class="settings-title">Impostazioni Utente</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="feedbackMessage" class="success-message">
+    {{ feedbackMessage }}
+  </div>
+
+  <button class="settings-button" [routerLink]="['/le-mie-prenotazioni']">
+    Le mie prenotazioni
+  </button>
+
+  <div class="button-group">
+    <button class="settings-button" (click)="showProfileForm()">Modifica Profilo</button>
+    <button class="settings-button" (click)="showChangePassword()">Cambia Password</button>
+  </div>
+
+  <!-- Form profilo -->
+  <div *ngIf="isProfileEditing">
+    <form #profileForm="ngForm" (ngSubmit)="updateProfile()">
+      <div>
+        <label for="firstname">Nome:</label>
+        <input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required>
+      </div>
+
+      <div>
+        <label for="lastname">Cognome:</label>
+        <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required>
+      </div>
+
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
+      </div>
+
+      <div>
+        <label for="phoneNumber">Numero di Telefono:</label>
+        <input type="tel" id="phoneNumber" [(ngModel)]="user.phoneNumber" name="phoneNumber" pattern="^[+0-9]{10,15}$"
+          required>
+      </div>
+
+      <div>
+        <label for="birthDate">Data di Nascita:</label>
+        <input type="date" id="birthDate" [(ngModel)]="user.birthDate" name="birthDate">
+      </div>
+
+      <div>
+        <label>
+          <input type="checkbox" [(ngModel)]="user.wantsNews" name="wantsNews">
+          Voglio ricevere offerte e aggiornamenti
+        </label>
+      </div>
+
+      <div>
+        <label for="avatar">Immagine Profilo:</label>
+        <input type="file" id="avatar" (change)="onFileSelected($event)">
+      </div>
+
+      <div *ngIf="user.avatar">
+        <img [src]="user.avatar" alt="Avatar" width="100">
+      </div>
+
+      <button type="submit" [disabled]="!profileForm.form.valid">Salva</button>
     </form>
-    
-  
-    <!-- Bottoni di navigazione -->
-    <div class="button-group">
-      <button class="settings-button" (click)="showProfileForm()">Modifica Profilo</button>
-      <button class="settings-button" (click)="showChangePassword()">Cambia Password</button>
-    </div>
-  
-    <!-- Modulo per modificare il profilo -->
-    <div *ngIf="isProfileEditing">
-      <form>
-        <div>
-          <label for="firstname">Nome:</label>
-          <input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required>
+  </div>
+
+  <!-- Form password -->
+  <div *ngIf="isPasswordChanging">
+    <form (ngSubmit)="changePassword()">
+      <div>
+        <label for="oldPassword">Password Attuale:</label>
+        <div class="password-input-container">
+          <input [type]="showOldPassword ? 'text' : 'password'" id="oldPassword" [(ngModel)]="oldPassword"
+            name="oldPassword" required>
+          <button type="button" (click)="showOldPassword = !showOldPassword">👁️</button>
         </div>
-  
-        <div>
-          <label for="lastname">Cognome:</label>
-          <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required>
+      </div>
+
+      <div>
+        <label for="newPassword">Nuova Password:</label>
+        <div class="password-input-container">
+          <input [type]="showNewPassword ? 'text' : 'password'" id="newPassword" [(ngModel)]="newPassword"
+            name="newPassword" required>
+          <button type="button" (click)="showNewPassword = !showNewPassword">👁️</button>
         </div>
-  
-        <div>
-          <label for="email">Email:</label>
-          <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
-        </div>
-  
-        <!-- Nuovo campo per il numero di telefono -->
-        <div>
-          <label for="phoneNumber">Numero di Telefono:</label>
-          <input type="tel" id="phoneNumber" [(ngModel)]="user.phoneNumber" name="phoneNumber" pattern="^[+0-9]{10,15}$" required>
-        </div>
-  
-        <button type="button" (click)="updateProfile()">Salva</button>
-      </form>
-    </div>
-  
-    <!-- Modulo per cambiare la password -->
-    <div *ngIf="isPasswordChanging">
-      <form>
-        <div>
-          <label for="oldPassword">Password Attuale:</label>
-          <div class="password-input-container">
-            <input type="password" id="oldPassword" [(ngModel)]="oldPassword" name="oldPassword" required [type]="showOldPassword ? 'text' : 'password'">
-          </div>
-        </div>
-  
-        <div>
-          <label for="newPassword">Nuova Password:</label>
-          <div class="password-input-container">
-            <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required [type]="showNewPassword ? 'text' : 'password'">
-          </div>
-        </div>
-  
-        <button type="button" (click)="changePassword()">Salva Nuova Password</button>
-      </form>
-    </div>
+      </div>
+
+      <button type="submit">Salva Nuova Password</button>
+    </form>
+  </div>
+
+  <div>
+    <label>
+      <input type="checkbox" (change)="toggleTheme($event)"> Tema Scuro
+    </label>
+  </div>
+
+  <div>
+    <button class="settings-button danger" (click)="confirmDelete()">Elimina il mio account</button>
+  </div>
 </div>

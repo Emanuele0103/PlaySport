@@ -1,188 +1,226 @@
 /* Contenitore principale della pagina */
 .settings-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
+/* Pulsante indietro */
 .back-button {
-    top: 5px;
-    left: 10px;
     background: none;
     border: none;
-    cursor: pointer;
-    font-size: 20px;
+    font-size: 22px;
     color: #333;
+    cursor: pointer;
     transition: color 0.3s;
+    margin-bottom: 10px;
 }
 
 .back-button:hover {
     color: #007bff;
 }
 
+/* Titolo pagina */
 .settings-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 700;
     text-align: center;
+    margin-bottom: 30px;
 }
 
-/* Stile per i messaggi di errore e successo */
+/* Messaggi */
 .error-message {
-    color: #e74c3c;
-    background-color: #f8d7da;
-    padding: 10px;
+    color: #a94442;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    padding: 12px;
+    border-radius: 6px;
     margin-bottom: 20px;
-    border-radius: 4px;
 }
 
 .success-message {
-    color: #28a745;
-    background-color: #d4edda;
-    padding: 10px;
+    color: #3c763d;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    padding: 12px;
+    border-radius: 6px;
     margin-bottom: 20px;
-    border-radius: 4px;
 }
 
-/* Stile della tabella */
+/* Tabella */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 table thead {
     background-color: #007bff;
-    color: white;
+    color: #fff;
 }
 
 table th,
 table td {
-    padding: 12px 15px;
-    text-align: left;
+    padding: 14px 16px;
     border: 1px solid #ddd;
-}
-
-table th {
-    font-size: 16px;
-}
-
-table td {
-    font-size: 14px;
+    text-align: left;
+    font-size: 15px;
 }
 
 table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
 }
 
+/* Bottoni nella tabella */
 table button {
-    background-color: #28a745;
-    color: white;
     border: none;
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 20px; /* Aumentato per maggiore distanziamento */
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    margin-right: 6px;
+}
+
+table button:first-child {
+    background-color: #ffc107;
+    color: #000;
+}
+
+table button:first-child:hover {
+    background-color: #e0a800;
 }
 
 table button:last-child {
     background-color: #dc3545;
-    margin-right: 0; /* Nessun margine extra per l'ultimo bottone */
+    color: #fff;
 }
 
-/* Stile dei moduli */
+table button:last-child:hover {
+    background-color: #c82333;
+}
+
+/* Form */
 form {
-    background-color: white;
-    padding: 20px;
+    background-color: #fafafa;
+    padding: 24px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
     margin-bottom: 20px;
 }
 
 form div {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 form label {
     display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
 }
 
 form input[type="text"],
 form input[type="number"],
 form select {
     width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
+    padding: 10px 14px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s;
 }
 
-/* Stile per i pulsanti di invio del form */
+form input:focus,
+form select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Pulsanti nel form */
 form button {
     background-color: #007bff;
-    color: white;
+    color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
+    padding: 10px 24px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 600;
+    margin-right: 10px;
 }
 
 form button:hover {
     background-color: #0056b3;
 }
 
-/* Stile per il gruppo di bottoni */
+/* Gruppo bottoni finale */
 .button-group {
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
     margin-top: 20px;
 }
 
 .settings-button {
     background-color: #007bff;
-    color: white;
+    color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
+    padding: 10px 22px;
+    border-radius: 5px;
+    font-size: 15px;
     cursor: pointer;
-    margin-left: 10px;
+    transition: background-color 0.3s;
 }
 
 .settings-button:hover {
     background-color: #0056b3;
 }
 
+.settings-button.danger {
+    background-color: #dc3545;
+}
+
+.settings-button.danger:hover {
+    background-color: #c82333;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .settings-container {
-        padding: 10px;
+        padding: 16px;
+    }
+
+    .settings-title {
+        font-size: 22px;
     }
 
     table th,
     table td {
-        font-size: 14px;
-        padding: 8px;
-    }
-
-    form input[type="text"],
-    form input[type="number"],
-    form select {
         font-size: 13px;
+        padding: 10px;
     }
 
+    form input,
+    form select {
+        font-size: 14px;
+    }
+
+    .settings-button,
     form button {
         font-size: 14px;
+        padding: 10px 18px;
     }
 
-    .settings-button {
-        font-size: 14px;
-        padding: 10px 20px;
+    .button-group {
+        flex-direction: column;
+        align-items: stretch;
     }
 }

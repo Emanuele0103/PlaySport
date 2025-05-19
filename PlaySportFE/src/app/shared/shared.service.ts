@@ -2,28 +2,33 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SharedService {
-  fieldData: { id: any; name: string; sport: string; pricePerHour: number; };
+  fieldData: { id: any; name: string; sport: string; pricePerHour: number };
   errorMessage: string;
   feedbackMessage: string;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   goBack(): void {
     this.router.navigate(['/home']);
   }
 
-  resetForm() :void  {
+  resetForm(): void {
     this.fieldData = {
       id: null,
       name: '',
       sport: '',
-      pricePerHour: 0
+      pricePerHour: 0,
     };
     this.errorMessage = '';
     this.feedbackMessage = '';
   }
 
+  logout() {
+    localStorage.removeItem('authToken');
+    sessionStorage.clear();
+    // Puoi anche reindirizzare alla login se vuoi, oppure lasciare che lo faccia il componente
+  }
 }

@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SharedService } from '../shared/shared.service';
@@ -9,57 +13,80 @@ export interface UserProfile {
   lastname?: string;
   email?: string;
   phoneNumber?: string;
+  birthDate?: string;
+  wantsNews?: boolean;
+  avatar?: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private apiUrl = 'http://localhost:9090/api/v1/user';
 
-  constructor(private http: HttpClient, private sharedService: SharedService) { }
+  constructor(private http: HttpClient, private sharedService: SharedService) {}
 
-  // Aggiorna il profilo dell'utente
-  updateUserProfile(user: UserProfile): Observable<any> {
+  private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
-    const headers = { Authorization: `Bearer ${token}` };
-
-    return this.http.put(`${this.apiUrl}/update`, user, { headers }).pipe(
-      catchError(this.handleError) // Gestione degli errori
-    );
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
   }
 
-  changePassword(oldPassword: string, newPassword: string): Observable<any> {
-    const token = localStorage.getItem('authToken');
+  // ✅ Recupera il profilo utente
+  getUserProfile(): Observable<UserProfile> {
+    return this.http
+      .get<UserProfile>(`${this.apiUrl}/profile`, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(catchError(this.handleError));
+  }
 
-    if (!token) {
-      console.error('Token non trovato!');
-    }
+  // ✅ Aggiorna il profilo utente
+  updateUserProfile(user: UserProfile): Observable<any> {
+    return this.http
+      .put(`${this.apiUrl}/update`, user, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(catchError(this.handleError));
+  }
 
-    const headers = { Authorization: `Bearer ${token}` };
-
+  // ✅ Cambia la password
+  changePassword(
+    oldPassword: string,
+    newPassword: string
+  ): Observable<{ message: string }> {
     const changePasswordRequest = {
       currentPassword: oldPassword,
-      newPassword: newPassword
+      newPassword: newPassword,
     };
 
-    return this.http.post<{ message: string }>(`${this.apiUrl}/change_password`, changePasswordRequest, { headers }).pipe(
-      catchError(this.handleError)
-    );
+    return this.http
+      .post<{ message: string }>(
+        `${this.apiUrl}/change_password`,
+        changePasswordRequest,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      )
+      .pipe(catchError(this.handleError));
   }
 
-  // Recupera il profilo utente
-  getUserProfile(): Observable<UserProfile> {
-    const token = localStorage.getItem('authToken');
-    const headers = { Authorization: `Bearer ${token}` };
-    return this.http.get<UserProfile>(`${this.apiUrl}/profile`, { headers }).pipe( // Cambia l'endpoint se necessario
-      catchError(this.handleError)
-    );
+  // ✅ Elimina account utente
+  deleteAccount(): Observable<any> {
+    return this.http
+      .delete(`${this.apiUrl}/delete`, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(catchError(this.handleError));
   }
 
-  // Gestione degli errori
+  // ⚠️ Gestione errori generica
   private handleError(error: HttpErrorResponse) {
     console.error('Errore:', error);
-    return throwError('Si è verificato un errore. Riprova più tardi.');
+    return throwError(
+      () =>
+        error.error?.message || 'Si è verificato un errore. Riprova più tardi.'
+    );
   }
 }

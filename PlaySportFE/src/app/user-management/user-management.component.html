@@ -1,19 +1,17 @@
 <div class="settings-container">
   <button class="back-button" (click)="goBack()">
-    <i class="fas fa-arrow-left"></i> <!-- Icona freccia -->
+    <i class="fas fa-arrow-left"></i>
   </button>
   <h2 class="settings-title">Gestione Campi da Gioco</h2>
 
-  <!-- Messaggi di feedback -->
   <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
   </div>
-
   <div *ngIf="feedbackMessage" class="success-message">
     {{ feedbackMessage }}
   </div>
 
-  <!-- Tabella dei campi esistenti -->
+  <!-- Tabella -->
   <div *ngIf="fields.length > 0">
     <h3>Campi esistenti</h3>
     <table>
@@ -34,17 +32,17 @@
           <td>{{ field.resourceOwnerName }}</td>
           <td>
             <button (click)="editField(field)">Modifica</button>
-            <button (click)="deleteField(field.id)">Elimina</button>
+            <button (click)="confirmDeleteField(field.id)">Elimina</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Form per aggiungere o modificare un campo -->
+  <!-- Form Aggiunta/Modifica -->
   <div *ngIf="isEditing || isAdding">
     <h3>{{ isEditing ? 'Modifica Campo' : 'Aggiungi Nuovo Campo' }}</h3>
-    <form (ngSubmit)="saveField()">
+    <form (ngSubmit)="saveField()" #fieldForm="ngForm">
       <div>
         <label for="resourceName">Nome Campo:</label>
         <input type="text" id="resourceName" [(ngModel)]="fieldData.resourceName" name="resourceName" required>
@@ -67,15 +65,21 @@
 
       <div>
         <label for="resourceOwnerName">Nome Proprietario:</label>
-        <input type="text" id="resourceOwnerName" [(ngModel)]="fieldData.resourceOwnerName" name="resourceOwnerName" required>
+        <input type="text" id="resourceOwnerName" [(ngModel)]="fieldData.resourceOwnerName" name="resourceOwnerName"
+          required>
       </div>
 
-      <button type="submit">{{ isEditing ? 'Salva Modifiche' : 'Aggiungi Campo' }}</button>
+      <div class="button-group">
+        <button type="submit" [disabled]="!fieldForm.form.valid">
+          {{ isEditing ? 'Salva Modifiche' : 'Aggiungi Campo' }}
+        </button>
+        <button type="button" (click)="cancelEdit()">Annulla</button>
+      </div>
     </form>
   </div>
 
-  <!-- Bottone per aggiungere un nuovo campo -->
-  <div class="button-group" *ngIf="!isEditing && !isAdding">
+  <!-- Bottone per aggiunta -->
+  <div *ngIf="!isEditing && !isAdding" class="button-group">
     <button class="settings-button" (click)="showAddFieldForm()">Aggiungi Nuovo Campo</button>
   </div>
 </div>
