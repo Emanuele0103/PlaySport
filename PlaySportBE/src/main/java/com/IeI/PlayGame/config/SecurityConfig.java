@@ -23,21 +23,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auths -> auths
-                        .requestMatchers("/api/v1/user/**").permitAll() // Public access to user endpoints
-                        .requestMatchers("/api/v1/user/change-password").authenticated() // Requires authentication
-                        .requestMatchers("/api/v1/user/update").authenticated() // Requires authentication
-                        .anyRequest().authenticated() // Any other request must be authenticated
+                        .requestMatchers(
+                                "/api/v1/user/register",
+                                "/api/v1/user/authenticate"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/api/v1/user/change-password",
+                                "/api/v1/user/update"
+                        ).authenticated()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless session management
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {

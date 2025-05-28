@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 interface Campo {
   id: number;
@@ -10,6 +12,7 @@ interface Campo {
 }
 
 interface User {
+  id?: number;
   firstname: string;
   lastname: string;
   avatar?: string;
@@ -22,15 +25,24 @@ interface User {
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  user$: User;
+  user$: User = {
+    firstname: 'Utente',
+    lastname: 'Sconosciuto',
+    role: null,
+  };
   selectedSport: string = '';
   campi: Campo[] = [];
   isAdmin: boolean = false;
+  env = environment;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-    this.authService.user$.subscribe((user: User) => {
+    this.authService.user$.subscribe((user: User | null) => {
       if (user) {
         this.user$ = user;
         this.isAdmin = this.authService.isAdmin();
@@ -44,10 +56,10 @@ export class HomeComponent implements OnInit {
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       const firstname = localStorage.getItem('firstname') || 'Utente';
       const lastname = localStorage.getItem('lastname') || 'Sconosciuto';
-      const avatar = localStorage.getItem('avatar') || '';
-      this.user$ = { firstname, lastname, avatar, role: null };
-    } else {
-      this.user$ = { firstname: 'Utente', lastname: 'Sconosciuto', role: null };
+      const avatar =
+        localStorage.getItem('avatar') || 'assets/img/avatar-demo.png';
+      const role = localStorage.getItem('role');
+      this.user$ = { firstname, lastname, avatar, role };
     }
   }
 
@@ -137,6 +149,7 @@ export class HomeComponent implements OnInit {
       localStorage.removeItem('firstname');
       localStorage.removeItem('lastname');
       localStorage.removeItem('avatar');
+      localStorage.removeItem('role');
     }
 
     this.router.navigate(['/login']);

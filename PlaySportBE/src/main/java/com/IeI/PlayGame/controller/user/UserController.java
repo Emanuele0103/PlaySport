@@ -3,7 +3,6 @@ package com.IeI.PlayGame.controller.user;
 import com.IeI.PlayGame.pass.ChangePasswordRequest;
 import com.IeI.PlayGame.auth.LoginRequest;
 import com.IeI.PlayGame.auth.LoginResponse;
-import com.IeI.PlayGame.auth.RegisterRequest;
 import com.IeI.PlayGame.bean.user.Role;
 import com.IeI.PlayGame.bean.user.User;
 import com.IeI.PlayGame.services.user.UserService;
@@ -13,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -24,19 +25,38 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> registerUser(
+            @RequestPart("firstname") String firstname,
+            @RequestPart("lastname") String lastname,
+            @RequestPart("email") String email,
+            @RequestPart("password") String password,
+            @RequestPart("phoneNumber") String phoneNumber,
+            @RequestPart(value = "avatar", required = false) MultipartFile avatar
+    ) {
+        String avatarUrl = null;
+
+        if (avatar != null && !avatar.isEmpty()) {
+            try {
+                avatarUrl = userService.uploadAvatarTemporary(avatar); // metodo da creare
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel salvataggio immagine.");
+            }
+        }
+
         User user = new User();
-        user.setFirstname(request.getFirstname());
-        user.setLastname(request.getLastname());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setPhoneNumber(phoneNumber);
         user.setRole(Role.USER);
-        user.setPhoneNumber(request.getPhoneNumber());
+        user.setAvatarUrl(avatarUrl);
 
         Optional<User> response = userService.saveUser(user);
         return response.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.unprocessableEntity().build());
     }
+
 
     @PostMapping("/authenticate")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginRequest request) {
@@ -53,6 +73,16 @@ public class UserController {
         Optional<User> updatedUserOpt = userService.updateUser(email, updatedUser);
 
         return updatedUserOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @PostMapping("/users/{id}/avatar")
+    public ResponseEntity<?> uploadUserAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            String avatarUrl = userService.uploadUserAvatar(id, file);
+            return ResponseEntity.ok(avatarUrl);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel caricamento avatar");
+        }
     }
 
 

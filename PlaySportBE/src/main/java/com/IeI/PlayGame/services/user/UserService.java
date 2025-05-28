@@ -2,7 +2,9 @@ package com.IeI.PlayGame.services.user;
 
 import com.IeI.PlayGame.auth.LoginResponse;
 import com.IeI.PlayGame.bean.user.User;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public interface UserService {
@@ -20,4 +22,8 @@ public interface UserService {
     User getAuthenticatedUser();
 
     Optional<User> findById(Long id);
+
+    String uploadUserAvatar(Long userId, MultipartFile file) throws IOException;
+    String uploadAvatarTemporary(MultipartFile file) throws IOException;
+
 }

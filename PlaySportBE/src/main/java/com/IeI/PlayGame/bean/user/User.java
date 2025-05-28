@@ -40,6 +40,10 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String phoneNumber;
 
+    @Column
+    private String avatarUrl;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

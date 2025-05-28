@@ -14,7 +14,7 @@
   <!-- Tabella -->
   <div *ngIf="fields.length > 0">
     <h3>Campi esistenti</h3>
-    <table>
+    <table class="fields-table">
       <thead>
         <tr>
           <th>Nome Campo</th>
@@ -31,8 +31,10 @@
           <td>{{ field.resourceType }}</td>
           <td>{{ field.resourceOwnerName }}</td>
           <td>
-            <button (click)="editField(field)">Modifica</button>
-            <button (click)="confirmDeleteField(field.id)">Elimina</button>
+            <div class="action-buttons">
+              <button class="edit-btn" (click)="editField(field)">Modifica</button>
+              <button class="delete-btn" (click)="confirmDeleteField(field.id)">Elimina</button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -40,34 +42,26 @@
   </div>
 
   <!-- Form Aggiunta/Modifica -->
-  <div *ngIf="isEditing || isAdding">
+  <div *ngIf="isEditing || isAdding" class="edit-form-container">
     <h3>{{ isEditing ? 'Modifica Campo' : 'Aggiungi Nuovo Campo' }}</h3>
-    <form (ngSubmit)="saveField()" #fieldForm="ngForm">
-      <div>
-        <label for="resourceName">Nome Campo:</label>
-        <input type="text" id="resourceName" [(ngModel)]="fieldData.resourceName" name="resourceName" required>
-      </div>
+    <form (ngSubmit)="saveField()" #fieldForm="ngForm" class="edit-form">
+      <label for="resourceName">Nome Campo:</label>
+      <input type="text" id="resourceName" [(ngModel)]="fieldData.resourceName" name="resourceName" required>
 
-      <div>
-        <label for="address">Indirizzo:</label>
-        <input type="text" id="address" [(ngModel)]="fieldData.address" name="address" required>
-      </div>
+      <label for="address">Indirizzo:</label>
+      <input type="text" id="address" [(ngModel)]="fieldData.address" name="address" required>
 
-      <div>
-        <label for="resourceType">Tipo di Sport:</label>
-        <select id="resourceType" [(ngModel)]="fieldData.resourceType" name="resourceType" required>
-          <option value="calcio">Calcio</option>
-          <option value="tennis">Tennis</option>
-          <option value="basket">Basket</option>
-          <option value="padel">Padel</option>
-        </select>
-      </div>
+      <label for="resourceType">Tipo di Sport:</label>
+      <select id="resourceType" [(ngModel)]="fieldData.resourceType" name="resourceType" required>
+        <option value="calcio">Calcio</option>
+        <option value="tennis">Tennis</option>
+        <option value="basket">Basket</option>
+        <option value="padel">Padel</option>
+      </select>
 
-      <div>
-        <label for="resourceOwnerName">Nome Proprietario:</label>
-        <input type="text" id="resourceOwnerName" [(ngModel)]="fieldData.resourceOwnerName" name="resourceOwnerName"
-          required>
-      </div>
+      <label for="resourceOwnerName">Nome Proprietario:</label>
+      <input type="text" id="resourceOwnerName" [(ngModel)]="fieldData.resourceOwnerName" name="resourceOwnerName"
+        required>
 
       <div class="button-group">
         <button type="submit" [disabled]="!fieldForm.form.valid">

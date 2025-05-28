@@ -12,6 +12,7 @@ export class RegisterComponent {
   signupForm: FormGroup;
   avatarBase64: string = '';
   selectedFileName: string = '';
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -33,35 +34,36 @@ export class RegisterComponent {
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      this.selectedFile = file;
       this.selectedFileName = file.name;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.avatarBase64 = reader.result as string;
-      };
-      reader.readAsDataURL(file);
     } else {
+      this.selectedFile = null;
       this.selectedFileName = '';
     }
   }
 
   onSubmit(): void {
     if (this.signupForm.valid) {
-      const newUser = {
-        ...this.signupForm.value,
-        avatar: this.avatarBase64 || null,
-      };
+      const formData = new FormData();
 
-      this.authService.register(newUser).subscribe({
+      // Aggiunta corretta dei campi
+      for (const field in this.signupForm.value) {
+        formData.append(field, this.signupForm.value[field]);
+      }
+
+      if (this.selectedFile) {
+        formData.append('avatar', this.selectedFile); // chiave = "avatar"
+      }
+
+      this.authService.register(formData).subscribe({
         next: (data) => {
-          console.log('Registrazione completata con successo!', data);
+          console.log('Registrazione completata!', data);
           this.router.navigate(['/login']);
         },
         error: (err) => {
           console.error('Errore durante la registrazione:', err);
         },
       });
-    } else {
-      console.log('Form non valido');
     }
   }
 }

@@ -17,6 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+import java.io.IOException;
 
 import java.util.Optional;
 
@@ -82,6 +88,7 @@ public class UserServiceImpl implements UserService {
                             .firstname(user.getFirstname())
                             .lastname(user.getLastname())
                             .role(user.getRole())
+                            .avatarUrl(user.getAvatarUrl())
                             .build();
                 }
             }
@@ -92,6 +99,20 @@ public class UserServiceImpl implements UserService {
         }
 
         return LoginResponse.builder().token(null).build();
+    }
+
+    @Override
+    public String uploadAvatarTemporary(MultipartFile file) throws IOException {
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path uploadDir = Paths.get("uploads");
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+
+        Path filePath = uploadDir.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath);
+
+        return "/uploads/" + fileName;
     }
 
     @Override
@@ -178,6 +199,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public String uploadUserAvatar(Long userId, MultipartFile file) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato con ID: " + userId));
+
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+        Path uploadDir = Paths.get("uploads");
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+
+        Path filePath = uploadDir.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath);
+
+        String avatarUrl = "/uploads/" + fileName;
+        user.setAvatarUrl(avatarUrl);
+        userRepository.save(user);
+
+        return avatarUrl;
     }
 
 }

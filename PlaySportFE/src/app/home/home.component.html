@@ -3,7 +3,14 @@
   <div class="sidebar">
     <!-- Profilo utente -->
     <div class="user-profile" *ngIf="user$">
-      <img [src]="user$.avatar || 'assets/default-avatar.png'" alt="Avatar" class="avatar" />
+      <div class="avatar">
+        <ng-container *ngIf="user$?.avatar; else defaultIcon">
+          <img [src]="env.apiBaseUrl + user$.avatar" alt="Avatar" />
+        </ng-container>
+        <ng-template #defaultIcon>
+          <i class="fas fa-user-circle fa-3x"></i>
+        </ng-template>
+      </div>
       <p class="username">{{ user$.firstname }} {{ user$.lastname }}</p>
     </div>
 
@@ -14,7 +21,7 @@
     <button class="button" (click)="selectSport('basket')">Basket</button>
 
     <div class="bottom-buttons">
-      <button *ngIf="isAdmin" class="button">
+      <button *ngIf="isAdmin" class="button" [routerLink]="['/userManagement']">
         <i class="fas fa-user-cog"></i> Gestisci Utenti
       </button>
       <button class="button" [routerLink]="['/settings']">
