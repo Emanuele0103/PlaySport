@@ -28,6 +28,7 @@ export class RegisterComponent {
         '',
         [Validators.required, Validators.pattern('^[0-9]{8,15}$')],
       ],
+      role: ['USER', Validators.required],
     });
   }
 

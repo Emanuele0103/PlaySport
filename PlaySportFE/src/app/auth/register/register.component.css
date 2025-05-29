@@ -25,3 +25,37 @@
   font-size: 14px;
   color: #555;
 }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
+.custom-select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+.upload-label {
+  margin-top: 16px; /* 👈 aumentato per distaccarlo dal dropdown */
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

@@ -1,81 +1,43 @@
 <h1>Benvenuti in PlaySport</h1>
 <div class="auth-container">
   <h2>Registrazione</h2>
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="register-form">
     <!-- Nome -->
-    <div>
-      <label for="firstname">Nome</label>
-      <input id="firstname" formControlName="firstname" required />
-      <div
-        *ngIf="signupForm.get('firstname')?.invalid && (signupForm.get('firstname')?.dirty || signupForm.get('firstname')?.touched)">
-        <small *ngIf="signupForm.get('firstname')?.errors?.['required']" class="error-message">Il nome è
-          obbligatorio.</small>
-        <small *ngIf="signupForm.get('firstname')?.errors?.['minlength']" class="error-message">Il nome deve essere
-          lungo almeno 2 caratteri.</small>
-      </div>
-    </div>
+    <label for="firstname">Nome</label>
+    <input id="firstname" formControlName="firstname" />
 
     <!-- Cognome -->
-    <div>
-      <label for="lastname">Cognome</label>
-      <input id="lastname" formControlName="lastname" required />
-      <div
-        *ngIf="signupForm.get('lastname')?.invalid && (signupForm.get('lastname')?.dirty || signupForm.get('lastname')?.touched)">
-        <small *ngIf="signupForm.get('lastname')?.errors?.['required']" class="error-message">Il cognome è
-          obbligatorio.</small>
-        <small *ngIf="signupForm.get('lastname')?.errors?.['minlength']" class="error-message">Il cognome deve essere
-          lungo almeno 2 caratteri.</small>
-      </div>
-    </div>
+    <label for="lastname">Cognome</label>
+    <input id="lastname" formControlName="lastname" />
 
     <!-- Email -->
-    <div>
-      <label for="email">Email</label>
-      <input id="email" formControlName="email" type="email" required />
-      <div
-        *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)">
-        <small *ngIf="signupForm.get('email')?.errors?.['required']" class="error-message">L'email è
-          obbligatoria.</small>
-        <small *ngIf="signupForm.get('email')?.errors?.['email']" class="error-message">Inserisci un'email
-          valida.</small>
-      </div>
-    </div>
+    <label for="email">Email</label>
+    <input id="email" formControlName="email" type="email" />
 
     <!-- Password -->
-    <div>
-      <label for="password">Password</label>
-      <input id="password" formControlName="password" type="password" required />
-      <div
-        *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)">
-        <small *ngIf="signupForm.get('password')?.errors?.['required']" class="error-message">La password è
-          obbligatoria.</small>
-        <small *ngIf="signupForm.get('password')?.errors?.['minlength']" class="error-message">La password deve essere
-          lunga almeno 6 caratteri.</small>
-      </div>
-    </div>
+    <label for="password">Password</label>
+    <input id="password" formControlName="password" type="password" />
 
-    <!-- Numero di Telefono -->
-    <div>
-      <label for="phoneNumber">Numero di Telefono</label>
-      <input id="phoneNumber" formControlName="phoneNumber" type="tel" required />
-      <div
-        *ngIf="signupForm.get('phoneNumber')?.invalid && (signupForm.get('phoneNumber')?.dirty || signupForm.get('phoneNumber')?.touched)">
-        <small *ngIf="signupForm.get('phoneNumber')?.errors?.['required']" class="error-message">Il numero di telefono è
-          obbligatorio.</small>
-        <small *ngIf="signupForm.get('phoneNumber')?.errors?.['pattern']" class="error-message">Inserisci un numero di
-          telefono valido.</small>
-      </div>
-    </div>
+    <!-- Numero -->
+    <label for="phoneNumber">Numero di Telefono</label>
+    <input id="phoneNumber" formControlName="phoneNumber" type="tel" />
+
+    <!-- Ruolo -->
+    <label for="role">Tipo di account</label>
+    <select id="role" formControlName="role" class="custom-select">
+      <option value="USER">Utente</option>
+      <option value="OWNER">Proprietario Struttura</option>
+    </select>
 
     <!-- Avatar -->
-    <div class="custom-file-upload">
-      <label for="avatar" class="upload-label">📷 Carica Foto Profilo</label>
-      <input type="file" id="avatar" (change)="onFileSelected($event)" accept="image/*" hidden>
-      <span class="file-name">{{ selectedFileName || 'Nessun file selezionato' }}</span>
-    </div>
+    <label class="upload-label">
+      📷 Carica Foto Profilo
+      <input type="file" (change)="onFileSelected($event)" hidden />
+    </label>
+    <span class="file-name" *ngIf="selectedFileName">
+      ✅ {{ selectedFileName }}
+    </span>
 
-
-    <!-- Submit -->
     <button type="submit" [disabled]="signupForm.invalid">Registrati</button>
 
     <!-- Link login -->
