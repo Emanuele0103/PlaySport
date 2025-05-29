@@ -43,6 +43,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user: User | null) => {
+      console.log('👤 [Home] Utente ricevuto:', user);
+      console.log('🌐 Avatar full path:', this.env.apiBaseUrl + user?.avatar);
       if (user) {
         this.user$ = user;
         this.isAdmin = this.authService.isAdmin();

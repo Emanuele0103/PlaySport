@@ -55,25 +55,23 @@ export class AuthService {
   }
 
   getDecodedToken(): User {
-    const token = localStorage.getItem('authToken'); // Recupera il token dal localStorage
+    const token = localStorage.getItem('authToken');
     if (token) {
       try {
-        // Decodifica il token JWT
         const decoded: any = jwtDecode(token);
-        console.log('Token decodificato:', decoded); // Aggiungi questo per visualizzare il token decodificato
+        console.log('🔍 [Token Decodificato]', decoded);
 
-        // Restituisce i dati dell'utente decodificato (nome, cognome, ruolo)
         return {
-          firstname: decoded.firstname || 'Utente', // Usa "Utente" come nome predefinito se non presente
-          lastname: decoded.lastname || 'sconosciuto', // Usa "sconosciuto" come cognome predefinito se non presente
-          role: decoded.role || 'user', // Controlla il nome esatto del campo 'role' nel token
-          avatar: decoded.avatarUrl,
+          firstname: decoded.firstname,
+          lastname: decoded.lastname,
+          role: decoded.role,
+          avatar: decoded.avatarUrl || null,
         };
       } catch (error) {
-        console.error('Errore nella decodifica del token:', error); // Gestisce eventuali errori di decodifica
+        console.error('Errore nella decodifica del token:', error);
       }
     }
-    return null; // Se non c'è token o non può essere decodificato, restituisce `null`
+    return null;
   }
 
   // Verifica se l'utente è autenticato (controlla la presenza del token nel localStorage)

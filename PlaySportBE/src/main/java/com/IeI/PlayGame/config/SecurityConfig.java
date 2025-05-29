@@ -26,6 +26,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auths -> auths
                         .requestMatchers(
+                                "/uploads/**", // 👈 Permetti accesso pubblico ai file statici
                                 "/api/v1/user/register",
                                 "/api/v1/user/authenticate"
                         ).permitAll()
@@ -44,17 +45,16 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**") // Map CORS for all API endpoints
-                        .allowedOrigins("http://localhost:4200") // Allow requests from Angular app
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allowed HTTP methods
-                        .allowedHeaders("*") // Allow all headers
-                        .allowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)
+                registry.addMapping("/api/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }

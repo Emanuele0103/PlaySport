@@ -102,20 +102,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String uploadAvatarTemporary(MultipartFile file) throws IOException {
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        Path uploadDir = Paths.get("uploads");
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectories(uploadDir);
-        }
-
-        Path filePath = uploadDir.resolve(fileName);
-        Files.copy(file.getInputStream(), filePath);
-
-        return "/uploads/" + fileName;
-    }
-
-    @Override
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -204,13 +190,17 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public String uploadUserAvatar(Long userId, MultipartFile file) throws IOException {
+        System.out.println("🖼️ [DEBUG] Ricevuta immagine per userId: " + userId);
+        System.out.println("🖼️ [DEBUG] Nome file originale: " + file.getOriginalFilename());
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Utente non trovato con ID: " + userId));
 
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-
         Path uploadDir = Paths.get("uploads");
+
         if (!Files.exists(uploadDir)) {
+            System.out.println("📁 [DEBUG] Cartella uploads non trovata, la creo...");
             Files.createDirectories(uploadDir);
         }
 
@@ -218,10 +208,38 @@ public class UserServiceImpl implements UserService {
         Files.copy(file.getInputStream(), filePath);
 
         String avatarUrl = "/uploads/" + fileName;
+        System.out.println("🔗 [DEBUG] avatarUrl salvato: " + avatarUrl);
+        System.out.println("📍 [DEBUG] Path assoluto: " + filePath.toAbsolutePath());
+
         user.setAvatarUrl(avatarUrl);
         userRepository.save(user);
 
+        System.out.println("✅ [DEBUG] Avatar salvato per l'utente con ID: " + userId);
         return avatarUrl;
     }
+
+    @Override
+    public String uploadAvatarTemporary(MultipartFile file) throws IOException {
+        System.out.println("🖼️ [DEBUG] Caricamento avatar temporaneo: " + file.getOriginalFilename());
+
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path uploadDir = Paths.get("uploads");
+
+        if (!Files.exists(uploadDir)) {
+            System.out.println("📁 [DEBUG] Creo cartella uploads...");
+            Files.createDirectories(uploadDir);
+        }
+
+        Path filePath = uploadDir.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath);
+
+        String finalUrl = "/uploads/" + fileName;
+        System.out.println("🔗 [DEBUG] URL avatar temporaneo: " + finalUrl);
+        System.out.println("📍 [DEBUG] Salvato in: " + filePath.toAbsolutePath());
+
+        return finalUrl;
+    }
+
+
 
 }

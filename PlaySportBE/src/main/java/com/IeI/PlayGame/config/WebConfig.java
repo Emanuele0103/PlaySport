@@ -9,12 +9,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String absolutePath = System.getProperty("user.dir") + "/uploads/";
-        System.out.println("🧾 Serving static resources from: " + absolutePath);
+        String path = System.getProperty("user.dir") + "/uploads/";
+        System.out.println("🧾 [WebConfig] Static files served from: " + path); // stampa path assoluto
 
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + absolutePath);
+                .addResourceLocations("file:" + path);
     }
 }
+
 
 
