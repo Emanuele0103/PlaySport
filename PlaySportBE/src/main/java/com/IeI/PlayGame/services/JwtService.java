@@ -34,6 +34,7 @@ public class JwtService {
 
         if (userDetails instanceof User) {
             User user = (User) userDetails;
+            extraClaims.put("id", user.getId());
             extraClaims.put("firstname", user.getFirstname());
             extraClaims.put("lastname", user.getLastname());
             extraClaims.put("role", user.getRole());

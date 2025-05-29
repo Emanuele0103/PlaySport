@@ -77,6 +77,15 @@ public class UserController {
 
     @PostMapping("/users/{id}/avatar")
     public ResponseEntity<?> uploadUserAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        // Verifica che l’utente loggato corrisponda all’id
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = auth.getName();
+
+        Optional<User> userOpt = userService.findById(id);
+        if (userOpt.isEmpty() || !userOpt.get().getEmail().equals(loggedEmail)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Non autorizzato");
+        }
+
         try {
             String avatarUrl = userService.uploadUserAvatar(id, file);
             return ResponseEntity.ok(avatarUrl);
@@ -84,6 +93,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel caricamento avatar");
         }
     }
+
 
 
 

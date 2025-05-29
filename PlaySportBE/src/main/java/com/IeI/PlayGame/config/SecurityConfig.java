@@ -23,16 +23,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http
+                .cors(cors -> {}) // ✅ Abilita CORS
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auths -> auths
                         .requestMatchers(
-                                "/uploads/**", // 👈 Permetti accesso pubblico ai file statici
+                                "/uploads/**",
                                 "/api/v1/user/register",
                                 "/api/v1/user/authenticate"
                         ).permitAll()
                         .requestMatchers(
                                 "/api/v1/user/change-password",
                                 "/api/v1/user/update"
+                        ).authenticated()
+                        .requestMatchers(
+                                "/api/v1/user/users/*/avatar"
                         ).authenticated()
                         .anyRequest().authenticated()
                 )
@@ -50,7 +55,7 @@ public class SecurityConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
+                registry.addMapping("/**") // ✅ tutte le rotte, incluse /uploads e multipart
                         .allowedOrigins("http://localhost:4200")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")

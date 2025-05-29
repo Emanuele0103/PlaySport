@@ -31,4 +31,10 @@ export class SharedService {
     sessionStorage.clear();
     // Puoi anche reindirizzare alla login se vuoi, oppure lasciare che lo faccia il componente
   }
+
+  updateLocalAvatar(avatarUrl: string) {
+    if (avatarUrl) {
+      localStorage.setItem('avatar', avatarUrl);
+    }
+  }
 }

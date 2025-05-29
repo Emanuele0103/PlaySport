@@ -45,6 +45,33 @@ export class UserService {
     return new HttpHeaders();
   }
 
+  private getCurrentUserId(): string | null {
+    const token = localStorage.getItem('authToken');
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.id?.toString() || null;
+    } catch (error) {
+      console.error('Errore nel decoding del token JWT:', error);
+      return null;
+    }
+  }
+
+  uploadUserAvatar(file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(
+      `${this.apiUrl}/users/${this.getCurrentUserId()}/avatar`,
+      formData,
+      {
+        headers: this.getAuthHeaders(),
+        responseType: 'text',
+      }
+    );
+  }
+
   getUserProfile(): Observable<UserProfile> {
     return this.http
       .get<UserProfile>(`${this.apiUrl}/profile`, {

@@ -24,6 +24,7 @@ export class SettingsComponent implements OnInit {
   isProfileEditing: boolean = false;
   feedbackMessage: string = '';
   errorMessage: string = '';
+  selectedFile: File | null = null;
 
   constructor(
     private sharedService: SharedService,
@@ -53,55 +54,54 @@ export class SettingsComponent implements OnInit {
   }
 
   updateProfile() {
-    const updatedUserProfile: Partial<UserProfile> = {
-      email: this.user.email,
-      avatar: this.user.avatar,
+    const update = () => {
+      const updatedUserProfile: Partial<UserProfile> = {
+        email: this.user.email,
+        avatar: this.user.avatar, // URL dopo upload
+      };
+
+      this.userService.updateUserProfile(updatedUserProfile).subscribe({
+        next: () => {
+          this.sharedService.updateLocalAvatar(this.user.avatar); // ✅ aggiorna localStorage
+          this.feedbackMessage = 'Profilo aggiornato con successo!';
+          this.errorMessage = '';
+          this.oldPassword = '';
+          this.newPassword = '';
+          this.selectedFile = null;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        error: (err) => {
+          this.feedbackMessage = '';
+          this.errorMessage = "Errore durante l'aggiornamento del profilo.";
+        },
+      });
     };
 
-    this.userService.updateUserProfile(updatedUserProfile).subscribe({
-      next: () => {
-        if (this.oldPassword && this.newPassword) {
-          this.userService
-            .changePassword(this.oldPassword, this.newPassword)
-            .subscribe({
-              next: (res) => {
-                this.feedbackMessage =
-                  'Email, immagine e password aggiornati con successo!';
-                this.errorMessage = '';
-                this.oldPassword = '';
-                this.newPassword = '';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              },
-              error: (error) => {
-                this.feedbackMessage = '';
-                this.errorMessage =
-                  'Email/immagine aggiornati, ma errore nel cambio password: ' +
-                  error.error.message;
-                console.error(error);
-              },
-            });
-        } else {
-          this.feedbackMessage = 'Email e immagine aggiornati con successo!';
-          this.errorMessage = '';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        (document.getElementById('avatar') as HTMLInputElement).value = '';
-      },
-      error: (error) => {
-        this.feedbackMessage = '';
-        this.errorMessage = "Errore durante l'aggiornamento.";
-        console.error('Errore aggiornamento profilo:', error);
-      },
-    });
+    if (this.selectedFile) {
+      this.userService.uploadUserAvatar(this.selectedFile).subscribe({
+        next: (avatarUrl) => {
+          this.user.avatar = avatarUrl;
+          this.sharedService.updateLocalAvatar(avatarUrl); // ✅ subito dopo upload
+          update();
+        },
+        error: (err) => {
+          this.errorMessage = 'Errore durante il caricamento immagine.';
+          console.error(err);
+        },
+      });
+    } else {
+      update();
+    }
   }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
+      this.selectedFile = file;
+
       const reader = new FileReader();
       reader.onload = () => {
-        this.user.avatar = reader.result as string;
+        this.user.avatar = reader.result as string; // anteprima facoltativa
       };
       reader.readAsDataURL(file);
     }
