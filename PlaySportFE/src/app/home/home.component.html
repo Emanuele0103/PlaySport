@@ -24,6 +24,9 @@
       <button *ngIf="isAdmin" class="button" [routerLink]="['/userManagement']">
         <i class="fas fa-user-cog"></i> Gestisci Utenti
       </button>
+      <button *ngIf="isOwner" class="button" [routerLink]="['/strutture']">
+        <i class="fas fa-building"></i> Gestisci Strutture
+      </button>
       <button class="button" [routerLink]="['/settings']">
         <i class="fas fa-cog"></i> Impostazioni
       </button>

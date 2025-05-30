@@ -31,16 +31,27 @@ public class UserController {
             @RequestPart("email") String email,
             @RequestPart("password") String password,
             @RequestPart("phoneNumber") String phoneNumber,
+            @RequestPart("role") String roleStr, // <-- AGGIUNTO
             @RequestPart(value = "avatar", required = false) MultipartFile avatar
     ) {
         String avatarUrl = null;
 
         if (avatar != null && !avatar.isEmpty()) {
             try {
-                avatarUrl = userService.uploadAvatarTemporary(avatar); // metodo da creare
+                avatarUrl = userService.uploadAvatarTemporary(avatar);
             } catch (IOException e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nel salvataggio immagine.");
             }
+        }
+
+        Role role;
+        try {
+            role = Role.valueOf(roleStr.toUpperCase());
+            if (!(role == Role.USER || role == Role.OWNER)) {
+                return ResponseEntity.badRequest().body("Ruolo non consentito.");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Ruolo non valido. Usa USER o OWNER.");
         }
 
         User user = new User();
@@ -49,7 +60,7 @@ public class UserController {
         user.setEmail(email);
         user.setPassword(password);
         user.setPhoneNumber(phoneNumber);
-        user.setRole(Role.USER);
+        user.setRole(role);
         user.setAvatarUrl(avatarUrl);
 
         Optional<User> response = userService.saveUser(user);

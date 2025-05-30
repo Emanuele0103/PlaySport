@@ -1,0 +1,32 @@
+<div class="owner-structures">
+    <h2>Le tue strutture</h2>
+
+    <form (ngSubmit)="onSubmit()" #strutturaForm="ngForm">
+        <input type="text" name="nome" [(ngModel)]="formModel.nome" placeholder="Nome struttura" required />
+        <input type="text" name="indirizzo" [(ngModel)]="formModel.indirizzo" placeholder="Indirizzo" required />
+        <select name="sport" [(ngModel)]="formModel.sport" required>
+            <option value="" disabled selected>Seleziona sport</option>
+            <option value="calcio">Calcio</option>
+            <option value="padel">Padel</option>
+            <option value="tennis">Tennis</option>
+            <option value="basket">Basket</option>
+        </select>
+        <input type="text" name="immagine" [(ngModel)]="formModel.immagine"
+            placeholder="Nome immagine (es. calcio1.jpg)" required />
+        <button type="submit">{{ editMode ? 'Salva Modifiche' : 'Aggiungi Struttura' }}</button>
+        <button *ngIf="editMode" type="button" (click)="annullaModifica()">Annulla</button>
+    </form>
+
+    <div *ngIf="strutture.length === 0">Nessuna struttura presente.</div>
+
+    <div *ngFor="let struttura of strutture" class="struttura-card">
+        <img [src]="'assets/img/' + struttura.immagine" alt="Immagine struttura" />
+        <div>
+            <h3>{{ struttura.nome }}</h3>
+            <p>{{ struttura.indirizzo }}</p>
+            <p><strong>Sport:</strong> {{ struttura.sport }}</p>
+            <button (click)="modificaStruttura(struttura)">Modifica</button>
+            <button (click)="eliminaStruttura(struttura.id)">Elimina</button>
+        </div>
+    </div>
+</div>

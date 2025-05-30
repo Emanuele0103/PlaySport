@@ -8,6 +8,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { ClubDetailsComponent } from './club-details/club-details.component';
 import { UserBookingsComponent } from './user-booking/user-booking.component';
+import { OwnerStructuresComponent } from './owner-structures/owner-structures.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'userManagement', component: UserManagementComponent },
   { path: 'club/:id', component: ClubDetailsComponent },
   { path: 'le-mie-prenotazioni', component: UserBookingsComponent },
+  { path: 'strutture', component: OwnerStructuresComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 

@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   selectedSport: string = '';
   campi: Campo[] = [];
   isAdmin: boolean = false;
+  isOwner: boolean = false;
   env = environment;
 
   constructor(
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit {
       if (user) {
         this.user$ = user;
         this.isAdmin = this.authService.isAdmin();
+        this.isOwner = user.role === 'OWNER';
       } else {
         this.recuperaUtenteDaLocalStorage();
       }

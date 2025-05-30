@@ -32,6 +32,7 @@ import { MY_DATE_FORMATS } from './shared/date-format';
 // Locale italiano
 import { registerLocaleData } from '@angular/common';
 import localeIt from '@angular/common/locales/it';
+import { OwnerStructuresComponent } from './owner-structures/owner-structures.component';
 registerLocaleData(localeIt);
 
 @NgModule({
@@ -42,6 +43,7 @@ registerLocaleData(localeIt);
     UserManagementComponent,
     ClubDetailsComponent,
     UserBookingsComponent,
+    OwnerStructuresComponent,
   ],
   imports: [
     BrowserModule,
