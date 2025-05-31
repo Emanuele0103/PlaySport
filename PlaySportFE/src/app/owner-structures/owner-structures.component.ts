@@ -21,6 +21,8 @@ export class OwnerStructuresComponent implements OnInit {
   editMode: boolean = false;
   currentEditId: number | null = null;
   nextId: number = 1;
+  anteprima: string | null = null;
+  selectedFileName: string = '';
 
   constructor(private location: Location) {}
 
@@ -68,14 +70,15 @@ export class OwnerStructuresComponent implements OnInit {
       const nuovaStruttura = { ...this.formModel, id: this.nextId++ };
       this.strutture.push(nuovaStruttura);
       this.formModel = this.getEmptyStruttura();
+      this.anteprima = null;
+      this.selectedFileName = '';
     }
   }
-
-  anteprima: string | null = null;
 
   onImageSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      this.selectedFileName = file.name;
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.anteprima = e.target.result;
@@ -89,12 +92,16 @@ export class OwnerStructuresComponent implements OnInit {
     this.formModel = { ...struttura };
     this.editMode = true;
     this.currentEditId = struttura.id;
+    this.anteprima = struttura.imgUrl;
+    this.selectedFileName = struttura.immagine;
   }
 
   annullaModifica(): void {
     this.editMode = false;
     this.currentEditId = null;
     this.formModel = this.getEmptyStruttura();
+    this.anteprima = null;
+    this.selectedFileName = '';
   }
 
   eliminaStruttura(id: number): void {

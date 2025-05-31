@@ -24,8 +24,11 @@
             <option value="basket">Basket</option>
         </select>
 
-        <label for="immagine">Immagine</label>
-        <input id="immagine" type="file" (change)="onImageSelected($event)" accept="image/*" required />
+        <label for="immagine" class="upload-label">
+            <i class="fas fa-upload"></i> Carica immagine
+            <input id="immagine" type="file" (change)="onImageSelected($event)" accept="image/*" hidden />
+        </label>
+        <span class="file-name" *ngIf="selectedFileName">📂 {{ selectedFileName }}</span>
         <img *ngIf="anteprima" [src]="anteprima" alt="Anteprima" class="file-preview" />
 
         <button type="submit">{{ editMode ? 'Salva Modifiche' : 'Aggiungi Struttura' }}</button>

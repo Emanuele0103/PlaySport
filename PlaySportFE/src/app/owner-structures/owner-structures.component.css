@@ -125,3 +125,31 @@ button:hover {
   transition: color 0.3s;
   margin-bottom: 10px;
 }
+
+.upload-label {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 15px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+}
+
+.upload-label i {
+  margin-right: 8px;
+}
+
+.upload-label:hover {
+  background-color: #0056b3;
+}
+
+.file-name {
+  font-size: 14px;
+  margin-top: 6px;
+  color: #444;
+}
