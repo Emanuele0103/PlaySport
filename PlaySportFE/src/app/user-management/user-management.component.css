@@ -263,6 +263,20 @@ table td .action-buttons button {
     background-color: #e0a800;
 }
 
+.edit-form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.edit-form-container input,
+.edit-form-container select {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .delete-btn {
     background-color: #dc3545;
     color: white;

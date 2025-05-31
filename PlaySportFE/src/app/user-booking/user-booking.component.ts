@@ -1,6 +1,5 @@
-// user-bookings.component.ts
 import { Component, OnInit } from '@angular/core';
-import { BookingService } from '../shared/booking.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-user-bookings',
@@ -10,23 +9,36 @@ import { BookingService } from '../shared/booking.service';
 export class UserBookingsComponent implements OnInit {
   bookings: any[] = [];
 
-  constructor(private bookingService: BookingService) {}
+  constructor(private location: Location) {}
 
   ngOnInit(): void {
-    this.loadBookings();
-  }
-
-  loadBookings() {
-    this.bookingService.getUserBookings().subscribe({
-      next: (data) => (this.bookings = data),
-      error: (err) => console.error('Errore prenotazioni:', err),
-    });
+    this.bookings = [
+      {
+        id: '1',
+        sport: 'Tennis',
+        date: '2025-06-11',
+        time: '17:00',
+        fieldName: 'Campo Centrale',
+      },
+      {
+        id: '2',
+        sport: 'Calcio',
+        date: '2025-06-12',
+        time: '20:30',
+        fieldName: 'Stadio Comunale',
+      },
+      {
+        id: '3',
+        sport: 'Padel',
+        date: '2025-06-15',
+        time: '16:00',
+        fieldName: 'Padel Arena 2',
+      },
+    ];
   }
 
   cancelBooking(id: string) {
-    this.bookingService.cancelBooking(id).subscribe(() => {
-      this.loadBookings(); // Ricarica
-    });
+    this.bookings = this.bookings.filter((b) => b.id !== id);
   }
 
   confirmDelete(id: string) {
@@ -36,5 +48,9 @@ export class UserBookingsComponent implements OnInit {
     if (conferma) {
       this.cancelBooking(id);
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

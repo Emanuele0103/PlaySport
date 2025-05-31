@@ -1,14 +1,17 @@
-<h2>Le mie prenotazioni</h2>
+<div class="page-container">
+    <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
 
-<div *ngIf="bookings.length > 0; else nessunaPrenotazione">
-    <div *ngFor="let b of bookings" class="booking-card">
-        <p><strong>Sport:</strong> {{ b.sport }}</p>
-        <p><strong>Data:</strong> {{ b.date }} ore {{ b.time }}</p>
-        <p><strong>Campo:</strong> {{ b.fieldName }}</p>
-        <button class="cancel-button" (click)="confirmDelete(b.id)">Annulla prenotazione</button>
+
+    <h2 class="page-title">Le tue prenotazioni</h2>
+
+    <div class="bookings-list">
+        <div *ngFor="let b of bookings" class="booking-card">
+            <p><strong>Sport:</strong> {{ b.sport }}</p>
+            <p><strong>Data:</strong> {{ b.date }} ore {{ b.time }}</p>
+            <p><strong>Campo:</strong> {{ b.fieldName }}</p>
+            <button class="cancel-button" (click)="confirmDelete(b.id)">Annulla prenotazione</button>
+        </div>
     </div>
 </div>
-
-<ng-template #nessunaPrenotazione>
-    <p>Non hai prenotazioni attive.</p>
-</ng-template>

@@ -1,32 +1,48 @@
 <div class="owner-structures">
-    <h2>Le tue strutture</h2>
+    <!-- Pulsante indietro -->
+    <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+    </button>
 
+    <!-- Titolo -->
+    <h2 class="page-title">Gestisci Strutture</h2>
+
+    <!-- Form di inserimento -->
     <form (ngSubmit)="onSubmit()" #strutturaForm="ngForm">
-        <input type="text" name="nome" [(ngModel)]="formModel.nome" placeholder="Nome struttura" required />
-        <input type="text" name="indirizzo" [(ngModel)]="formModel.indirizzo" placeholder="Indirizzo" required />
-        <select name="sport" [(ngModel)]="formModel.sport" required>
+        <label for="nome">Nome struttura</label>
+        <input id="nome" type="text" [(ngModel)]="formModel.nome" name="nome" required />
+
+        <label for="indirizzo">Indirizzo</label>
+        <input id="indirizzo" type="text" [(ngModel)]="formModel.indirizzo" name="indirizzo" required />
+
+        <label for="sport">Sport</label>
+        <select id="sport" [(ngModel)]="formModel.sport" name="sport" required>
             <option value="" disabled selected>Seleziona sport</option>
             <option value="calcio">Calcio</option>
             <option value="padel">Padel</option>
             <option value="tennis">Tennis</option>
             <option value="basket">Basket</option>
         </select>
-        <input type="text" name="immagine" [(ngModel)]="formModel.immagine"
-            placeholder="Nome immagine (es. calcio1.jpg)" required />
+
+        <label for="immagine">Immagine</label>
+        <input id="immagine" type="file" (change)="onImageSelected($event)" accept="image/*" required />
+        <img *ngIf="anteprima" [src]="anteprima" alt="Anteprima" class="file-preview" />
+
         <button type="submit">{{ editMode ? 'Salva Modifiche' : 'Aggiungi Struttura' }}</button>
         <button *ngIf="editMode" type="button" (click)="annullaModifica()">Annulla</button>
     </form>
 
-    <div *ngIf="strutture.length === 0">Nessuna struttura presente.</div>
-
-    <div *ngFor="let struttura of strutture" class="struttura-card">
-        <img [src]="'assets/img/' + struttura.immagine" alt="Immagine struttura" />
-        <div>
-            <h3>{{ struttura.nome }}</h3>
-            <p>{{ struttura.indirizzo }}</p>
-            <p><strong>Sport:</strong> {{ struttura.sport }}</p>
-            <button (click)="modificaStruttura(struttura)">Modifica</button>
-            <button (click)="eliminaStruttura(struttura.id)">Elimina</button>
+    <!-- Lista delle strutture -->
+    <div class="structures-list" *ngIf="strutture.length > 0">
+        <div class="struttura-card" *ngFor="let struttura of strutture">
+            <img [src]="struttura.imgUrl || 'assets/img/placeholder.jpg'" alt="Struttura">
+            <div>
+                <h3>{{ struttura.nome }}</h3>
+                <p>{{ struttura.indirizzo }}</p>
+                <p><strong>Sport:</strong> {{ struttura.sport }}</p>
+                <button (click)="modificaStruttura(struttura)">Modifica</button>
+                <button (click)="eliminaStruttura(struttura.id)">Elimina</button>
+            </div>
         </div>
     </div>
 </div>
