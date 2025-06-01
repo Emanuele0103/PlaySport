@@ -13,6 +13,8 @@ export class RegisterComponent {
   avatarBase64: string = '';
   selectedFileName: string = '';
   selectedFile: File | null = null;
+  documentFile: File | null = null;
+  documentFileName: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -43,6 +45,17 @@ export class RegisterComponent {
     }
   }
 
+  onDocumentSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.documentFile = file;
+      this.documentFileName = file.name;
+    } else {
+      this.documentFile = null;
+      this.documentFileName = '';
+    }
+  }
+
   onSubmit(): void {
     if (this.signupForm.valid) {
       const formData = new FormData();
@@ -55,6 +68,8 @@ export class RegisterComponent {
       if (this.selectedFile) {
         formData.append('avatar', this.selectedFile); // chiave = "avatar"
       }
+
+      formData.append('document', this.documentFile);
 
       this.authService.register(formData).subscribe({
         next: (data) => {

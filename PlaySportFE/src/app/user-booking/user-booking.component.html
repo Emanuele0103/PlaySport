@@ -1,12 +1,12 @@
-<div class="page-container">
+<div class="page-container" style="width: 100vw;">
     <button class="back-button" (click)="goBack()">
         <i class="fas fa-arrow-left"></i>
     </button>
 
-
     <h2 class="page-title">Le tue prenotazioni</h2>
 
-    <div class="bookings-list">
+    <div class="bookings-list"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
         <div *ngFor="let b of bookings" class="booking-card">
             <p><strong>Sport:</strong> {{ b.sport }}</p>
             <p><strong>Data:</strong> {{ b.date }} ore {{ b.time }}</p>

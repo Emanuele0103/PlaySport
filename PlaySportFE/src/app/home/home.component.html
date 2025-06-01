@@ -15,10 +15,19 @@
     </div>
 
     <h2>Sport</h2>
-    <button class="button" (click)="selectSport('calcio')">Calcio</button>
-    <button class="button" (click)="selectSport('padel')">Padel</button>
-    <button class="button" (click)="selectSport('tennis')">Tennis</button>
-    <button class="button" (click)="selectSport('basket')">Basket</button>
+    <button class="button" (click)="selectSport('calcio')">
+      <i class="fas fa-futbol"></i> Calcio
+    </button>
+    <button class="button" (click)="selectSport('padel')">
+      <i class="fas fa-table-tennis"></i> Padel
+    </button>
+    <button class="button" (click)="selectSport('tennis')">
+      <i class="fas fa-table-tennis"></i> Tennis
+    </button>
+    <button class="button" (click)="selectSport('basket')">
+      <i class="fas fa-basketball-ball"></i> Basket
+    </button>
+
 
     <div class="bottom-buttons">
       <button *ngIf="isAdmin" class="button" [routerLink]="['/userManagement']">

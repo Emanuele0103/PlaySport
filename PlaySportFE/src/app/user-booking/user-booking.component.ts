@@ -34,6 +34,34 @@ export class UserBookingsComponent implements OnInit {
         time: '16:00',
         fieldName: 'Padel Arena 2',
       },
+      {
+        id: '4',
+        sport: 'Basket',
+        date: '2025-06-18',
+        time: '18:00',
+        fieldName: 'Palestra Sud',
+      },
+      {
+        id: '5',
+        sport: 'Volley',
+        date: '2025-06-20',
+        time: '19:30',
+        fieldName: 'Centro Sportivo Nord',
+      },
+      {
+        id: '6',
+        sport: 'Calcio',
+        date: '2025-06-21',
+        time: '21:00',
+        fieldName: 'Stadio B',
+      },
+      {
+        id: '7',
+        sport: 'Padel',
+        date: '2025-06-23',
+        time: '17:45',
+        fieldName: 'Padel Club Roma',
+      },
     ];
   }
 

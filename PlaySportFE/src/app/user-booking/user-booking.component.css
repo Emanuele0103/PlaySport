@@ -4,14 +4,18 @@ body, html {
   padding: 0;
   background-color: #ffffff;
   font-family: Arial, sans-serif;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* Contenitore principale */
 .page-container {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 40px;
   background-color: #ffffff;
+  box-sizing: border-box;
 }
 
 /* Titolo pagina */
@@ -23,11 +27,13 @@ body, html {
   text-align: left;
 }
 
-/* Lista prenotazioni */
+/* Lista in griglia */
 .bookings-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Card prenotazione */
@@ -38,8 +44,13 @@ body, html {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   text-align: left;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+/* Testo prenotazione */
 .booking-card p {
   margin: 8px 0;
   font-size: 16px;
@@ -56,6 +67,7 @@ body, html {
   font-weight: 600;
   cursor: pointer;
   margin-top: 10px;
+  align-self: flex-start;
 }
 
 .cancel-button:hover {
@@ -70,6 +82,7 @@ body, html {
   padding-top: 20px;
 }
 
+/* Bottone indietro */
 .back-button {
   background: none;
   border: none;

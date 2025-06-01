@@ -59,3 +59,24 @@
   flex-direction: column;
   gap: 5px;
 }
+.upload-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.small-upload {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.file-names {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}

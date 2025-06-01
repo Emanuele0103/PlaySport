@@ -1,7 +1,7 @@
 <div class="settings-container">
   <div class="back-wrapper">
     <button class="back-button" (click)="goBack()" aria-label="Torna indietro">
-      ←
+      <i class="fas fa-arrow-left"></i>
     </button>
   </div>
 
@@ -10,12 +10,14 @@
 
   <div class="button-group full-width">
     <button class="settings-button full" [routerLink]="['/le-mie-prenotazioni']">
-      📅 Le mie prenotazioni
+      <i class="fas fa-calendar-alt"></i> Le mie prenotazioni
     </button>
   </div>
 
   <div class="button-group">
-    <button class="settings-button" (click)="showProfileForm()">✏️ Modifica Profilo</button>
+    <button class="settings-button" (click)="showProfileForm()">
+      <i class="fas fa-user-edit"></i> Modifica Profilo
+    </button>
   </div>
 
   <!-- Toggle Tema Scuro -->
@@ -29,8 +31,9 @@
 
   <!-- Bottone elimina account -->
   <button class="settings-button danger full" (click)="confirmDelete()">
-    🗑️ Elimina il mio account
+    <i class="fas fa-trash-alt"></i> Elimina il mio account
   </button>
+
 
   <!-- Modulo modifica profilo -->
   <div *ngIf="isProfileEditing" class="profile-form">
@@ -49,7 +52,10 @@
       <input type="password" [(ngModel)]="oldPassword" name="oldPassword" placeholder="Vecchia password" />
       <input type="password" [(ngModel)]="newPassword" name="newPassword" placeholder="Nuova password" />
 
-      <button type="submit" class="settings-button">💾 Salva</button>
+      <button type="submit" class="settings-button">
+        <i class="fas fa-save"></i> Salva
+      </button>
+
     </form>
 
     <!-- Feedback -->

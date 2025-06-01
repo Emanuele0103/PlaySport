@@ -29,14 +29,24 @@
       <option value="OWNER">Proprietario Struttura</option>
     </select>
 
-    <!-- Avatar -->
-    <label class="upload-label">
-      📷 Carica Foto Profilo
-      <input type="file" (change)="onFileSelected($event)" hidden />
-    </label>
-    <span class="file-name" *ngIf="selectedFileName">
-      ✅ {{ selectedFileName }}
-    </span>
+    <!-- Upload avatar e documento -->
+    <div class="upload-row">
+      <label class="upload-label small-upload">
+        <i class="fas fa-camera"></i> Carica Foto Profilo
+        <input type="file" (change)="onFileSelected($event)" hidden />
+      </label>
+      <label class="upload-label small-upload">
+        <i class="fas fa-id-card"></i> Carica Documento Identità
+        <input type="file" (change)="onDocumentSelected($event)" hidden />
+      </label>
+
+    </div>
+
+    <div class="file-names">
+      <span class="file-name" *ngIf="selectedFileName">✅ {{ selectedFileName }}</span>
+      <span class="file-name" *ngIf="documentFileName">✅ {{ documentFileName }}</span>
+    </div>
+
 
     <button type="submit" [disabled]="signupForm.invalid">Registrati</button>
 
