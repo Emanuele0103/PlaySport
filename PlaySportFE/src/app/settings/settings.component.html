@@ -44,8 +44,14 @@
       <input type="email" [(ngModel)]="user.email" name="email" placeholder="Email" required />
 
       <!-- Avatar upload -->
-      <label for="avatar">Foto Profilo</label>
-      <input type="file" (change)="onFileSelected($event)" id="avatar" />
+      <label class="upload-label">
+        <i class="fas fa-upload"></i> Carica nuova foto profilo
+        <input type="file" id="avatar" (change)="onFileSelected($event)" hidden />
+      </label>
+      <span class="file-name" *ngIf="selectedFile?.name">
+        ✅ {{ selectedFile.name }}
+      </span>
+
 
       <!-- Cambia Password integrato -->
       <h4>Cambia Password (opzionale)</h4>
