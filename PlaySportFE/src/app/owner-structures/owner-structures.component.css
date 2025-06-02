@@ -153,3 +153,36 @@ button:hover {
   margin-top: 6px;
   color: #444;
 }
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* più vicino! */
+  background-color: #f1f1f1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.checkbox-item input[type="checkbox"] {
+  accent-color: #007bff;
+  margin: 0; /* rimuove spazi interni */
+  transform: scale(1.1);
+}
+
+.checkbox-item:hover {
+  background-color: #e0e0e0;
+}
+
+.checkbox-item span {
+  font-size: 14px;
+  font-weight: 500;
+}

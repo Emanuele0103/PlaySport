@@ -15,14 +15,35 @@
         <label for="indirizzo">Indirizzo</label>
         <input id="indirizzo" type="text" [(ngModel)]="formModel.indirizzo" name="indirizzo" required />
 
-        <label for="sport">Sport</label>
-        <select id="sport" [(ngModel)]="formModel.sport" name="sport" required>
-            <option value="" disabled selected>Seleziona sport</option>
-            <option value="calcio">Calcio</option>
-            <option value="padel">Padel</option>
-            <option value="tennis">Tennis</option>
-            <option value="basket">Basket</option>
-        </select>
+        <label>Sport</label>
+        <div class="checkbox-group">
+            <label class="checkbox-item">
+                <input type="checkbox" value="calcio" (change)="onSportChange($event)"
+                    [checked]="formModel.sport.includes('calcio')" />
+                <span>Calcio</span>
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="padel" (change)="onSportChange($event)"
+                    [checked]="formModel.sport.includes('padel')" />
+                <span>Padel</span>
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="tennis" (change)="onSportChange($event)"
+                    [checked]="formModel.sport.includes('tennis')" />
+                <span>Tennis</span>
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="basket" (change)="onSportChange($event)"
+                    [checked]="formModel.sport.includes('basket')" />
+                <span>Basket</span>
+            </label>
+        </div>
+
+        <label for="apertura">Orario di apertura</label>
+        <input id="apertura" type="time" [(ngModel)]="formModel.orarioApertura" name="orarioApertura" required />
+
+        <label for="chiusura">Orario di chiusura</label>
+        <input id="chiusura" type="time" [(ngModel)]="formModel.orarioChiusura" name="orarioChiusura" required />
 
         <label for="immagine" class="upload-label">
             <i class="fas fa-upload"></i> Carica immagine
@@ -42,7 +63,8 @@
             <div>
                 <h3>{{ struttura.nome }}</h3>
                 <p>{{ struttura.indirizzo }}</p>
-                <p><strong>Sport:</strong> {{ struttura.sport }}</p>
+                <p><strong>Sport:</strong> {{ struttura.sport.join(', ') }}</p>
+                <p><strong>Orario:</strong> {{ struttura.orarioApertura }} - {{ struttura.orarioChiusura }}</p>
                 <button (click)="modificaStruttura(struttura)">Modifica</button>
                 <button (click)="eliminaStruttura(struttura.id)">Elimina</button>
             </div>

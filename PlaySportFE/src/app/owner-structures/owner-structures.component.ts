@@ -5,9 +5,11 @@ interface Struttura {
   id: number;
   nome: string;
   indirizzo: string;
-  sport: string;
+  sport: string[];
   immagine: string;
   imgUrl: string;
+  orarioApertura: string; // Orario come stringa formato "HH:mm"
+  orarioChiusura: string;
 }
 
 @Component({
@@ -32,19 +34,34 @@ export class OwnerStructuresComponent implements OnInit {
         id: this.nextId++,
         nome: 'Sport Village Roma',
         indirizzo: 'Via Appia 123',
-        sport: 'calcio',
+        sport: ['calcio', 'padel'],
         immagine: 'calcio1.jpg',
         imgUrl: 'assets/img/calcio1.jpg',
+        orarioApertura: '14:00',
+        orarioChiusura: '22:00',
       },
       {
         id: this.nextId++,
         nome: 'Tennis Club Firenze',
         indirizzo: 'Viale dei Campi 22',
-        sport: 'tennis',
+        sport: ['tennis', 'basket'],
         immagine: 'tennis1.jpg',
         imgUrl: 'assets/img/tennis1.jpg',
+        orarioApertura: '10:00',
+        orarioChiusura: '22:00',
       },
     ];
+  }
+
+  onSportChange(event: any): void {
+    const sport = event.target.value;
+    if (event.target.checked) {
+      if (!this.formModel.sport.includes(sport)) {
+        this.formModel.sport.push(sport);
+      }
+    } else {
+      this.formModel.sport = this.formModel.sport.filter((s) => s !== sport);
+    }
   }
 
   getEmptyStruttura(): Struttura {
@@ -52,13 +69,20 @@ export class OwnerStructuresComponent implements OnInit {
       id: 0,
       nome: '',
       indirizzo: '',
-      sport: '',
+      sport: [],
       immagine: '',
       imgUrl: '',
+      orarioApertura: '',
+      orarioChiusura: '',
     };
   }
 
   onSubmit(): void {
+    // Validazione orario apertura < chiusura
+    if (this.formModel.orarioApertura >= this.formModel.orarioChiusura) {
+      alert("L'orario di apertura deve essere precedente a quello di chiusura");
+      return;
+    }
     if (this.editMode) {
       this.strutture = this.strutture.map((s) =>
         s.id === this.currentEditId
