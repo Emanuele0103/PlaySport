@@ -81,6 +81,8 @@ export class ClubDetailsComponent implements OnInit {
         images: ['assets/img/calcio1.jpg'],
         lat: 41.9028,
         lng: 12.4964,
+        orarioApertura: '08:00',
+        orarioChiusura: '22:00',
         calendar: [],
       },
       {
@@ -90,6 +92,8 @@ export class ClubDetailsComponent implements OnInit {
         images: ['assets/img/calcio2.jpg'],
         lat: 45.4642,
         lng: 9.19,
+        orarioApertura: '09:00',
+        orarioChiusura: '21:00',
         calendar: [],
       },
       {
@@ -99,51 +103,63 @@ export class ClubDetailsComponent implements OnInit {
         images: ['assets/img/padel1.jpg', 'assets/img/padel2.jpg'],
         lat: 40.8522,
         lng: 14.2681,
+        orarioApertura: '10:00',
+        orarioChiusura: '23:00',
         calendar: [],
       },
       {
         id: 4,
         name: 'Campo Padel 2',
         address: 'Via Firenze',
-        image: ['assets/img/padel2.jpg'],
+        images: ['assets/img/padel2.jpg'],
         lat: 43.7696,
         lng: 11.2558,
+        orarioApertura: '08:30',
+        orarioChiusura: '20:30',
         calendar: [],
       },
       {
         id: 5,
         name: 'Campo Tennis 1',
         address: 'Via Torino',
-        image: ['assets/img/tennis1.jpg'],
+        images: ['assets/img/tennis1.jpg'],
         lat: 45.0703,
         lng: 7.6869,
+        orarioApertura: '07:00',
+        orarioChiusura: '21:00',
         calendar: [],
       },
       {
         id: 6,
         name: 'Campo Tennis 2',
         address: 'Via Bologna',
-        image: ['assets/img/tennis2.jpg'],
+        images: ['assets/img/tennis2.jpg'],
         lat: 44.4949,
         lng: 11.3426,
+        orarioApertura: '08:00',
+        orarioChiusura: '22:00',
         calendar: [],
       },
       {
         id: 7,
         name: 'Campo Basket 1',
         address: 'Via Palermo',
-        image: ['assets/img/basket1.jpg'],
+        images: ['assets/img/basket1.jpg'],
         lat: 38.1157,
         lng: 13.3615,
+        orarioApertura: '09:00',
+        orarioChiusura: '20:00',
         calendar: [],
       },
       {
         id: 8,
         name: 'Campo Basket 2',
         address: 'Via Genova',
-        image: ['assets/img/basket2.jpg'],
+        images: ['assets/img/basket2.jpg'],
         lat: 44.4056,
         lng: 8.9463,
+        orarioApertura: '10:00',
+        orarioChiusura: '21:30',
         calendar: [],
       },
     ];
@@ -152,14 +168,31 @@ export class ClubDetailsComponent implements OnInit {
   }
 
   generateMockCalendar() {
-    const baseHour = 8;
+    const apertura = this.clubData.orarioApertura || '08:00';
+    const chiusura = this.clubData.orarioChiusura || '20:00';
+
+    const startHour = parseInt(apertura.split(':')[0], 10);
+    const endHour = parseInt(chiusura.split(':')[0], 10);
+
+    const now = new Date();
+    const selected = new Date(this.selectedDate);
+    const isToday = selected.toDateString() === now.toDateString();
+
     const slots = [];
-    for (let i = 0; i < 8; i++) {
+    for (let hour = startHour; hour < endHour; hour++) {
+      const label = `${hour.toString().padStart(2, '0')}:00`;
+
+      let isPast = false;
+      if (isToday && hour <= now.getHours()) {
+        isPast = true;
+      }
+
       slots.push({
-        hour: `${(baseHour + i).toString().padStart(2, '0')}:00`,
-        available: Math.random() > 0.3,
+        hour: label,
+        available: !isPast && Math.random() > 0.3,
       });
     }
+
     return slots;
   }
 

@@ -58,6 +58,7 @@
           <div class="campo-info">
             <h3>{{ campo.name }}</h3>
             <p>{{ campo.address }}</p>
+            <p><strong>Orario:</strong> {{ campo.orarioApertura }} - {{ campo.orarioChiusura }}</p>
             <button [routerLink]="['/club', campo.id]">Prenota</button>
           </div>
         </div>

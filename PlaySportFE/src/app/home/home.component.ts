@@ -9,6 +9,8 @@ interface Campo {
   name: string;
   address: string;
   img: string;
+  orarioApertura: string;
+  orarioChiusura: string;
 }
 
 interface User {
@@ -84,12 +86,16 @@ export class HomeComponent implements OnInit {
           name: 'Campo Calcio 1',
           address: 'Via Roma',
           img: 'calcio1.jpg',
+          orarioApertura: '08:00',
+          orarioChiusura: '22:00',
         },
         {
           id: 2,
           name: 'Campo Calcio 2',
           address: 'Via Milano',
           img: 'calcio2.jpg',
+          orarioApertura: '09:00',
+          orarioChiusura: '21:00',
         },
       ],
       padel: [
@@ -98,12 +104,16 @@ export class HomeComponent implements OnInit {
           name: 'Campo Padel 1',
           address: 'Via Napoli',
           img: 'padel1.jpg',
+          orarioApertura: '10:00',
+          orarioChiusura: '23:00',
         },
         {
           id: 4,
           name: 'Campo Padel 2',
           address: 'Via Firenze',
           img: 'padel2.jpg',
+          orarioApertura: '09:00',
+          orarioChiusura: '22:00',
         },
       ],
       tennis: [
@@ -112,12 +122,16 @@ export class HomeComponent implements OnInit {
           name: 'Campo Tennis 1',
           address: 'Via Torino',
           img: 'tennis1.jpg',
+          orarioApertura: '07:00',
+          orarioChiusura: '20:00',
         },
         {
           id: 6,
           name: 'Campo Tennis 2',
           address: 'Via Bologna',
           img: 'tennis2.jpg',
+          orarioApertura: '08:00',
+          orarioChiusura: '21:00',
         },
       ],
       basket: [
@@ -126,12 +140,16 @@ export class HomeComponent implements OnInit {
           name: 'Campo Basket 1',
           address: 'Via Palermo',
           img: 'basket1.jpg',
+          orarioApertura: '10:00',
+          orarioChiusura: '22:00',
         },
         {
           id: 8,
           name: 'Campo Basket 2',
           address: 'Via Genova',
           img: 'basket2.jpg',
+          orarioApertura: '09:00',
+          orarioChiusura: '21:30',
         },
       ],
     };
