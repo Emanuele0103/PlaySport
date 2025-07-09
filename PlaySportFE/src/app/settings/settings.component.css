@@ -32,7 +32,6 @@
   background-color: #e0e0e0;
   color: #333;
   font-size: 18px;
-  font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -45,8 +44,6 @@
   background-color: #d1d1d1;
   transform: scale(1.05);
 }
-
-
 
 /* Gruppo di pulsanti */
 .button-group {
@@ -113,7 +110,7 @@ form select {
   box-sizing: border-box;
 }
 
-/* Password + toggle 👁️ */
+/* Input con toggle password (se presente in futuro) */
 .password-input-container {
   position: relative;
   display: flex;
@@ -159,72 +156,7 @@ form select {
   font-weight: bold;
 }
 
-/* Tema scuro switch */
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.theme-label {
-  font-weight: bold;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 48px;
-  height: 24px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  border-radius: 34px;
-  transition: 0.4s;
-}
-
-.slider::before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  border-radius: 50%;
-  transition: 0.4s;
-}
-
-input:checked + .slider {
-  background-color: #007bff;
-}
-
-input:checked + .slider::before {
-  transform: translateX(24px);
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .button-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .settings-button {
-    width: 100%;
-  }
-}
-
+/* Upload */
 .upload-label {
   display: inline-block;
   background-color: #007bff;
@@ -252,4 +184,16 @@ input:checked + .slider::before {
   color: #555;
   margin-bottom: 10px;
   display: block;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .settings-button {
+    width: 100%;
+  }
 }

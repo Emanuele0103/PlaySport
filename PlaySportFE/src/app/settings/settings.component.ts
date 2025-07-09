@@ -107,11 +107,6 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  toggleTheme(event: any) {
-    const dark = event.target.checked;
-    document.body.classList.toggle('dark-theme', dark);
-  }
-
   confirmDelete() {
     if (
       confirm(

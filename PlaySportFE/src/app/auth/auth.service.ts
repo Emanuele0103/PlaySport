@@ -25,7 +25,15 @@ export class AuthService {
   // `user$` è l'osservabile che altri componenti possono sottoscrivere per sapere se l'utente è autenticato
   public user$ = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        const decoded = this.getDecodedToken();
+        this.userSubject.next(decoded);
+      }
+    }
+  }
 
   // Funzione di registrazione: invia i dati di registrazione all'API
   register(formData: any): Observable<any> {
